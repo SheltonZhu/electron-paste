@@ -3,11 +3,14 @@ import { isQuiting } from './data'
 import logger from './logger'
 import { appIcon } from '../shared/icon'
 import { isProd } from '../shared/env'
-import { registerShortcut, unregisterShortcut } from './shortcut'
+// import { registerShortcut, unregisterShortcut } from './shortcut'
+// import appConfig$ from './data'
+// import { showNotification } from './notification'
+// import { showWindow as showSettings } from './window-settings'
 
 const winURL = !isProd
-    ? `http://localhost:9080/clipboard`
-    : `file://${__dirname}/clipboard/index.html`
+  ? `http://localhost:9080/clipboard`
+  : `file://${__dirname}/clipboard/index.html`
 
 let mainWindow
 let readyPromise
@@ -41,7 +44,8 @@ export function createWindow () {
     icon: appIcon,
     title: 'ClipBoard',
     titleBarStyle: 'hidden',
-    show: !isProd,
+    // show: !isProd,
+    show: false,
     webPreferences: {
       webSecurity: isProd,
       nodeIntegration: true,
@@ -50,7 +54,8 @@ export function createWindow () {
     }
   })
   mainWindow.setMenu(null)
-  mainWindow.loadURL(winURL).then(() => {})
+  mainWindow.loadURL(winURL).then(() => {
+  })
   // hide to tray when window closed
   mainWindow.on('close', (e) => {
     // 当前不是退出APP的时候才去隐藏窗口
@@ -64,15 +69,15 @@ export function createWindow () {
     mainWindow = null
   })
 
-  mainWindow.on('show', () => {
-    logger.debug('show clipboard window.')
-    registerShortcut('hideClipboard', 'Esc')
-  })
-
-  mainWindow.on('hide', () => {
-    logger.debug('hide clipboard window.')
-    unregisterShortcut('Esc')
-  })
+  // mainWindow.on('show', () => {
+  //   logger.debug('show clipboard window.')
+  //   registerShortcut('hideClipboard', 'Esc')
+  // })
+  //
+  // mainWindow.on('hide', () => {
+  //   logger.debug('hide clipboard window.')
+  //   unregisterShortcut('Esc')
+  // })
 
   readyPromise = new Promise(resolve => {
     mainWindow.webContents.once('did-finish-load', resolve)
@@ -157,7 +162,6 @@ export async function sendData (channel, ...args) {
  * 打开开发者工具
  */
 export async function openDevtool () {
-  logger.debug('[clipboard]: open dev tool...')
   if (mainWindow) {
     await readyPromise
     mainWindow.webContents.openDevTools()

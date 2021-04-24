@@ -1,5 +1,5 @@
 import { Notification } from 'electron'
-import { sendData } from './window-clipboard'
+import { sendData as sendToClipboard } from './window-clipboard'
 import { EVENT_APP_NOTIFY_MAIN } from '../shared/events'
 import { isMac } from '../shared/env'
 import { notificationIcon } from '../shared/icon'
@@ -18,6 +18,6 @@ export function showNotification (body, title = '通知', onClick) {
     notification.show()
   } else {
     logger.debug('不支持原生通知，将使用HTML5通知')
-    sendData(EVENT_APP_NOTIFY_MAIN, { title, body })
+    sendToClipboard(EVENT_APP_NOTIFY_MAIN, { title, body }).then()
   }
 }

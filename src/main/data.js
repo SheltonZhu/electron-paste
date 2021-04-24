@@ -7,6 +7,7 @@ import { sendData } from './window-clipboard'
 import { EVENT_RX_SYNC_MAIN } from '../shared/events'
 import { isArray, getUpdatedKeys, configMerge, clone } from '../shared/utils'
 import defaultConfig, { mergeConfig } from '../shared/config'
+import logger from './logger'
 
 let promise
 // 是因为调用app.quit还是手动点击窗口的叉号引起的关闭事件, true表示app.quit
@@ -21,6 +22,7 @@ async function read () {
   try {
     return await readJson(appConfigPath)
   } catch (e) {
+    logger.error(`[config]: 读取配置失败： ${e}`)
     return Promise.resolve(defaultConfig)
   }
 }
@@ -42,15 +44,10 @@ const source = Observable.create(observe => {
   promise = init().then(data => {
     currentConfig = data
     isFromRenderer = false
-    // 第一个参数为当前配置对象，第二个参数为变更的字段数组，第三个参数为旧配置，第四个参数为当前配置对应是否开启了代理，第五个参数为旧配置对应是否开启了代理
-    observe.next([data, [], null, isProxyStarted(data), false])
+    // 第一个参数为当前配置对象，第二个参数为变更的字段数组，第三个参数为旧配置
+    observe.next([data, [], null])
   })
 })
-
-// 当前是否已选择某节点，即socks代理是否选中并启用
-export function isProxyStarted (appConfig) {
-  return !!(appConfig.enable && appConfig.configs && appConfig.configs[appConfig.index])
-}
 
 /**
  * 统一使用该接口从外部更新应用配置
@@ -63,7 +60,7 @@ export function updateAppConfig (targetConfig, fromRenderer = false, forceAppend
     const oldConfig = clone(currentConfig, true)
     configMerge(currentConfig, targetConfig, forceAppendArray)
     isFromRenderer = fromRenderer
-    _observe.next([currentConfig, changedKeys, oldConfig, isProxyStarted(currentConfig), isProxyStarted(oldConfig)])
+    _observe.next([currentConfig, changedKeys, oldConfig])
   }
 }
 
@@ -94,7 +91,7 @@ appConfig$.subscribe(data => {
     writeJson(appConfigPath, appConfig, { spaces: '\t' })
     // 如果是从renderer同步过来的数据则不再同步回去，避免重复同步
     if (!isFromRenderer) {
-      sendData(EVENT_RX_SYNC_MAIN, appConfig)
+      sendData(EVENT_RX_SYNC_MAIN, appConfig).then()
     }
   }
 })

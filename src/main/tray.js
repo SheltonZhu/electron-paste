@@ -4,6 +4,7 @@ import { checkUpdate } from './updater'
 import { isMac } from '../shared/env'
 import { appTray } from '../shared/icon'
 import logger from './logger'
+import pkg from '../../package.json'
 
 let tray
 
@@ -24,12 +25,12 @@ function generateMenus () {
         { label: '查看日志', click: handler.openLog },
         {
           label: '项目主页', click: () => {
-            handler.openURL('https://github.com/SheltonZhu/electron-paste').then()
+            handler.openURL(pkg.homepage).then()
           }
         },
         {
           label: 'Bug反馈', click: () => {
-            handler.openURL('https://github.com/SheltonZhu/electron-paste/issues').then()
+            handler.openURL(pkg.bugs.url).then()
           }
         },
         { label: '打开开发者工具', click: handler.openDevtool }
@@ -72,7 +73,7 @@ export default function renderTray () {
   updateTray()
   setTrayIcon(appTray)
   // tray.on((isMac || isWin) ? 'double-click' : 'click', handler.toggleClipboardWindow)
-  tray.on( 'click', handler.toggleClipboardWindow)
+  tray.on('click', handler.toggleClipboardWindow)
   logger.debug('[tray]: render tray done.')
 }
 

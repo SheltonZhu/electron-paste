@@ -1,8 +1,9 @@
 import { app, globalShortcut } from 'electron'
 import logger from './logger'
 import { showWindow as showClipboard, hideWindow as hideClipboard } from './window-clipboard'
-// import { appConfig$ } from './data'
-// import { showNotification } from './notification'
+import { showWindow as showSettings, sendData as sendToSettings } from './window-settings'
+import { appConfig$ } from './data'
+import { showNotification } from './notification'
 // import { EVENT_APP_SHOW_PAGE } from '../shared/events'
 
 const func = {
@@ -47,51 +48,51 @@ export function clearShortcuts () {
   globalShortcut.unregisterAll()
 }
 
-// /**
-//  * 变更快捷键绑定
-//  * @param {Boolean} shortcutEnable 是否启用快捷键
-//  * @param {String} oldKey 旧的快捷键
-//  * @param {String} newKey 新的快捷键
-//  */
-// function switchRegister (funcName, shortcutEnable, oldKey, newKey) {
-//   unregisterShortcut(oldKey)
-//   if (shortcutEnable) {
-//     registerShortcut(funcName, newKey)
-//   }
-// }
+/**
+ * 变更快捷键绑定
+ * @param {Boolean} shortcutEnable 是否启用快捷键
+ * @param {String} oldKey 旧的快捷键
+ * @param {String} newKey 新的快捷键
+ */
+function switchRegister (funcName, shortcutEnable, oldKey, newKey) {
+  unregisterShortcut(oldKey)
+  if (shortcutEnable) {
+    registerShortcut(funcName, newKey)
+  }
+}
 
 app.on('ready', () => {
-  _registerShortcut('showClipboard','Alt+V')
+  // _registerShortcut('showClipboard','Alt+B')
   // 监听配置
-  // appConfig$.subscribe(data => {
-  //   const [appConfig, changed, oldConfig] = data
-  //   if (!changed.length) {
-  //     // 注册，并返回注册失败的
-  //     const failed = Object.keys(appConfig.globalShortcuts).filter(funcName => {
-  //       if (appConfig.globalShortcuts[funcName].enable) {
-  //         return !registerShortcut(funcName, appConfig.globalShortcuts[funcName].key)
-  //       }
-  //       return false
-  //     })
-  //     // if (failed.length) {
-  //     //   showNotification(`检测到${failed.length}个全局快捷键注册失败，请在快捷键页面重新设置`, '错误', () => {
-  //     //     showWindow()
-  //     //     sendData(EVENT_APP_SHOW_PAGE, { page: 'Options', tab: 'shortcuts' })
-  //     //   })
-  //     // }
-  //   } else {
-  //     if (changed.indexOf('globalShortcuts') > -1) {
-  //       // 配置改变
-  //       Object.keys(appConfig.globalShortcuts).forEach(funcName => {
-  //         const oldShortcut = oldConfig.globalShortcuts[funcName]
-  //         const newShortcut = appConfig.globalShortcuts[funcName]
-  //         // 配置项变更时才更新快捷键
-  //         if (oldShortcut.key !== newShortcut.key || oldShortcut.enable !== newShortcut.enable) {
-  //           switchRegister(funcName, newShortcut.enable, oldShortcut.key, newShortcut.key)
-  //         }
-  //       })
-  //     }
-  //   }
-  // })
+  appConfig$.subscribe(data => {
+    const [appConfig, changed, oldConfig] = data
+    if (!changed.length) {
+      // 注册，并返回注册失败的
+      const failed = Object.keys(appConfig.globalShortcuts).filter(funcName => {
+        if (appConfig.globalShortcuts[funcName].enable) {
+          return !registerShortcut(funcName, appConfig.globalShortcuts[funcName].key)
+        }
+        return false
+      })
+      if (failed.length) {
+        showNotification(`检测到${failed.length}个全局快捷键注册失败，请在快捷键页面重新设置`, '错误', () => {
+          showSettings()
+          // sendToSettings(EVENT_APP_SHOW_PAGE, { page: 'Options', tab: 'shortcuts' })
+        })
+      }
+    } else {
+      if (changed.indexOf('globalShortcuts') > -1) {
+        // 配置改变
+        Object.keys(appConfig.globalShortcuts).forEach(funcName => {
+          const oldShortcut = oldConfig.globalShortcuts[funcName]
+          const newShortcut = appConfig.globalShortcuts[funcName]
+          // 配置项变更时才更新快捷键
+          if (oldShortcut.key !== newShortcut.key || oldShortcut.enable !== newShortcut.enable) {
+            switchRegister(funcName, newShortcut.enable, oldShortcut.key, newShortcut.key)
+          }
+        })
+      }
+    }
+  })
 })
 

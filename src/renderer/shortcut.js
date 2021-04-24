@@ -1,8 +1,9 @@
 import Mousetrap from 'mousetrap'
-import { toggleMenu } from './ipc'
+import { toggleMenu, hideClipboard } from './ipc'
 
 const func = {
-  toggleMenu
+  toggleMenu,
+  hideClipboard
 }
 
 export function init (appConfig) {

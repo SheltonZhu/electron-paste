@@ -4,9 +4,9 @@ import logger, { logPath } from './logger'
 import {
   showWindow as showClipboard,
   openDevtool as cod,
-  toggleWindow as toggleClipboard,
+  toggleWindow as toggleClipboard
 } from './window-clipboard'
-import { showWindow as showSettings ,openDevtool as sod} from './window-settings'
+import { showWindow as showSettings, openDevtool as sod } from './window-settings'
 
 // 打开窗口
 export function showClipboardWindow () {
@@ -26,13 +26,17 @@ export function showSettingsWindow () {
 // 打开配置文件
 export async function openConfigFile () {
   await bootstrapPromise
-  shell.openItem(appConfigPath)
+  shell.openPath(appConfigPath).then(e => {
+    logger.error(`[tray]: 打开配置失败： ${e}`)
+  })
 }
 
 // 打开日志文件
 export async function openLog () {
   await bootstrapPromise
-  shell.openItem(logPath)
+  shell.openPath(logPath).then(e => {
+    logger.error(`[tray]: 打开日志文件： ${e}`)
+  })
 }
 
 // 打开指定的url
@@ -44,11 +48,12 @@ export function openURL (url) {
 export function exitApp () {
   app.quit()
 }
-export function openDevtool(){
-  cod().then(()=>{
-    logger.debug("[tray]: open dev tool from clipboard.")
+
+export function openDevtool () {
+  cod().then(() => {
+    logger.debug('[tray]: open dev tool from clipboard.')
   })
-  sod().then(()=>{
-    logger.debug("[tray]: open dev tool from settings.")
+  sod().then(() => {
+    logger.debug('[tray]: open dev tool from settings.')
   })
 }

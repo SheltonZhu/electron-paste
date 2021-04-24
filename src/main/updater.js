@@ -6,7 +6,7 @@ import { getWindow } from './window-settings'
 import { showNotification } from './notification'
 import { isLinux } from '../shared/env'
 import { request } from '../shared/utils'
-
+import pkg from '../../package.json'
 let forceUpdate = false
 autoUpdater.logger = logger
 autoUpdater.autoDownload = false
@@ -70,7 +70,7 @@ export function checkUpdate (force = false) {
       const isOutdated = versionCheck(currentVersion, remotePkg.version)
       if (isOutdated) {
         showNotification(`最新版本为 v${remotePkg.version}，点击前往下载。`, '通知', () => {
-          shell.openExternal('https://github.com/shadowsocksrr/electron-paste/releases')
+          shell.openExternal(`${pkg.homepage}/releases`)
         })
       } else if (force) {
         showNotification('当前已是最新版，无需更新')

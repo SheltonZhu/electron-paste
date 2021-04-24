@@ -57,7 +57,7 @@ export function debounce (fn, delay) {
 
 /**
  * Vue data merge
- * @param  {Object} to      object that want to be merget to
+ * @param  {Object} to      object that want to be merge to
  * @param  {Object} origins origin object sources
  */
 export function merge (to, ...origins) {

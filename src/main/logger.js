@@ -5,7 +5,7 @@ import { ensureDirSync } from 'fs-extra'
 import * as Sentry from '@sentry/electron'
 
 if (process.env.NODE_ENV === 'production') {
-  Sentry.init({ dsn: "https://2444a54068d944a58a6d4809f27271e1@o578131.ingest.sentry.io/5734190" });
+  Sentry.init({ dsn: 'https://2444a54068d944a58a6d4809f27271e1@o578131.ingest.sentry.io/5734190' })
 }
 
 const userPath = app.getPath('userData')

@@ -7,11 +7,12 @@ import { hideWindow as hideClipboard } from './window-clipboard'
 import defaultConfig, { mergeConfig } from '../shared/config'
 import { showNotification } from './notification'
 import logger from './logger'
+import robot from 'robotjs'
 
 /**
  * ipc-main事件
  */
-ipcMain.on(events.EVENT_APP_HIDE_WINDOW, () => {
+ipcMain.on(events.EVENT_APP_HIDE_WINDOW_CLIPBOARD, () => {
   // 隐藏窗口
   hideClipboard()
 }).on(events.EVENT_APP_WEB_INIT, e => {
@@ -40,4 +41,8 @@ ipcMain.on(events.EVENT_APP_HIDE_WINDOW, () => {
 }).on(events.EVENT_APP_OPEN_DIALOG, async (e, params) => {
   const ret = await dialog.showOpenDialog(params)
   e.returnValue = ret.filePaths
+}).on('test', () => {
+  setTimeout(async () => {
+    robot.keyTap('v', 'control')
+  }, 10)
 })

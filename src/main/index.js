@@ -1,8 +1,7 @@
 import { app, screen } from 'electron'
-// import AutoLaunch from 'auto-launch'
+import AutoLaunch from 'auto-launch'
 import clipboard from 'electron-clipboard-extended'
 import bootstrap from './bootstrap'
-import { isQuiting } from './data'
 import renderTray, { destroyTray } from './tray'
 import { checkUpdate } from './updater'
 import './menu'
@@ -12,17 +11,20 @@ import {
   createWindow as createClipboard,
   getWindow as getClipboard,
   destroyWindow as destroyClipboard,
-  reCreateWindow
+  reCreateWindow,
+  showWindow as showClipboard
 } from './window-clipboard'
 import {
   createWindow as createSettings,
   getWindow as getSettings,
   destroyWindow as destroySettings
 } from './window-settings'
-
+import renderMenu from './menu'
 import logger from './logger'
 import { clearShortcuts } from './shortcut'
-import { isProd, isWin } from '../shared/env'
+import { isProd, isWin, isMac } from '../shared/env'
+import { isQuiting, appConfig$ } from './data'
+import { showNotification } from './notification'
 
 const isPrimaryInstance = app.requestSingleInstanceLock()
 
@@ -32,50 +34,53 @@ if (!isPrimaryInstance) {
   app.exit()
 } else {
   app.on('second-instance', (event, argv) => {
-    // showWindow()
-    // // 如果是通过链接打开的应用，则添加记录
-    // if (argv[1]) {
-    //   const configs = loadConfigsFromString(argv[1])
-    //   if (configs.length) {
-    //     addConfigs(configs)
-    //   }
-    // }
+    showClipboard()
+    // 如果是通过链接打开的应用，则添加记录
+    if (argv[1]) {
+      showNotification(argv[1], '浏览器打开')
+    }
   })
 
   bootstrap.then(() => {
     logger.info('[app]: Bootstrap...')
-    // createClipboard()
+    createClipboard()
     createSettings()
     renderTray()
+    renderMenu()
+
+    if (isWin || isMac) {
+      app.setAsDefaultProtocolClient('paste')
+    }
+
     if (isProd) {
       checkUpdate()
     }
 
     // 开机自启动配置
-    // const AutoLauncher = new AutoLaunch({
-    //   name: 'Electron Paste',
-    //   isHidden: true,
-    //   mac: {
-    //     useLaunchAgent: true
-    //   }
-    // })
+    const AutoLauncher = new AutoLaunch({
+      name: 'Electron Paste',
+      isHidden: true,
+      mac: {
+        useLaunchAgent: true
+      }
+    })
 
-    // appConfig$.subscribe(data => {
-    //   const [appConfig, changed] = data
-    //   if (!changed.length || changed.indexOf('autoLaunch') > -1) {
-    //     // 初始化或者选项变更时
-    //     AutoLauncher.isEnabled().then(enabled => {
-    //       // 状态不相同时
-    //       if (appConfig.autoLaunch !== enabled) {
-    //         return AutoLauncher[appConfig.autoLaunch ? 'enable' : 'disable']().catch(() => {
-    //           logger.error(`${appConfig.autoLaunch ? '执行' : '取消'}开机自启动失败`)
-    //         })
-    //       }
-    //     }).catch(() => {
-    //       logger.error('获取开机自启状态失败')
-    //     })
-    //   }
-    // })
+    appConfig$.subscribe(data => {
+      const [appConfig, changed] = data
+      if (!changed.length || changed.indexOf('autoLaunch') > -1) {
+        // 初始化或者选项变更时
+        AutoLauncher.isEnabled().then(enabled => {
+          // 状态不相同时
+          if (appConfig.autoLaunch !== enabled) {
+            return AutoLauncher[appConfig.autoLaunch ? 'enable' : 'disable']().catch(() => {
+              logger.error(`${appConfig.autoLaunch ? '执行' : '取消'}开机自启动失败`)
+            })
+          }
+        }).catch(() => {
+          logger.error('获取开机自启状态失败')
+        })
+      }
+    })
 
     app.on('window-all-closed', () => {
       logger.debug('window-all-closed')
@@ -104,7 +109,7 @@ if (!isPrimaryInstance) {
       }
     })
 
-    //监听屏幕变化
+    // 监听屏幕变化
     screen.on('display-metrics-changed', async () => {
       logger.debug('[screen]: display-changed')
       reCreateWindow()
@@ -120,19 +125,19 @@ if (!isPrimaryInstance) {
       logger.debug('[screen]: display-added')
     })
 
-    // if (!isProd) {
-    //   if (isWin) {
-    //     process.on('message', data => {
-    //       if (data === 'graceful-exit') {
-    //         app.quit()
-    //       }
-    //     })
-    //   } else {
-    //     process.on('SIGTERM', () => {
-    //       app.quit()
-    //     })
-    //   }
-    // }
+    if (!isProd) {
+      if (isWin) {
+        process.on('message', data => {
+          if (data === 'graceful-exit') {
+            app.quit()
+          }
+        })
+      } else {
+        process.on('SIGTERM', () => {
+          app.quit()
+        })
+      }
+    }
     logger.info('[app]: Bootstrap...done.')
   })
 }

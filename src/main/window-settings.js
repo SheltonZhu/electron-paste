@@ -34,7 +34,8 @@ export function createWindow () {
     title: 'Settings',
     titleBarStyle: 'hidden',
     center: true,
-    show: !isProd,
+    // show: !isProd,
+    show: false,
     webPreferences: {
       webSecurity: isProd,
       nodeIntegration: true,
@@ -45,7 +46,7 @@ export function createWindow () {
   mainWindow.setMenu(null)
   mainWindow.loadURL(winURL).then()
   // hide to tray when window closed
-  mainWindow.on('close', (e) => {
+  mainWindow.on('close', e => {
     // 当前不是退出APP的时候才去隐藏窗口
     if (!isQuiting()) {
       e.preventDefault()

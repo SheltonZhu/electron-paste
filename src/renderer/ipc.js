@@ -1,9 +1,7 @@
 import { ipcRenderer } from 'electron'
 import store from './store'
 import { showNotification, showHtmlNotification } from './notification'
-import scanQrcode from './qrcode/scan-screenshot'
 import * as events from '../shared/events'
-import { loadConfigsFromString } from '../shared/ssr'
 
 /**
  * ipc-render事件
@@ -11,19 +9,6 @@ import { loadConfigsFromString } from '../shared/ssr'
 ipcRenderer.on(events.EVENT_APP_NOTIFY_MAIN, (e, { title, body }) => {
   // 显示main进程的通知
   showHtmlNotification(body, title)
-}).on(events.EVENT_APP_SCAN_DESKTOP, () => {
-  // 扫描二维码
-  scanQrcode((e, result) => {
-    if (e) {
-      showNotification('未找到相关二维码', '扫码失败')
-    } else {
-      const configs = loadConfigsFromString(result)
-      if (configs.length) {
-        store.dispatch('addConfigs', configs)
-        showNotification(`已成功添加${configs.length}条记录`)
-      }
-    }
-  })
 }).on(events.EVENT_APP_SHOW_PAGE, (e, targetView) => {
   // 显示具体某页面
   console.log('received view update: ', targetView.page, targetView.tab)
@@ -31,17 +16,6 @@ ipcRenderer.on(events.EVENT_APP_NOTIFY_MAIN, (e, { title, body }) => {
 }).on(events.EVENT_APP_ERROR_MAIN, (e, err) => {
   // 弹框显示main进程报错内容
   alert(err)
-}).on(events.EVENT_SUBSCRIBE_UPDATE_MAIN, (e) => {
-  // 更新订阅服务器
-  store.dispatch('updateSubscribes').then(updatedCount => {
-    if (updatedCount > 0) {
-      showNotification(`服务器订阅更新成功，共更新了${updatedCount}个节点`)
-    } else {
-      showNotification(`服务器订阅更新完成，没有新节点`)
-    }
-  }).catch(() => {
-    showNotification('服务器订阅更新失败')
-  })
 }).on(events.EVENT_RX_SYNC_MAIN, (e, appConfig) => {
   // 同步数据
   console.log('received sync data: %o', appConfig)
@@ -76,8 +50,8 @@ export function toggleMenu () {
 /**
  * 隐藏窗口
  */
-export function hideWindow () {
-  ipcRenderer.send(events.EVENT_APP_HIDE_WINDOW)
+export function hideClipboard () {
+  ipcRenderer.send(events.EVENT_APP_HIDE_WINDOW_CLIPBOARD)
 }
 
 /**

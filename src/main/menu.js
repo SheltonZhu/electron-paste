@@ -2,6 +2,7 @@ import { app, Menu } from 'electron'
 import * as handler from './tray-handler'
 import { checkUpdate } from './updater'
 import { isMac, isLinux } from '../shared/env'
+import pkg from '../../package.json'
 
 let showLinuxMenu = false
 /**
@@ -17,7 +18,8 @@ export default function renderMenu () {
         { role: 'about' },
         { type: 'separator' },
         { role: 'quit' }
-      ] }, {
+      ]
+    }, {
       label: 'Edit',
       submenu: [
         { role: 'undo' },
@@ -34,19 +36,33 @@ export default function renderMenu () {
   } else if (isLinux) {
     if (showLinuxMenu) {
       template = [
-        { label: '应用', submenu: [
-          { label: '退出', click: handler.exitApp }
-        ] },
-        { label: '配置', submenu: [
-          { label: '打开配置文件', click: handler.openConfigFile }
-        ] },
-        { label: '帮助', submenu: [
-          { label: '检查更新', click: () => checkUpdate(true) },
-          { label: '查看日志', click: handler.openLog },
-            { label: '项目主页', click: () => { handler.openURL('https://github.com/SheltonZhu/electron-paste').then() } },
-            { label: 'Bug反馈', click: () => { handler.openURL('https://github.com/SheltonZhu/electron-paste/issues').then() } },
-          { label: '打开开发者工具', click: handler.openDevtool }
-        ] }
+        {
+          label: '应用', submenu: [
+            { label: '退出', click: handler.exitApp }
+          ]
+        },
+        {
+          label: '配置', submenu: [
+            { label: '打开配置文件', click: handler.openConfigFile }
+          ]
+        },
+        {
+          label: '帮助', submenu: [
+            { label: '检查更新', click: () => checkUpdate(true) },
+            { label: '查看日志', click: handler.openLog },
+            {
+              label: '项目主页', click: () => {
+                handler.openURL(pkg.homepage).then()
+              }
+            },
+            {
+              label: 'Bug反馈', click: () => {
+                handler.openURL(pkg.bugs.url).then()
+              }
+            },
+            { label: '打开开发者工具', click: handler.openDevtool }
+          ]
+        }
       ]
     }
   }
@@ -67,15 +83,3 @@ export function toggleMenu () {
     }
   }
 }
-
-// 监听数据变更
-// appConfig$.subscribe(data => {
-//   const [appConfig, changed] = data
-//   if (!changed.length) {
-//     renderMenu(appConfig)
-//   } else {
-//     if (['enable', 'sysProxyMode'].some(key => changed.indexOf(key) > -1)) {
-//       renderMenu(appConfig)
-//     }
-//   }
-// })

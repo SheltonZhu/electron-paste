@@ -1,14 +1,11 @@
 
 import os from 'os'
 import { execSync } from 'child_process'
-import logger from '../main/logger'
 export const platform = os.platform()
-
 export const isWin = platform === 'win32'
 export const isMac = platform === 'darwin'
 export const isLinux = platform === 'linux'
 export const isProd = process.env.NODE_ENV !== 'development'
-logger.info("[env]: is prod? -> ", isProd)
 // mac版本号
 export let macVersion
 // mac版本是否低于10.11
