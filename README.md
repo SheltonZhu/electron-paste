@@ -1,5 +1,15 @@
 # Electron-Paste
+
 [中文](README-CN.md)
+
+![](https://img.shields.io/github/languages/top/SheltonZhu/clipboard-paste.svg?style=flat)
+![](https://img.shields.io/github/stars/SheltonZhu/clipboard-paste.svg?style=social)
+
+This app is a clipboard tool programed by [Electron](https://www.electronjs.org/) and [Vue.js](https://vuejs.org/)
+(UI Component: [ElementUI](https://element.eleme.cn/)). It supports Windows only.
+(Now supports ubuntu20.04 for some features.)
+
+The design style of this app imitates [Paste](https://pasteapp.io/) on Mac.
 
 ## Note for Linux user
 By default the `libsodium` maybe not get installed on some platform, for example, the `Fedora`, you can install it manually by command `dnf install libsodium`.

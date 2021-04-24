@@ -1,5 +1,5 @@
 import { Notification } from 'electron'
-import { sendData } from './window_clipboard'
+import { sendData } from './window-clipboard'
 import { EVENT_APP_NOTIFY_MAIN } from '../shared/events'
 import { isMac } from '../shared/env'
 import { notificationIcon } from '../shared/icon'

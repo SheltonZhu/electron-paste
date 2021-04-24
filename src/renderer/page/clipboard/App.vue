@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>Hello Clipboard!</h1>
+    <h1>Hello clipboard!</h1>
   </div>
 </template>
 <script>

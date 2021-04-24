@@ -1,6 +1,6 @@
 import { app, globalShortcut } from 'electron'
 import logger from './logger'
-import { showWindow as showClipboard, hideWindow as hideClipboard } from './window_clipboard'
+import { showWindow as showClipboard, hideWindow as hideClipboard } from './window-clipboard'
 // import { appConfig$ } from './data'
 // import { showNotification } from './notification'
 // import { EVENT_APP_SHOW_PAGE } from '../shared/events'

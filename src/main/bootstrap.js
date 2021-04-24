@@ -33,7 +33,7 @@ process.on('unhandledRejection', (reason, p) => {
 export const appConfigDir = app.getPath('userData')
 // 应用配置存储路径
 export const appConfigPath = path.join(appConfigDir, 'config.json')
-// 默认的ssr下载目录
+// 默认的下载目录
 export const defaultDownloadDir = path.join(appConfigDir, 'electron-paste')
 
 // 当前可执行程序的路径

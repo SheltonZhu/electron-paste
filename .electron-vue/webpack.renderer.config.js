@@ -12,7 +12,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-
+const {entries, htmlPlugin} = require('./muti-page.config')
 /**
  * List of node_modules to include in webpack bundle
  *
@@ -24,9 +24,10 @@ let whiteListedModules = ['vue', 'vuex', 'erguotou-iview', 'qr-image']
 
 let rendererConfig = {
   devtool: '#cheap-module-eval-source-map',
-  entry: {
-    renderer: path.join(__dirname, '../src/renderer/main.js')
-  },
+  entry: entries(),
+  // entry: {
+  //   renderer: path.join(__dirname, '../src/renderer/main.js')
+  // },
   externals: [
     ...Object.keys(dependencies || {}).filter(d => !whiteListedModules.includes(d))
   ],
@@ -121,23 +122,24 @@ let rendererConfig = {
   plugins: [
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({filename: 'styles.css'}),
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: path.resolve(__dirname, '../src/index.ejs'),
-      minify: {
-        collapseWhitespace: true,
-        removeAttributeQuotes: true,
-        removeComments: true
-      },
-      nodeModules: process.env.NODE_ENV !== 'production'
-        ? path.resolve(__dirname, '../node_modules')
-        : false
-    }),
+    // new HtmlWebpackPlugin({
+    //   filename: 'index.html',
+    //   template: path.resolve(__dirname, '../src/index.ejs'),
+    //   minify: {
+    //     collapseWhitespace: true,
+    //     removeAttributeQuotes: true,
+    //     removeComments: true
+    //   },
+    //   nodeModules: process.env.NODE_ENV !== 'production'
+    //     ? path.resolve(__dirname, '../node_modules')
+    //     : false
+    // }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
-  ],
+  ].concat(htmlPlugin()),
   output: {
-    filename: '[name].js',
+    // filename: '[name].js',
+    filename: '[name]/index.js',
     libraryTarget: 'commonjs2',
     path: path.join(__dirname, '../dist/electron')
   },

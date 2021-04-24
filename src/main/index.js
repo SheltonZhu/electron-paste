@@ -1,6 +1,6 @@
 import { app, screen } from 'electron'
 // import AutoLaunch from 'auto-launch'
-import clipboard from "electron-clipboard-extended";
+import clipboard from 'electron-clipboard-extended'
 import bootstrap from './bootstrap'
 import { isQuiting } from './data'
 import renderTray, { destroyTray } from './tray'
@@ -8,12 +8,22 @@ import { checkUpdate } from './updater'
 import './menu'
 import './ipc'
 import './clipboard'
-import { createWindow as createClipboard, getWindow as getClipboard, destroyWindow as destroyClipboard, reCreateWindow } from './window_clipboard'
-import { createWindow as createSettings, getWindow as getSettings, destroyWindow as destroySettings } from './window_settings'
+import {
+  createWindow as createClipboard,
+  getWindow as getClipboard,
+  destroyWindow as destroyClipboard,
+  reCreateWindow
+} from './window-clipboard'
+import {
+  createWindow as createSettings,
+  getWindow as getSettings,
+  destroyWindow as destroySettings
+} from './window-settings'
 
 import logger from './logger'
 import { clearShortcuts } from './shortcut'
 import { isProd, isWin } from '../shared/env'
+
 const isPrimaryInstance = app.requestSingleInstanceLock()
 
 if (!isPrimaryInstance) {
@@ -34,9 +44,9 @@ if (!isPrimaryInstance) {
 
   bootstrap.then(() => {
     logger.info('[app]: Bootstrap...')
-    renderTray()
-    createClipboard()
+    // createClipboard()
     createSettings()
+    renderTray()
     if (isProd) {
       checkUpdate()
     }
@@ -75,21 +85,16 @@ if (!isPrimaryInstance) {
     })
 
     // 由main进程发起的退出
-    app.on('before-quit', () => { isQuiting(true) })
-
-    app.on('will-quit', e => {
-      logger.debug('will-quit')
-      // e.preventDefault()
+    app.on('before-quit', () => {
+      isQuiting(true)
       destroyTray()
       destroyClipboard()
       destroySettings()
       clearShortcuts()
+      clipboard.stopWatching()
+      if (app.hasSingleInstanceLock()) app.releaseSingleInstanceLock()
     })
 
-    app.on("quit", () => {
-      clipboard.stopWatching();
-      if (app.hasSingleInstanceLock()) app.releaseSingleInstanceLock();
-    });
     app.on('activate', () => {
       if (getClipboard() === null) {
         createClipboard()
@@ -115,19 +120,19 @@ if (!isPrimaryInstance) {
       logger.debug('[screen]: display-added')
     })
 
-    if (!isProd) {
-      if (isWin) {
-        process.on("message", data => {
-          if (data === "graceful-exit") {
-            app.quit();
-          }
-        });
-      } else {
-        process.on("SIGTERM", () => {
-          app.quit();
-        });
-      }
-    }
+    // if (!isProd) {
+    //   if (isWin) {
+    //     process.on('message', data => {
+    //       if (data === 'graceful-exit') {
+    //         app.quit()
+    //       }
+    //     })
+    //   } else {
+    //     process.on('SIGTERM', () => {
+    //       app.quit()
+    //     })
+    //   }
+    // }
     logger.info('[app]: Bootstrap...done.')
   })
 }

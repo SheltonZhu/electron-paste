@@ -2,7 +2,14 @@
 
 [English](README.md)
 
-这是一个跨平台（支持Windows MacOS Linux系统）的`ShadowsocksR`客户端桌面应用，它功能丰富，支持windows版大部分功能，更有更多人性化功能。它是开源的，它来源于开源，回馈以开源。
+![](https://img.shields.io/github/languages/top/SheltonZhu/clipboard-paste.svg?style=flat)
+![](https://img.shields.io/github/stars/SheltonZhu/clipboard-paste.svg?style=social)
+
+这是一个使用[Electron](https://www.electronjs.org/) 和 [Vue.js](https://vuejs.org/)
+(UI 组件: [ElementUI](https://element.eleme.cn/)). 当前仅支持window环境.
+(现在部分功能支持ubuntu20.04.)
+
+设计风格借鉴了Mac平台的 [Paste](https://pasteapp.io/).
 
 ## Linux 用户注意
 在`Fedora`等平台可能未默认安装 `libsodium`, 可手动安装: `dnf install libsodium`

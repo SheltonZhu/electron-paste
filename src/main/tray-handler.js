@@ -1,8 +1,12 @@
 import { app, shell } from 'electron'
 import bootstrapPromise, { appConfigPath } from './bootstrap'
 import logger, { logPath } from './logger'
-import { showWindow as showClipboard, openDevtool, toggleWindow as toggleClipboard } from './window_clipboard'
-import { showWindow as showSettings } from './window_settings'
+import {
+  showWindow as showClipboard,
+  openDevtool as cod,
+  toggleWindow as toggleClipboard,
+} from './window-clipboard'
+import { showWindow as showSettings ,openDevtool as sod} from './window-settings'
 
 // 打开窗口
 export function showClipboardWindow () {
@@ -39,4 +43,12 @@ export function openURL (url) {
 // 退出
 export function exitApp () {
   app.quit()
+}
+export function openDevtool(){
+  cod().then(()=>{
+    logger.debug("[tray]: open dev tool from clipboard.")
+  })
+  sod().then(()=>{
+    logger.debug("[tray]: open dev tool from settings.")
+  })
 }

@@ -1,13 +1,13 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, screen } from 'electron'
 import { isQuiting } from './data'
 import logger from './logger'
 import { appIcon } from '../shared/icon'
 import { isProd } from '../shared/env'
+import { registerShortcut, unregisterShortcut } from './shortcut'
 
 const winURL = !isProd
-  // ? process.env.WEBPACK_DEV_SERVER_URL
-  ? `http://localhost:9080`
-  : `file://${__dirname}/index.html`
+    ? `http://localhost:9080/clipboard`
+    : `file://${__dirname}/clipboard/index.html`
 
 let mainWindow
 let readyPromise
@@ -19,22 +19,28 @@ export function createWindow () {
   if (process.platform === 'darwin') {
     app.dock.hide()
   }
+  const display = screen.getPrimaryDisplay().workAreaSize
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    backgroundColor: '#fff',
-    fullscreenable: false,
+    width: display.width,
+    height: 472,
+    x: 0,
+    y: display.height - 472,
+    backgroundColor: '#00000000',
+    transparent: true,
     frame: false,
-    maximizable: false,
+    alwaysOnTop: true,
     resizable: false,
-    useContentSize: true,
+    movable: false,
+    fullscreenable: false,
+    minimizable: false,
+    closable: false,
     autoHideMenuBar: true,
     hasShadow: true,
+    skipTaskbar: true,
     vibrancy: 'light', // macos
     icon: appIcon,
-    title: 'Settings',
+    title: 'ClipBoard',
     titleBarStyle: 'hidden',
-    center: true,
     show: !isProd,
     webPreferences: {
       webSecurity: isProd,
@@ -44,7 +50,7 @@ export function createWindow () {
     }
   })
   mainWindow.setMenu(null)
-  mainWindow.loadURL(winURL)
+  mainWindow.loadURL(winURL).then(() => {})
   // hide to tray when window closed
   mainWindow.on('close', (e) => {
     // 当前不是退出APP的时候才去隐藏窗口
@@ -58,9 +64,22 @@ export function createWindow () {
     mainWindow = null
   })
 
+  mainWindow.on('show', () => {
+    logger.debug('show clipboard window.')
+    registerShortcut('hideClipboard', 'Esc')
+  })
+
+  mainWindow.on('hide', () => {
+    logger.debug('hide clipboard window.')
+    unregisterShortcut('Esc')
+  })
+
   readyPromise = new Promise(resolve => {
     mainWindow.webContents.once('did-finish-load', resolve)
   })
+  if (!isProd) {
+    openDevtool().then()
+  }
 }
 
 /**
@@ -113,6 +132,16 @@ export function destroyWindow () {
 }
 
 /**
+ * 重启窗口
+ */
+export function reCreateWindow () {
+  if (mainWindow) {
+    destroyWindow()
+  }
+  createWindow()
+}
+
+/**
  * 向主窗口发送消息
  */
 export async function sendData (channel, ...args) {
@@ -128,6 +157,7 @@ export async function sendData (channel, ...args) {
  * 打开开发者工具
  */
 export async function openDevtool () {
+  logger.debug('[clipboard]: open dev tool...')
   if (mainWindow) {
     await readyPromise
     mainWindow.webContents.openDevTools()

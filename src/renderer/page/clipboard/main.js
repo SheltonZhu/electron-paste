@@ -2,8 +2,7 @@ import Vue from 'vue'
 // import './components'
 // import './ipc'
 // import store from './store'
-import Clipboard from './Clipboard'
-import Settings from './Settings'
+import App from './App'
 // import { getInitConfig } from './ipc'
 // import { init as initShortcut } from './shortcut'
 
@@ -16,10 +15,6 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   // store,
-  render: h => h(Clipboard)
-}).$mount('#clipboard')
+  render: h => h(App)
+}).$mount('#app')
 
-new Vue({
-  // store,
-  render: h => h(Settings)
-}).$mount('#settings')
