@@ -2,8 +2,8 @@
 
 [English](README.md)
 
-![](https://img.shields.io/github/languages/top/SheltonZhu/clipboard-paste.svg?style=flat)
-![](https://img.shields.io/github/stars/SheltonZhu/clipboard-paste.svg?style=social)
+![](https://img.shields.io/github/languages/top/SheltonZhu/electron-paste.svg?style=flat)
+![](https://img.shields.io/github/stars/SheltonZhu/electron-paste.svg?style=social)
 
 这是一个使用[Electron](https://www.electronjs.org/) 和 [Vue.js](https://vuejs.org/)
 (UI 组件: [ElementUI](https://element.eleme.cn/)). 当前仅支持window环境.

@@ -64,7 +64,8 @@ function release() {
         output: 'build'
       },
       publish: {
-        provider: 'github'
+        provider: 'github',
+        url: pkg.homepage
       },
       dmg: {
         contents: [

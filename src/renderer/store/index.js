@@ -24,7 +24,7 @@ export default new Vuex.Store({
           extractConfig[key] = targetConfig[key]
         })
         merge(state.appConfig, extractConfig)
-        console.log('config updated: ', extractConfig)
+        console.log('[store][updateConfig]: config updated: ', extractConfig)
         if (sync) {
           syncConfig(extractConfig)
         }
@@ -33,7 +33,7 @@ export default new Vuex.Store({
     // 更新应用元数据
     updateMeta (state, targetMeta) {
       merge(state.meta, targetMeta)
-      console.log('meta updated: ', targetMeta)
+      console.log('[store][updateMeta]: meta updated: ', targetMeta)
     }
   },
   actions: {

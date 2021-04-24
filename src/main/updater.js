@@ -10,7 +10,6 @@ import pkg from '../../package.json'
 let forceUpdate = false
 autoUpdater.logger = logger
 autoUpdater.autoDownload = false
-
 // 自定义检测更新事件
 autoUpdater
   .on('error', err => {
@@ -18,7 +17,7 @@ autoUpdater
   })
   .on('update-available', UpdateInfo => {
     showNotification(`检测到最新版本${UpdateInfo.version}，系统将自动下载并更新`)
-    autoUpdater.downloadUpdate()
+    autoUpdater.downloadUpdate().then()
   })
   .on('download-progress', ({ percent }) => {
     const mainWindow = getWindow()
@@ -64,13 +63,13 @@ export function versionCheck (oldVersion, newVersion) {
 // 检查更新
 export function checkUpdate (force = false) {
   if (isLinux && !/\.AppImage&/.test(exePath)) {
-    request('https://raw.githubusercontent.com/SheltonZhu/electron-paste/master/package.json').then(data => {
+    request('https://raw.githubusercontent.com/SheltonZhu/electron-paste/main/package.json').then(data => {
       const remotePkg = JSON.parse(data)
       const currentVersion = app.getVersion()
       const isOutdated = versionCheck(currentVersion, remotePkg.version)
       if (isOutdated) {
         showNotification(`最新版本为 v${remotePkg.version}，点击前往下载。`, '通知', () => {
-          shell.openExternal(`${pkg.homepage}/releases`)
+          shell.openExternal(`${pkg.homepage}/releases`).then()
         })
       } else if (force) {
         showNotification('当前已是最新版，无需更新')
@@ -78,6 +77,6 @@ export function checkUpdate (force = false) {
     })
   } else {
     forceUpdate = force
-    autoUpdater.checkForUpdates()
+    autoUpdater.checkForUpdates().then()
   }
 }

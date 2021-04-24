@@ -3,14 +3,14 @@
   "version": "0.0.1",
   "author": "Shelton Zhu <498220739@qq.com> (https://github.com/SheltonZhu)",
   "description": "An Electron & Vue.js clipboard with elementUI support",
-  "homepage": "https://github.com/SheltonZhu/clipboard-paste",
+  "homepage": "https://github.com/SheltonZhu/electron-paste",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SheltonZhu/clipboard-paste"
+    "url": "https://github.com/SheltonZhu/electron-paste.git"
   },
   "bugs": {
-    "url": "https://github.com/SheltonZhu/clipboard-paste/issues"
+    "url": "https://github.com/SheltonZhu/electron-paste/issues"
   },
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -18,6 +18,7 @@
     "#build:dir": "cross-env DIR=true node .electron-vue/build.js",
     "#build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
     "#build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
+    "#build:generate-icons": "electron-icon-builder --input=./public/icon.png --output=build --flatten",
     "dev": "node .electron-vue/dev-runner.js",
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src",
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src",
@@ -41,8 +42,8 @@
     "robotjs": "^0.6.0",
     "rxjs": "^5.5.5",
     "sudo-prompt": "^8.1.0",
-    "vue": "^2.3.3",
-    "vuex": "^3.0.1"
+    "vue": "^2.6.11",
+    "vuex": "^3.4-0"
   },
   "devDependencies": {
     "ajv": "^7.0.3",
@@ -67,6 +68,7 @@
     "electron-builder": "^21.2.0",
     "electron-debug": "^3.0.1",
     "electron-devtools-installer": "^2.2.0",
+    "electron-icon-builder": "^2.0.1",
     "eslint": "^4.19.1",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^2.0.0",

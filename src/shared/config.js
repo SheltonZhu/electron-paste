@@ -38,12 +38,12 @@ const defaultConfig = {
   // 窗口快捷键
   windowShortcuts: {
     toggleMenu: {
-      key: isLinux ? 'Ctrl+Shift+B' : '',
+      key: isLinux ? 'Ctrl+Shift+B' : 'Ctrl+Shift+B',
       enable: isLinux
     },
     hideClipboard: {
       key: 'Esc',
-      enable: false
+      enable: true
     }
   }
 }

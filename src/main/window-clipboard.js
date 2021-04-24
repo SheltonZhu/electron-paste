@@ -29,7 +29,7 @@ export function createWindow () {
     x: 0,
     y: display.height - 472,
     backgroundColor: '#00000000',
-    transparent: true,
+    // transparent: true,
     frame: false,
     alwaysOnTop: true,
     resizable: false,

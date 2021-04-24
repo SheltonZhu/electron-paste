@@ -26,7 +26,7 @@ export function showSettingsWindow () {
 // 打开配置文件
 export async function openConfigFile () {
   await bootstrapPromise
-  shell.openPath(appConfigPath).then(e => {
+  shell.openPath(appConfigPath).catch(e => {
     logger.error(`[tray]: 打开配置失败： ${e}`)
   })
 }
@@ -34,8 +34,8 @@ export async function openConfigFile () {
 // 打开日志文件
 export async function openLog () {
   await bootstrapPromise
-  shell.openPath(logPath).then(e => {
-    logger.error(`[tray]: 打开日志文件： ${e}`)
+  shell.openPath(logPath).catch(e => {
+    logger.error(`[tray]: 打开日志文件失败： ${e}`)
   })
 }
 

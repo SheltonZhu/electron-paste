@@ -9,6 +9,7 @@ const func = {
 export function init (appConfig) {
   Object.keys(appConfig.windowShortcuts).forEach(funcName => {
     if (appConfig.windowShortcuts[funcName].enable) {
+      console.log(`[shortcut]: Register shortcut: ${appConfig.windowShortcuts[funcName].key}`)
       Mousetrap.bind(appConfig.windowShortcuts[funcName].key.toLowerCase(), func[funcName])
     }
   })

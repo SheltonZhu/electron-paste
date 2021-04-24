@@ -35,7 +35,7 @@ export function syncConfig (appConfig) {
  * 主动获取初始化数据
  */
 export function getInitConfig () {
-  console.log('get init config data')
+  console.log('[ipc]: get init config data')
   const res = ipcRenderer.sendSync(events.EVENT_APP_WEB_INIT)
   store.dispatch('initConfig', res)
 }
