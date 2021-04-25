@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import defaultConfig from '../../shared/config'
 import { getUpdatedKeys, merge } from '../../shared/utils'
 import { syncConfig } from '../ipc'
+import { createPersistedState, createSharedMutations } from 'electron-vuex'
 
 Vue.use(Vuex)
 
@@ -12,9 +13,14 @@ export default new Vuex.Store({
     meta: {
       version: '',
       defaultDownloadDir: ''
-    }
+    },
+    href: 'https://www.bilibili.com'
   },
+
   mutations: {
+    updateHref (state, nState) {
+      state.href = nState
+    },
     // 更新应用配置
     updateConfig (state, [targetConfig, sync = false]) {
       const changed = getUpdatedKeys(state.appConfig, targetConfig)
@@ -37,6 +43,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    changeHref ({ commit }, href) {
+      commit('updateHref', href)
+    },
     initConfig ({ commit }, { config, meta }) {
       commit('updateConfig', [config])
       commit('updateMeta', meta)
@@ -44,5 +53,13 @@ export default new Vuex.Store({
         document.title = `${document.title} v${meta.version}`
       }
     }
-  }
+  },
+  plugins: [
+    createPersistedState({
+      whitelist: ["changeHref"],
+      storageName: 'electron-paste',
+      delay: 500
+    }),
+    // createSharedMutations()
+  ]
 })

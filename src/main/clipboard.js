@@ -47,35 +47,35 @@ clipboard
     //     log.error(e)
     //   }
   })
-  // .on('image-changed', async () => {
-  //   // const window = windowManager.getActiveWindow();
-  //   let currentImage = clipboard.readImage()
-  //   let image = {
-  //     table: 'historyData',
-  //     copyType: 'Image',
-  //     copyTime: new Date(),
-  //     copyContent: currentImage.toDataURL(),
-  //     otherInfo: currentImage.getSize()
-  //   }
-  //   try {
-  //     let base64Icon = getCurrentWindowIcon()
-  //     let isExist;
-  //     [image.checksum, isExist] = await cardIconDb.getChecksumAndExist(
-  //       base64Icon
-  //     )
-  //     if (!isExist) {
-  //       await cardIconDb.create({
-  //         content: base64Icon,
-  //         checksum: image.checksum
-  //       })
-  //     }
-  //
-  //     MainWindow.browserWindow.webContents.send('clipboard-image-changed', {
-  //       data: await db.create(image),
-  //       isExist: isExist
-  //     })
-  //   } catch (e) {
-  //     log.error(e);
-  //   }
-  // })
-
+// .on('image-changed', async () => {
+//   // const window = windowManager.getActiveWindow();
+//   let currentImage = clipboard.readImage()
+//   let image = {
+//     table: 'historyData',
+//     copyType: 'Image',
+//     copyTime: new Date(),
+//     copyContent: currentImage.toDataURL(),
+//     otherInfo: currentImage.getSize()
+//   }
+//   try {
+//     let base64Icon = getCurrentWindowIcon()
+//     let isExist;
+//     [image.checksum, isExist] = await cardIconDb.getChecksumAndExist(
+//       base64Icon
+//     )
+//     if (!isExist) {
+//       await cardIconDb.create({
+//         content: base64Icon,
+//         checksum: image.checksum
+//       })
+//     }
+//
+//     MainWindow.browserWindow.webContents.send('clipboard-image-changed', {
+//       data: await db.create(image),
+//       isExist: isExist
+//     })
+//   } catch (e) {
+//     log.error(e);
+//   }
+// })
+export default clipboard

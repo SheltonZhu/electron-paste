@@ -1,6 +1,6 @@
 import Vue from 'vue'
 // import './ipc'
-// import store from './store'
+import store from '../../store'
 import App from './App'
 // import { getInitConfig } from './ipc'
 // import { init as initShortcut } from './shortcut'
@@ -13,7 +13,7 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  // store,
+  store,
   render: h => h(App)
 }).$mount('#app')
 

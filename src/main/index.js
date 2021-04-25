@@ -1,12 +1,10 @@
 import { app, screen } from 'electron'
 import AutoLaunch from 'auto-launch'
-import clipboard from 'electron-clipboard-extended'
 import bootstrap from './bootstrap'
 import renderTray, { destroyTray } from './tray'
 import { checkUpdate } from './updater'
 import './menu'
 import './ipc'
-import './clipboard'
 import {
   createWindow as createClipboard,
   getWindow as getClipboard,
@@ -25,9 +23,10 @@ import { clearShortcuts } from './shortcut'
 import { isProd, isWin, isMac } from '../shared/env'
 import { isQuiting, appConfig$ } from './data'
 import { showNotification } from './notification'
+// import store from '../renderer/store'
+
 
 const isPrimaryInstance = app.requestSingleInstanceLock()
-
 if (!isPrimaryInstance) {
   // cannot find module '../dialog'
   // https://github.com/electron/electron/issues/8862#issuecomment-294303518
@@ -47,7 +46,6 @@ if (!isPrimaryInstance) {
     createSettings()
     renderTray()
     renderMenu()
-
     if (isWin || isMac) {
       app.setAsDefaultProtocolClient('paste')
     }
@@ -82,6 +80,9 @@ if (!isPrimaryInstance) {
       }
     })
 
+    //app启动后导入electron-clipboard-extends, 否则linux下粘贴会卡死。
+    const cpb = require('./clipboard')
+
     app.on('window-all-closed', () => {
       logger.debug('window-all-closed')
       if (process.platform !== 'darwin') {
@@ -96,7 +97,7 @@ if (!isPrimaryInstance) {
       destroyClipboard()
       destroySettings()
       clearShortcuts()
-      clipboard.stopWatching()
+      cpb.stopWatching()
       if (app.hasSingleInstanceLock()) app.releaseSingleInstanceLock()
     })
 
