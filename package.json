@@ -22,6 +22,7 @@
     "dev": "node .electron-vue/dev-runner.js",
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src",
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src",
+    "prettier": "prettier --single-quote --write src",
     "pack": "npm run pack:main && npm run pack:renderer",
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
@@ -112,7 +113,7 @@
   "lint-staged": {
     "*.{js,css,json,md,vue,html}": [
       "eslint",
-      "prettier --write",
+      "prettier --single-quote --write src",
       "git add"
     ]
   }

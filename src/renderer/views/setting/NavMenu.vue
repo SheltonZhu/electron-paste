@@ -30,18 +30,18 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions } from 'vuex';
 
 export default {
-  name: "NavMenu",
+  name: 'NavMenu',
   data() {
     return {};
   },
   computed: {
-    ...mapState(["page"]),
+    ...mapState(['page']),
   },
   methods: {
-    ...mapActions(["changePage"]),
+    ...mapActions(['changePage']),
     handleSelect(key, keyPath) {
       this.changePage(key);
     },

@@ -1,5 +1,5 @@
-import Mousetrap from "mousetrap";
-import { toggleMenu, hideClipboard } from "./ipc";
+import Mousetrap from 'mousetrap';
+import { toggleMenu, hideClipboard } from './ipc';
 
 const func = {
   toggleMenu,

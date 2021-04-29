@@ -1,13 +1,13 @@
-import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs/Subject";
-import "rxjs/add/operator/multicast";
-import { readJson, writeJson } from "fs-extra";
-import bootstrap, { appConfigPath } from "./bootstrap";
-import { sendData } from "./window-clipboard";
-import { EVENT_RX_SYNC_MAIN } from "../shared/events";
-import { isArray, getUpdatedKeys, configMerge, clone } from "../shared/utils";
-import defaultConfig, { mergeConfig } from "../shared/config";
-import logger from "./logger";
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/multicast';
+import { readJson, writeJson } from 'fs-extra';
+import bootstrap, { appConfigPath } from './bootstrap';
+import { sendData } from './window-clipboard';
+import { EVENT_RX_SYNC_MAIN } from '../shared/events';
+import { isArray, getUpdatedKeys, configMerge, clone } from '../shared/utils';
+import defaultConfig, { mergeConfig } from '../shared/config';
+import logger from './logger';
 
 let promise;
 // 是因为调用app.quit还是手动点击窗口的叉号引起的关闭事件, true表示app.quit
@@ -100,7 +100,7 @@ appConfig$.subscribe((data) => {
   const [appConfig, changed] = data;
   if (changed.length) {
     // 如果更新则写入配置文件
-    writeJson(appConfigPath, appConfig, { spaces: "\t" });
+    writeJson(appConfigPath, appConfig, { spaces: '\t' });
     // 如果是从renderer同步过来的数据则不再同步回去，避免重复同步
     if (!isFromRenderer) {
       sendData(EVENT_RX_SYNC_MAIN, appConfig).then();

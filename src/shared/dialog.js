@@ -1,13 +1,13 @@
-import { isWin } from "./env";
-import { dialog as _dialog, remote } from "electron";
+import { isWin } from './env';
+import { dialog as _dialog, remote } from 'electron';
 
 const dialog = _dialog || remote.dialog;
 
 function choose(title, filters, isFile = true, isSave = false, defaultPath) {
-  const path = dialog[isSave ? "showSaveDialog" : "showOpenDialog"]({
+  const path = dialog[isSave ? 'showSaveDialog' : 'showOpenDialog']({
     title,
     defaultPath,
-    properties: [isFile ? "openFile" : "openDirectory"],
+    properties: [isFile ? 'openFile' : 'openDirectory'],
     filters,
   });
   if (isSave) {
@@ -19,7 +19,7 @@ function choose(title, filters, isFile = true, isSave = false, defaultPath) {
   } else if (path && path.length) {
     let _path = path[0];
     if (isWin) {
-      _path = _path.replace(/\\/g, "\\\\");
+      _path = _path.replace(/\\/g, '\\\\');
     }
     return _path;
   }

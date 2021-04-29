@@ -1,4 +1,4 @@
-import { isLinux } from "./env";
+import { isLinux } from './env';
 
 const defaultConfig = {
   // 开机自启
@@ -20,28 +20,28 @@ const defaultConfig = {
   // 开启背景图片
   enableBackgroundPic: true,
   // 背景颜色
-  backgroundColor: "#ffffffbf",
+  backgroundColor: '#ffffffbf',
 
   // 收藏便签 字体颜色 选中字体颜色 选中背景颜色
-  favoritesFontColor: "#2c3e50",
-  favoritesFontColorSelected: "#fff",
-  favoritesBgColorSelected: "#b9b9b9d1",
+  favoritesFontColor: '#2c3e50',
+  favoritesFontColorSelected: '#fff',
+  favoritesBgColorSelected: '#b9b9b9d1',
 
   // 全局快捷键
   globalShortcuts: {
     showClipboard: {
-      key: "Alt+V",
+      key: 'Alt+V',
       enable: true,
     },
   },
   // 窗口快捷键
   windowShortcuts: {
     toggleMenu: {
-      key: isLinux ? "Ctrl+Shift+B" : "Ctrl+Shift+B",
+      key: isLinux ? 'Ctrl+Shift+B' : 'Ctrl+Shift+B',
       enable: isLinux,
     },
     hideClipboard: {
-      key: "Esc",
+      key: 'Esc',
       enable: true,
     },
   },
@@ -57,7 +57,7 @@ export function mergeConfig(appConfig) {
       typeof appConfig[key] !== typeof defaultConfig[key]
     ) {
       appConfig[key] = defaultConfig[key];
-    } else if (typeof appConfig[key] === "object") {
+    } else if (typeof appConfig[key] === 'object') {
       for (const index in appConfig[key]) {
         if (appConfig[key][index] === undefined) {
           appConfig[key][index] = defaultConfig[key][index];

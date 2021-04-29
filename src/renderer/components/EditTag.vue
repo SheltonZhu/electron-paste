@@ -39,12 +39,12 @@ export default {
     cancel() {
       this.isEditing = false;
       this.editingName = this.name;
-      this.$emit("on-cancel");
+      this.$emit('on-cancel');
     },
     save() {
       if (this.editingName) {
         this.isEditing = false;
-        this.$emit("on-update", this.editingName);
+        this.$emit('on-update', this.editingName);
       }
     },
   },

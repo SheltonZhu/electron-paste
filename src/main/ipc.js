@@ -1,14 +1,14 @@
-import { app, ipcMain, dialog, clipboard } from "electron";
-import { readJsonSync } from "fs-extra";
-import * as events from "../shared/events";
-import { appConfigPath, defaultDownloadDir } from "./bootstrap";
-import { updateAppConfig } from "./data";
-import { hideWindow as hideClipboard } from "./window-clipboard";
-import defaultConfig, { mergeConfig } from "../shared/config";
-import { showNotification } from "./notification";
-import logger from "./logger";
-import robot from "robotjs";
-import store from "../renderer/store";
+import { app, ipcMain, dialog, clipboard } from 'electron';
+import { readJsonSync } from 'fs-extra';
+import * as events from '../shared/events';
+import { appConfigPath, defaultDownloadDir } from './bootstrap';
+import { updateAppConfig } from './data';
+import { hideWindow as hideClipboard } from './window-clipboard';
+import defaultConfig, { mergeConfig } from '../shared/config';
+import { showNotification } from './notification';
+import logger from './logger';
+import robot from 'robotjs';
+import store from '../renderer/store';
 
 /**
  * ipc-main事件
@@ -34,7 +34,7 @@ ipcMain
         defaultDownloadDir,
       },
     };
-    store.dispatch("initConfig", res).then();
+    store.dispatch('initConfig', res).then();
   })
   .on(events.EVENT_RX_SYNC_RENDERER, (_, data) => {
     // 同步数据
@@ -49,9 +49,9 @@ ipcMain
     const ret = await dialog.showOpenDialog(params);
     e.returnValue = ret.filePaths;
   })
-  .on("test", (e, copiedText) => {
+  .on('test', (e, copiedText) => {
     clipboard.writeText(copiedText);
     setTimeout(async () => {
-      robot.keyTap("v", "control");
+      robot.keyTap('v', 'control');
     }, 10);
   });

@@ -1,17 +1,17 @@
-import { app, globalShortcut } from "electron";
-import logger from "./logger";
+import { app, globalShortcut } from 'electron';
+import logger from './logger';
 import {
   showWindow as showClipboard,
   hideWindow as hideClipboard,
-} from "./window-clipboard";
+} from './window-clipboard';
 import {
   showWindow as showSettings,
   sendData as sendToSettings,
-} from "./window-settings";
-import { appConfig$ } from "./data";
-import { showNotification } from "./notification";
-import { EVENT_APP_SHOW_PAGE } from "../shared/events";
-import { PAGE_SHORTCUT } from "../shared/env";
+} from './window-settings';
+import { appConfig$ } from './data';
+import { showNotification } from './notification';
+import { EVENT_APP_SHOW_PAGE } from '../shared/events';
+import { PAGE_SHORTCUT } from '../shared/env';
 const func = {
   showClipboard,
   hideClipboard,
@@ -67,7 +67,7 @@ function switchRegister(funcName, shortcutEnable, oldKey, newKey) {
   }
 }
 
-app.on("ready", () => {
+app.on('ready', () => {
   // 监听配置
   appConfig$.subscribe((data) => {
     const [appConfig, changed, oldConfig] = data;
@@ -87,7 +87,7 @@ app.on("ready", () => {
       if (failed.length) {
         showNotification(
           `检测到${failed.length}个全局快捷键注册失败，请在快捷键页面重新设置`,
-          "错误",
+          '错误',
           () => {
             showSettings();
             sendToSettings(EVENT_APP_SHOW_PAGE, { page: PAGE_SHORTCUT }).then();
@@ -95,7 +95,7 @@ app.on("ready", () => {
         );
       }
     } else {
-      if (changed.indexOf("globalShortcuts") > -1) {
+      if (changed.indexOf('globalShortcuts') > -1) {
         // 配置改变
         Object.keys(appConfig.globalShortcuts).forEach((funcName) => {
           const oldShortcut = oldConfig.globalShortcuts[funcName];

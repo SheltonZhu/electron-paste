@@ -1,8 +1,8 @@
-import { app, BrowserWindow } from "electron";
-import { isQuiting } from "./data";
-import logger from "./logger";
-import { appIcon } from "../shared/icon";
-import { isProd } from "../shared/env";
+import { app, BrowserWindow } from 'electron';
+import { isQuiting } from './data';
+import logger from './logger';
+import { appIcon } from '../shared/icon';
+import { isProd } from '../shared/env';
 
 const winURL = !isProd
   ? `http://localhost:9080/settings`
@@ -15,13 +15,13 @@ let readyPromise;
  * 创建主视图
  */
 export function createWindow() {
-  if (process.platform === "darwin") {
+  if (process.platform === 'darwin') {
     app.dock.hide();
   }
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     fullscreenable: false,
     frame: false,
     maximizable: false,
@@ -29,10 +29,10 @@ export function createWindow() {
     useContentSize: true,
     autoHideMenuBar: true,
     hasShadow: true,
-    vibrancy: "light", // macos
+    vibrancy: 'light', // macos
     icon: appIcon,
-    title: "Settings",
-    titleBarStyle: "hidden",
+    title: 'Settings',
+    titleBarStyle: 'hidden',
     center: true,
     // show: !isProd,
     show: false,
@@ -46,7 +46,7 @@ export function createWindow() {
   mainWindow.setMenu(null);
   mainWindow.loadURL(winURL).then();
   // hide to tray when window closed
-  mainWindow.on("close", (e) => {
+  mainWindow.on('close', (e) => {
     // 当前不是退出APP的时候才去隐藏窗口
     if (!isQuiting()) {
       e.preventDefault();
@@ -54,12 +54,12 @@ export function createWindow() {
     }
   });
 
-  mainWindow.on("closed", () => {
+  mainWindow.on('closed', () => {
     mainWindow = null;
   });
 
   readyPromise = new Promise((resolve) => {
-    mainWindow.webContents.once("did-finish-load", resolve);
+    mainWindow.webContents.once('did-finish-load', resolve);
   });
 }
 
@@ -120,7 +120,7 @@ export async function sendData(channel, ...args) {
     await readyPromise;
     mainWindow.webContents.send(channel, ...args);
   } else {
-    logger.debug("not ready");
+    logger.debug('not ready');
   }
 }
 
@@ -132,6 +132,6 @@ export async function openDevtool() {
     await readyPromise;
     mainWindow.webContents.openDevTools();
   } else {
-    logger.debug("not ready");
+    logger.debug('not ready');
   }
 }

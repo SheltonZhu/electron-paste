@@ -1,8 +1,8 @@
-import { app, Menu } from "electron";
-import * as handler from "./tray-handler";
-import { checkUpdate } from "./updater";
-import { isMac, isLinux } from "../shared/env";
-import pkg from "../../package.json";
+import { app, Menu } from 'electron';
+import * as handler from './tray-handler';
+import { checkUpdate } from './updater';
+import { isMac, isLinux } from '../shared/env';
+import pkg from '../../package.json';
 
 let showLinuxMenu = false;
 /**
@@ -15,20 +15,20 @@ export default function renderMenu() {
     template = [
       {
         label: app.getName(),
-        submenu: [{ role: "about" }, { type: "separator" }, { role: "quit" }],
+        submenu: [{ role: 'about' }, { type: 'separator' }, { role: 'quit' }],
       },
       {
-        label: "Edit",
+        label: 'Edit',
         submenu: [
-          { role: "undo" },
-          { role: "redo" },
-          { type: "separator" },
-          { role: "cut" },
-          { role: "copy" },
-          { role: "paste" },
-          { role: "pasteandmatchstyle" },
-          { role: "delete" },
-          { role: "selectall" },
+          { role: 'undo' },
+          { role: 'redo' },
+          { type: 'separator' },
+          { role: 'cut' },
+          { role: 'copy' },
+          { role: 'paste' },
+          { role: 'pasteandmatchstyle' },
+          { role: 'delete' },
+          { role: 'selectall' },
         ],
       },
     ];
@@ -36,31 +36,31 @@ export default function renderMenu() {
     if (showLinuxMenu) {
       template = [
         {
-          label: "应用",
-          submenu: [{ label: "退出", click: handler.exitApp }],
+          label: '应用',
+          submenu: [{ label: '退出', click: handler.exitApp }],
         },
         {
-          label: "配置",
-          submenu: [{ label: "打开配置文件", click: handler.openConfigFile }],
+          label: '配置',
+          submenu: [{ label: '打开配置文件', click: handler.openConfigFile }],
         },
         {
-          label: "帮助",
+          label: '帮助',
           submenu: [
-            { label: "检查更新", click: () => checkUpdate(true) },
-            { label: "查看日志", click: handler.openLog },
+            { label: '检查更新', click: () => checkUpdate(true) },
+            { label: '查看日志', click: handler.openLog },
             {
-              label: "项目主页",
+              label: '项目主页',
               click: () => {
                 handler.openURL(pkg.homepage).then();
               },
             },
             {
-              label: "Bug反馈",
+              label: 'Bug反馈',
               click: () => {
                 handler.openURL(pkg.bugs.url).then();
               },
             },
-            { label: "打开开发者工具", click: handler.openDevtool },
+            { label: '打开开发者工具', click: handler.openDevtool },
           ],
         },
       ];

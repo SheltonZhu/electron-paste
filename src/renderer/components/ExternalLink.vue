@@ -4,7 +4,7 @@
   >
 </template>
 <script>
-import { shell } from "electron";
+import { shell } from 'electron';
 export default {
   props: {
     href: String,

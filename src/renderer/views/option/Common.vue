@@ -66,9 +66,9 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
-import { isSSRPathAvaliable, debounce } from "../../../shared/utils";
-import { openDialog } from "../../ipc";
+import { mapActions } from 'vuex';
+import { isSSRPathAvaliable, debounce } from '../../../shared/utils';
+import { openDialog } from '../../ipc';
 export default {
   data() {
     const appConfig = this.$store.state.appConfig;
@@ -89,7 +89,7 @@ export default {
               if (isSSRPathAvaliable(value)) {
                 callback();
               } else {
-                callback("该目录不正确，请重新选择");
+                callback('该目录不正确，请重新选择');
               }
             },
           },
@@ -98,24 +98,24 @@ export default {
     };
   },
   watch: {
-    "appConfig.ssrPath"(v) {
+    'appConfig.ssrPath'(v) {
       this.ssrPath = v;
     },
-    "appConfig.autoLaunch"(v) {
+    'appConfig.autoLaunch'(v) {
       this.autoLaunch = v;
     },
-    "appConfig.shareOverLan"(v) {
+    'appConfig.shareOverLan'(v) {
       this.shareOverLan = v;
     },
-    "appConfig.localPort"(v) {
+    'appConfig.localPort'(v) {
       this.localPort = v;
     },
-    "appConfig.pacPort"(v) {
+    'appConfig.pacPort'(v) {
       this.pacPort = v;
     },
   },
   methods: {
-    ...mapActions(["updateConfig"]),
+    ...mapActions(['updateConfig']),
     changeSSRPath() {
       this.$refs.form.validate((valid) => {
         if (valid) {
@@ -126,7 +126,7 @@ export default {
     // 选择目录
     selectPath() {
       const path = openDialog({
-        properties: ["openDirectory"],
+        properties: ['openDirectory'],
       });
       if (path && path.length) {
         this.form.ssrPath = path[0];

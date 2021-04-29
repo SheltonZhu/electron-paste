@@ -50,11 +50,11 @@
   </div>
 </template>
 <script>
-import { remote } from "electron";
-import { mapActions } from "vuex";
-import { changeBind } from "../../shortcut";
-import { debounce } from "../../../shared/utils";
-import { isLinux } from "../../../shared/env";
+import { remote } from 'electron';
+import { mapActions } from 'vuex';
+import { changeBind } from '../../shortcut';
+import { debounce } from '../../../shared/utils';
+import { isLinux } from '../../../shared/env';
 
 const globalShortcut = remote.globalShortcut;
 
@@ -64,35 +64,35 @@ export default {
     return {
       isLinux,
       globalShortcutMaps: {
-        toggleWindow: "切换窗口显隐",
-        switchSystemProxy: "切换系统代理模式",
+        toggleWindow: '切换窗口显隐',
+        switchSystemProxy: '切换系统代理模式',
       },
       form: {
         globalShortcuts: appConfig.globalShortcuts,
         windowShortcuts: appConfig.windowShortcuts,
       },
       funcKeys: new Set(),
-      actionKey: "",
+      actionKey: '',
     };
   },
   methods: {
-    ...mapActions(["updateConfig"]),
+    ...mapActions(['updateConfig']),
     update: debounce(function (parent, field) {
       this.updateConfig({ [parent]: { [field]: this.form[parent][field] } });
     }, 1000),
     keydown: function (e) {
       e.preventDefault();
       if (e.metaKey) {
-        this.funcKeys.add("Command");
+        this.funcKeys.add('Command');
       }
       if (e.ctrlKey) {
-        this.funcKeys.add("Ctrl");
+        this.funcKeys.add('Ctrl');
       }
       if (e.shiftKey) {
-        this.funcKeys.add("Shift");
+        this.funcKeys.add('Shift');
       }
       if (e.altKey) {
-        this.funcKeys.add("Alt");
+        this.funcKeys.add('Alt');
       }
       // 不包括上述组合键
       if ([16, 17, 18, 19, 91, 93].indexOf(e.keyCode) < 0) {
@@ -105,9 +105,9 @@ export default {
         if (this.actionKey) {
           keys.push(this.actionKey);
         }
-        const shortcutStr = keys.join("+");
+        const shortcutStr = keys.join('+');
         // 全局快捷键的判断
-        if (parent === "globalShortcuts") {
+        if (parent === 'globalShortcuts') {
           if (globalShortcut.isRegistered(shortcutStr)) {
             return this.$message.error(
               `快捷键 ${shortcutStr} 已被注册，请更换`
@@ -120,7 +120,7 @@ export default {
         }
         this.form[parent][field].key = shortcutStr;
         this.funcKeys.clear();
-        this.actionKey = "";
+        this.actionKey = '';
         this.update(parent, field);
       }
     },

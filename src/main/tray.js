@@ -1,10 +1,10 @@
-import { Menu, nativeImage, Tray } from "electron";
-import * as handler from "./tray-handler";
-import { checkUpdate } from "./updater";
-import { isMac } from "../shared/env";
-import { appTray } from "../shared/icon";
-import logger from "./logger";
-import pkg from "../../package.json";
+import { Menu, nativeImage, Tray } from 'electron';
+import * as handler from './tray-handler';
+import { checkUpdate } from './updater';
+import { isMac } from '../shared/env';
+import { appTray } from '../shared/icon';
+import logger from './logger';
+import pkg from '../../package.json';
 
 let tray;
 
@@ -13,32 +13,32 @@ let tray;
  */
 function generateMenus() {
   return [
-    { label: "设置", click: handler.showSettingsWindow },
+    { label: '设置', click: handler.showSettingsWindow },
     {
-      label: "配置",
-      submenu: [{ label: "打开配置文件", click: handler.openConfigFile }],
+      label: '配置',
+      submenu: [{ label: '打开配置文件', click: handler.openConfigFile }],
     },
     {
-      label: "帮助",
+      label: '帮助',
       submenu: [
-        { label: "检查更新", click: () => checkUpdate(true) },
-        { label: "查看日志", click: handler.openLog },
+        { label: '检查更新', click: () => checkUpdate(true) },
+        { label: '查看日志', click: handler.openLog },
         {
-          label: "项目主页",
+          label: '项目主页',
           click: () => {
             handler.openURL(pkg.homepage).then();
           },
         },
         {
-          label: "Bug反馈",
+          label: 'Bug反馈',
           click: () => {
             handler.openURL(pkg.bugs.url).then();
           },
         },
-        { label: "打开开发者工具", click: handler.openDevtool },
+        { label: '打开开发者工具', click: handler.openDevtool },
       ],
     },
-    { label: "退出", click: handler.exitApp },
+    { label: '退出', click: handler.exitApp },
   ];
 }
 
@@ -54,7 +54,7 @@ function updateTray() {
 
 // 根据配置显示tray tooltip
 function getTooltip() {
-  return "Electron Paste";
+  return 'Electron Paste';
 }
 /**
  * 设置托盘图标
@@ -70,13 +70,13 @@ function setTrayIcon(trayIcon) {
  */
 export default function renderTray() {
   // 生成tray
-  logger.debug("[tray]: render tray...");
+  logger.debug('[tray]: render tray...');
   tray = new Tray(nativeImage.createEmpty());
   updateTray();
   setTrayIcon(appTray);
   // tray.on((isMac || isWin) ? 'double-click' : 'click', handler.toggleClipboardWindow)
-  tray.on("click", handler.toggleClipboardWindow);
-  logger.debug("[tray]: render tray done.");
+  tray.on('click', handler.toggleClipboardWindow);
+  logger.debug('[tray]: render tray done.');
 }
 
 /**

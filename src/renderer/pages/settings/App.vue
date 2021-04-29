@@ -15,10 +15,10 @@
   </div>
 </template>
 <script>
-import TitleBar from "../../components/TitleBar";
-import NavMenu from "../../views/setting/NavMenu";
-import { mapActions } from "vuex";
-import Personalization from "../../views/setting/Personalization";
+import TitleBar from '../../components/TitleBar';
+import NavMenu from '../../views/setting/NavMenu';
+import { mapActions } from 'vuex';
+import Personalization from '../../views/setting/Personalization';
 
 export default {
   components: { TitleBar, NavMenu, Personalization },
@@ -36,7 +36,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions({ changeTo: "changeHref" }),
+    ...mapActions({ changeTo: 'changeHref' }),
   },
 };
 </script>

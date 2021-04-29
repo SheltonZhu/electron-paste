@@ -1,5 +1,5 @@
-import { readFile as _readFile, writeFile as _writeFIle } from "fs";
-import child from "child_process";
+import { readFile as _readFile, writeFile as _writeFIle } from 'fs';
+import child from 'child_process';
 
 function promisify(fn) {
   return function () {

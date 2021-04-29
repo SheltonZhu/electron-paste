@@ -1,13 +1,13 @@
-import Datastore from "nedb-promises";
-import path from "path";
-import Ajv from "ajv";
-import { appConfigDir } from "./bootstrap";
+import Datastore from 'nedb-promises';
+import path from 'path';
+import Ajv from 'ajv';
+import { appConfigDir } from './bootstrap';
 import {
   clipboardCardSchema,
   favoritesSchema,
   clipboardCardIconSchema,
-} from "./schame";
-import md5 from "md5";
+} from './schame';
+import md5 from 'md5';
 
 const dbFactory = (file, scheme) => {
   const db = new Datastore({
@@ -38,9 +38,9 @@ const dbFactory = (file, scheme) => {
 };
 
 const db = {
-  favorites: dbFactory("favorites.db", favoritesSchema),
-  clipboardCard: dbFactory("clipboardCard.db", clipboardCardSchema),
-  clipboardCardIcon: dbFactory("clipboardCardIcon.db", clipboardCardIconSchema),
+  favorites: dbFactory('favorites.db', favoritesSchema),
+  clipboardCard: dbFactory('clipboardCard.db', clipboardCardSchema),
+  clipboardCardIcon: dbFactory('clipboardCardIcon.db', clipboardCardIconSchema),
 };
 
 export default db;

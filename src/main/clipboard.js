@@ -1,11 +1,11 @@
-import clipboard from "electron-clipboard-extended";
-import { showNotification } from "./notification";
+import clipboard from 'electron-clipboard-extended';
+import { showNotification } from './notification';
 
 clipboard
   .startWatching()
-  .on("text-changed", async () => {
+  .on('text-changed', async () => {
     const copiedText = clipboard.readText();
-    showNotification(`复制了： ${copiedText}`, "复制成功！");
+    showNotification(`复制了： ${copiedText}`, '复制成功！');
 
     //   let isLink = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/.test(
     //     currentText.trim()
@@ -47,8 +47,8 @@ clipboard
     //     log.error(e)
     //   }
   })
-  .on("image-changed", async () => {
-    showNotification(`复制了图片`, "复制成功！");
+  .on('image-changed', async () => {
+    showNotification(`复制了图片`, '复制成功！');
     //   // const window = windowManager.getActiveWindow();
     //   let currentImage = clipboard.readImage()
     //   let image = {

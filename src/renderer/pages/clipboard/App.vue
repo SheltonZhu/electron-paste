@@ -8,17 +8,17 @@
 import {
   ipcRenderer,
   // clipboard
-} from "electron";
-import { mapState } from "vuex";
+} from 'electron';
+import { mapState } from 'vuex';
 
 export default {
   data: () => {
     return {};
   },
-  computed: mapState(["href"]),
+  computed: mapState(['href']),
   methods: {
     open() {
-      ipcRenderer.send("test", this.href);
+      ipcRenderer.send('test', this.href);
       this.$electron.remote.clipboard.writeText(this.href);
     },
   },

@@ -1,13 +1,13 @@
-import { net } from "electron";
+import { net } from 'electron';
 
-const STRING_PROTOTYPE = "[object String]";
-const NUMBER_PROTOTYPE = "[object Number]";
-const REGEXP_PROTOTYPE = "[object RegExp]";
-const DATE_PROTOTYPE = "[object Date]";
-const BOOL_PROTOTYPE = "[object Boolean]";
-const ARRAY_PROTOTYPE = "[object Array]";
-const OBJECT_PROTOTYPE = "[object Object]";
-const FUNCTION_PROTOTYPE = "[object Function]";
+const STRING_PROTOTYPE = '[object String]';
+const NUMBER_PROTOTYPE = '[object Number]';
+const REGEXP_PROTOTYPE = '[object RegExp]';
+const DATE_PROTOTYPE = '[object Date]';
+const BOOL_PROTOTYPE = '[object Boolean]';
+const ARRAY_PROTOTYPE = '[object Array]';
+const OBJECT_PROTOTYPE = '[object Object]';
+const FUNCTION_PROTOTYPE = '[object Function]';
 
 function protoString(obj) {
   return Object.prototype.toString.call(obj);
@@ -197,17 +197,17 @@ export function isConfigEqual(config1, config2) {
     Object.keys(config1).every((key) => {
       // 只关心这些键是否一致
       const validKeys = [
-        "server",
-        "server_port",
-        "password",
-        "method",
-        "protocol",
-        "protocolparam",
-        "obfs",
-        "obfsparam",
-        "remarks",
-        "group",
-        "enable",
+        'server',
+        'server_port',
+        'password',
+        'method',
+        'protocol',
+        'protocolparam',
+        'obfs',
+        'obfsparam',
+        'remarks',
+        'group',
+        'enable',
       ];
       if (validKeys.indexOf(key) > -1) {
         return config1[key] === config2[key];
@@ -219,12 +219,12 @@ export function isConfigEqual(config1, config2) {
 
 // 生成随机ID
 export function generateID() {
-  const seed = "ABCDEF01234567890";
+  const seed = 'ABCDEF01234567890';
   const arr = [];
   for (let i = 0; i < 32; i++) {
     arr.push(seed[Math.floor(Math.random() * seed.length)]);
   }
-  return arr.join("");
+  return arr.join('');
 }
 
 /**
@@ -234,21 +234,21 @@ export function generateID() {
 export function request(url, fromRenderer) {
   let _net = net;
   if (fromRenderer) {
-    const { remote } = require("electron");
-    const { net } = remote.require("electron");
+    const { remote } = require('electron');
+    const { net } = remote.require('electron');
     _net = net;
   }
   return new Promise((resolve, reject) => {
     _net
       .request(url)
-      .on("response", (response) => {
+      .on('response', (response) => {
         const body = [];
-        response.on("data", (chunk) => {
+        response.on('data', (chunk) => {
           body.push(chunk.toString());
         });
-        response.on("end", () => {
-          const stringRes = body.join("");
-          if (response.headers["content-type"] === "application/json") {
+        response.on('end', () => {
+          const stringRes = body.join('');
+          if (response.headers['content-type'] === 'application/json') {
             try {
               resolve(JSON.parse(stringRes));
             } catch (error) {
@@ -259,7 +259,7 @@ export function request(url, fromRenderer) {
           }
         });
       })
-      .on("error", reject)
+      .on('error', reject)
       .end();
   });
 }

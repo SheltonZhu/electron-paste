@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: "TitleBar",
+  name: 'TitleBar',
   methods: {
     closeWindow() {
       this.$electron.remote.getCurrentWindow().hide();
