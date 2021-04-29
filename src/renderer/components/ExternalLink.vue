@@ -1,17 +1,18 @@
 <template>
-  <a href @click.prevent="open"><slot>{{href}}</slot></a>
+  <a href @click.prevent="open"
+    ><slot>{{ href }}</slot></a
+  >
 </template>
 <script>
-import { shell } from 'electron'
+import { shell } from "electron";
 export default {
   props: {
-    href: String
+    href: String,
   },
   methods: {
-    open () {
-      shell.openExternal(this.href)
-    }
-  }
-}
+    open() {
+      shell.openExternal(this.href);
+    },
+  },
+};
 </script>
-

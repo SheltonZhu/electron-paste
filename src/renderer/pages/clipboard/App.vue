@@ -5,19 +5,21 @@
   </div>
 </template>
 <script>
-import { ipcRenderer, clipboard } from 'electron'
-import { mapState } from 'vuex'
+import { ipcRenderer, 
+// clipboard 
+} from "electron";
+import { mapState } from "vuex";
 
 export default {
   data: () => {
-    return {}
+    return {};
   },
-  computed: mapState(['href']),
+  computed: mapState(["href"]),
   methods: {
-    open () {
-      ipcRenderer.send('test', this.href)
-      this.$electron.remote.clipboard.writeText(this.href)
-    }
-  }
-}
+    open() {
+      ipcRenderer.send("test", this.href);
+      this.$electron.remote.clipboard.writeText(this.href);
+    },
+  },
+};
 </script>

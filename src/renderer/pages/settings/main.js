@@ -1,11 +1,11 @@
-import Vue from 'vue'
+import Vue from "vue";
 // import '../../ipc'
-import store from '../../store'
-import App from './App'
+import store from "../../store";
+import App from "./App";
 // import { getInitConfig } from '../../ipc'
 // import { init as initShortcut } from './shortcut'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 // 启动应用时获取初始化数据
 // getInitConfig()
@@ -14,6 +14,5 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   store,
-  render: h => h(App)
-}).$mount('#app')
-
+  render: (h) => h(App),
+}).$mount("#app");

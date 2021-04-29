@@ -1,8 +1,8 @@
-import { app, BrowserWindow, screen } from 'electron'
-import { isQuiting } from './data'
-import logger from './logger'
-import { appIcon } from '../shared/icon'
-import { isProd, isLinux } from '../shared/env'
+import { app, BrowserWindow, screen } from "electron";
+import { isQuiting } from "./data";
+import logger from "./logger";
+import { appIcon } from "../shared/icon";
+import { isProd, isLinux } from "../shared/env";
 // import { registerShortcut, unregisterShortcut } from './shortcut'
 // import appConfig$ from './data'
 // import { showNotification } from './notification'
@@ -10,25 +10,25 @@ import { isProd, isLinux } from '../shared/env'
 
 const winURL = !isProd
   ? `http://localhost:9080/clipboard`
-  : `file://${__dirname}/clipboard/index.html`
+  : `file://${__dirname}/clipboard/index.html`;
 
-let mainWindow
-let readyPromise
+let mainWindow;
+let readyPromise;
 
 /**
  * 创建主视图
  */
 export function createWindow() {
-  if (process.platform === 'darwin') {
-    app.dock.hide()
+  if (process.platform === "darwin") {
+    app.dock.hide();
   }
-  const display = screen.getPrimaryDisplay().workAreaSize
+  const display = screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
     width: display.width,
     height: 472,
     x: 0,
     y: isLinux ? display.height : display.height - 472,
-    backgroundColor: '#00000000',
+    backgroundColor: "#00000000",
     transparent: true,
     frame: false,
     alwaysOnTop: true,
@@ -40,34 +40,33 @@ export function createWindow() {
     autoHideMenuBar: true,
     hasShadow: true,
     skipTaskbar: true,
-    vibrancy: 'light', // macos
+    vibrancy: "light", // macos
     icon: appIcon,
-    title: 'ClipBoard',
-    titleBarStyle: 'hidden',
+    title: "ClipBoard",
+    titleBarStyle: "hidden",
     // show: !isProd,
     show: false,
     webPreferences: {
       webSecurity: isProd,
       nodeIntegration: true,
       experimentalFeatures: true,
-      enableRemoteModule: true
-    }
-  })
-  mainWindow.setMenu(null)
-  mainWindow.loadURL(winURL).then(() => {
-  })
+      enableRemoteModule: true,
+    },
+  });
+  mainWindow.setMenu(null);
+  mainWindow.loadURL(winURL).then(() => {});
   // hide to tray when window closed
-  mainWindow.on('close', (e) => {
+  mainWindow.on("close", (e) => {
     // 当前不是退出APP的时候才去隐藏窗口
     if (!isQuiting()) {
-      e.preventDefault()
-      mainWindow.hide()
+      e.preventDefault();
+      mainWindow.hide();
     }
-  })
+  });
 
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
+  mainWindow.on("closed", () => {
+    mainWindow = null;
+  });
 
   // mainWindow.on('show', () => {
   //   logger.debug('show clipboard window.')
@@ -79,11 +78,11 @@ export function createWindow() {
   //   unregisterShortcut('Esc')
   // })
 
-  readyPromise = new Promise(resolve => {
-    mainWindow.webContents.once('did-finish-load', resolve)
-  })
+  readyPromise = new Promise((resolve) => {
+    mainWindow.webContents.once("did-finish-load", resolve);
+  });
   if (!isProd) {
-    openDevtool().then()
+    openDevtool().then();
   }
 }
 
@@ -91,7 +90,7 @@ export function createWindow() {
  * 返回主视图
  */
 export function getWindow() {
-  return mainWindow
+  return mainWindow;
 }
 
 /**
@@ -99,7 +98,7 @@ export function getWindow() {
  */
 export function showWindow() {
   if (mainWindow) {
-    mainWindow.show()
+    mainWindow.show();
   }
 }
 
@@ -107,9 +106,9 @@ export function showWindow() {
  * 隐藏主视图
  */
 export function hideWindow() {
-  isQuiting(false)
+  isQuiting(false);
   if (mainWindow) {
-    mainWindow.hide()
+    mainWindow.hide();
   }
 }
 
@@ -119,9 +118,9 @@ export function hideWindow() {
 export function toggleWindow() {
   if (mainWindow) {
     if (mainWindow.isVisible()) {
-      mainWindow.hide()
+      mainWindow.hide();
     } else {
-      mainWindow.show()
+      mainWindow.show();
     }
   }
 }
@@ -131,8 +130,8 @@ export function toggleWindow() {
  */
 export function destroyWindow() {
   if (mainWindow) {
-    mainWindow.destroy()
-    mainWindow = null
+    mainWindow.destroy();
+    mainWindow = null;
   }
 }
 
@@ -141,9 +140,9 @@ export function destroyWindow() {
  */
 export function reCreateWindow() {
   if (mainWindow) {
-    destroyWindow()
+    destroyWindow();
   }
-  createWindow()
+  createWindow();
 }
 
 /**
@@ -151,10 +150,10 @@ export function reCreateWindow() {
  */
 export async function sendData(channel, ...args) {
   if (mainWindow) {
-    await readyPromise
-    mainWindow.webContents.send(channel, ...args)
+    await readyPromise;
+    mainWindow.webContents.send(channel, ...args);
   } else {
-    logger.debug('not ready')
+    logger.debug("not ready");
   }
 }
 
@@ -163,9 +162,9 @@ export async function sendData(channel, ...args) {
  */
 export async function openDevtool() {
   if (mainWindow) {
-    await readyPromise
-    mainWindow.webContents.openDevTools()
+    await readyPromise;
+    mainWindow.webContents.openDevTools();
   } else {
-    logger.debug('not ready')
+    logger.debug("not ready");
   }
 }

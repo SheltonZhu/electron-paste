@@ -73,6 +73,7 @@
     "electron-devtools-installer": "^2.2.0",
     "electron-icon-builder": "^2.0.1",
     "eslint": "^4.19.1",
+    "eslint-config-prettier": "8.3.0",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^2.0.0",
     "eslint-plugin-html": "^4.0.3",
