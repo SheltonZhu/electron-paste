@@ -12,6 +12,7 @@ This app is a clipboard tool programed by [Electron](https://www.electronjs.org/
 The design style of this app imitates [Paste](https://pasteapp.io/) on Mac.
 
 ## Note for Linux user
+
 By default the `libsodium` maybe not get installed on some platform, for example, the `Fedora`, you can install it manually by command `dnf install libsodium`.
 
 On some systems that use `Gnome` desktop, except `Ubuntu 18.04`, may not have the `AppIndicator` installed, you can manually install this [plugin](https://extensions.gnome.org/extension/615/appindicator-support/) to fix it. (or find it in the store's Add-ons-Shell Extensions)
@@ -42,10 +43,9 @@ On some systems that use `Gnome` desktop, except `Ubuntu 18.04`, may not have th
 
 [FAQ](./docs/FAQ.md) -->
 
-
 ## Build
 
-``` bash
+```bash
 # or npm install
 yarn
 

@@ -2,7 +2,8 @@ import { ipcRenderer } from "electron";
 import store from "./store";
 import {
   // showNotification,
-  showHtmlNotification } from "./notification";
+  showHtmlNotification,
+} from "./notification";
 import * as events from "../shared/events";
 
 /**
@@ -15,7 +16,7 @@ ipcRenderer
   })
   .on(events.EVENT_APP_SHOW_PAGE, (e, targetView) => {
     // 显示具体某页面
-    console.log("[settings][ipc]: received view update: ", targetView.page);
+    console.log("[renderer][ipc]: received view update: ", targetView.page);
     store.commit("updateView", { ...targetView, fromMain: true });
   })
   .on(events.EVENT_APP_ERROR_MAIN, (e, err) => {
@@ -41,7 +42,7 @@ export function syncConfig(appConfig) {
  * 主动获取初始化数据
  */
 export function getInitConfig() {
-  console.log("[ipc]: get init config data");
+  console.log("[renderer][ipc]: get init config data");
   // const res = ipcRenderer.sendSync(events.EVENT_APP_WEB_INIT)
   // store.dispatch('initConfig', res)
   ipcRenderer.sendSync(events.EVENT_APP_WEB_INIT);

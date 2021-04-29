@@ -13,16 +13,16 @@
 
 <script>
 export default {
-  name: 'TitleBar',
+  name: "TitleBar",
   methods: {
-    closeWindow () {
-      this.$electron.remote.getCurrentWindow().hide()
+    closeWindow() {
+      this.$electron.remote.getCurrentWindow().hide();
     },
-    minimizeWindow () {
-      this.$electron.remote.getCurrentWindow().minimize()
-    }
-  }
-}
+    minimizeWindow() {
+      this.$electron.remote.getCurrentWindow().minimize();
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -52,5 +52,4 @@ export default {
   background: #ffc259;
   border: 1px solid #e2bf8a;
 }
-
 </style>

@@ -6,10 +6,8 @@
 
 <script>
 export default {
-  name: 'Personalization'
-}
+  name: "Personalization",
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

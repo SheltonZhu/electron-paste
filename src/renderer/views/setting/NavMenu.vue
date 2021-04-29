@@ -8,38 +8,45 @@
       background-color="#d6d0d5"
       text-color="#000"
       :router="true"
-      active-text-color="#000">
-      <el-menu-item index="1" :route="{path: '/personalization'}"><i class="el-icon-magic-stick"/>个性化</el-menu-item>
-      <el-menu-item index="2" :route="{path: '/general'}"><i class="el-icon-cpu"/>通用</el-menu-item>
-      <el-menu-item index="3" :route="{path: '/shortcut'}"><i class="el-icon-position"/>快捷键</el-menu-item>
-      <el-menu-item index="4" :route="{path: '/rules'}"><i class="el-icon-s-marketing"/>规则</el-menu-item>
-      <el-menu-item index="5" :route="{path: '/about'}"><i class="el-icon-info"/>关于</el-menu-item>
+      active-text-color="#000"
+    >
+      <el-menu-item index="1" :route="{ path: '/personalization' }"
+        ><i class="el-icon-magic-stick" />个性化</el-menu-item
+      >
+      <el-menu-item index="2" :route="{ path: '/general' }"
+        ><i class="el-icon-cpu" />通用</el-menu-item
+      >
+      <el-menu-item index="3" :route="{ path: '/shortcut' }"
+        ><i class="el-icon-position" />快捷键</el-menu-item
+      >
+      <el-menu-item index="4" :route="{ path: '/rules' }"
+        ><i class="el-icon-s-marketing" />规则</el-menu-item
+      >
+      <el-menu-item index="5" :route="{ path: '/about' }"
+        ><i class="el-icon-info" />关于</el-menu-item
+      >
     </el-menu>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from "vuex";
 
 export default {
-  name: 'NavMenu',
-  data () {
-    return {}
+  name: "NavMenu",
+  data() {
+    return {};
   },
   computed: {
-    ...mapState([
-      'page'
-    ])
+    ...mapState(["page"]),
   },
   methods: {
-    ...mapActions([
-      'changePage'
-    ]),
-    handleSelect (key, keyPath) {
-      this.changePage(key)
-    }
-  }
-}
+    ...mapActions(["changePage"]),
+    handleSelect(key, keyPath) {
+      this.changePage(key);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -67,6 +74,4 @@ export default {
   padding: 0 15px;
 }
 </style>
-<style>
-
-</style>
+<style></style>

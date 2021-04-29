@@ -6,10 +6,8 @@
 
 <script>
 export default {
-  name: 'General'
-}
+  name: "General",
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

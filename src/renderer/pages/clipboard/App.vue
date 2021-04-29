@@ -5,8 +5,9 @@
   </div>
 </template>
 <script>
-import { ipcRenderer, 
-// clipboard 
+import {
+  ipcRenderer,
+  // clipboard
 } from "electron";
 import { mapState } from "vuex";
 
