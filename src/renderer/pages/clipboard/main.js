@@ -9,7 +9,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import { init as initShortcut } from '../../shortcut'
 import { getInitConfig } from '../../ipc'
-
+if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import defaultConfig from '../../shared/config'
 import { getUpdatedKeys, merge } from '../../shared/utils'
-import { syncConfig } from '../ipc'
 import { createPersistedState, createSharedMutations } from 'electron-vuex'
 
 Vue.use(Vuex)
@@ -18,11 +17,11 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    updateHref (state, nState) {
+    updateHref(state, nState) {
       state.href = nState
     },
     // 更新应用配置
-    updateConfig (state, [targetConfig, sync = false]) {
+    updateConfig(state, [targetConfig, sync = false]) {
       const changed = getUpdatedKeys(state.appConfig, targetConfig)
       if (changed.length) {
         const extractConfig = {}
@@ -31,22 +30,23 @@ export default new Vuex.Store({
         })
         merge(state.appConfig, extractConfig)
         console.log('[store][updateConfig]: config updated: ', extractConfig)
-        if (sync) {
+        if (sync && process.type === 'renderer') {
+          const syncConfig = require('../ipc')
           syncConfig(extractConfig)
         }
       }
     },
     // 更新应用元数据
-    updateMeta (state, targetMeta) {
+    updateMeta(state, targetMeta) {
       merge(state.meta, targetMeta)
       console.log('[store][updateMeta]: meta updated: ', targetMeta)
     }
   },
   actions: {
-    changeHref ({ commit }, href) {
+    changeHref({ commit }, href) {
       commit('updateHref', href)
     },
-    initConfig ({ commit }, { config, meta }) {
+    initConfig({ commit }, { config, meta }) {
       commit('updateConfig', [config])
       commit('updateMeta', meta)
       if (meta.version) {
@@ -60,6 +60,6 @@ export default new Vuex.Store({
       storageName: 'electron-paste',
       delay: 500
     }),
-    // createSharedMutations()
+    createSharedMutations()
   ]
 })

@@ -28,7 +28,13 @@ if (process.env.NODE_ENV !== 'development') {
 process.on('unhandledRejection', (reason, p) => {
   logger.error(`Unhandled Rejection at: Promise ${p}, reason: ${reason}`)
 })
-
+// 未捕获的exception
+process.on('uncaughtException', error => {
+  if (!(error instanceof ReferenceError)) {
+    logger.error(error.stack || JSON.stringify(error))
+    app.exit();
+  }
+})
 // 应用配置存储目录
 export const appConfigDir = app.getPath('userData')
 // 应用配置存储路径
@@ -37,37 +43,37 @@ export const appConfigPath = path.join(appConfigDir, 'config.json')
 export const defaultDownloadDir = path.join(appConfigDir, 'electron-paste')
 
 // 当前可执行程序的路径
-export const exePath = app.getPath('exe')
-// windows sysproxy.exe文件的路径
-let _winToolPath
-if (isWin) {
-  if (process.env.NODE_ENV === 'development') {
-    _winToolPath = path.resolve(__dirname, '../lib/sysproxy.exe')
-  } else {
-    _winToolPath = path.join(exePath, '../sysproxy.exe')
-  }
-}
-export const winToolPath = _winToolPath
-// mac proxy_conf_helper工具目录
-export const macToolPath = path.resolve(appConfigDir, 'proxy_conf_helper')
-
-// try fix linux dismiss bug
-if (isLinux) {
-  process.env.XDG_CURRENT_DESKTOP = 'Unity'
-}
-
-// 在mac上执行sudo命令
-async function sudoMacCommand (command) {
-  return new Promise((resolve, reject) => {
-    sudo.exec(command, { name: 'Electron Paste' }, (error, stdout, stderr) => {
-      if (error || stderr) {
-        reject(error || stderr)
-      } else {
-        resolve(stdout)
-      }
-    })
-  })
-}
+// export const exePath = app.getPath('exe')
+// // windows sysproxy.exe文件的路径
+// let _winToolPath
+// if (isWin) {
+//   if (process.env.NODE_ENV === 'development') {
+//     _winToolPath = path.resolve(__dirname, '../lib/sysproxy.exe')
+//   } else {
+//     _winToolPath = path.join(exePath, '../sysproxy.exe')
+//   }
+// }
+// export const winToolPath = _winToolPath
+// // mac proxy_conf_helper工具目录
+// export const macToolPath = path.resolve(appConfigDir, 'proxy_conf_helper')
+//
+// // try fix linux dismiss bug
+// if (isLinux) {
+//   process.env.XDG_CURRENT_DESKTOP = 'Unity'
+// }
+//
+// // 在mac上执行sudo命令
+// async function sudoMacCommand (command) {
+//   return new Promise((resolve, reject) => {
+//     sudo.exec(command, { name: 'Electron Paste' }, (error, stdout, stderr) => {
+//       if (error || stderr) {
+//         reject(error || stderr)
+//       } else {
+//         resolve(stdout)
+//       }
+//     })
+//   })
+// }
 
 /**
  * 确保文件存在，目录正常
@@ -82,13 +88,13 @@ async function init () {
   }
   await ensureDir(path.join(appConfigDir, 'logs'))
 
-  // 初始化确保文件存在, 10.11版本以下不支持该功能
-  if (isMac && !isOldMacVersion && !await pathExists(macToolPath)) {
-    const helperPath = process.env.NODE_ENV === 'development'
-      ? path.join(__dirname, '../lib/proxy_conf_helper')
-      : path.join(exePath, '../../../Contents/proxy_conf_helper')
-    await sudoMacCommand(`cp ${helperPath} "${macToolPath}" && chown root:admin "${macToolPath}" && chmod a+rx "${macToolPath}" && chmod +s "${macToolPath}"`)
-  }
+  // // 初始化确保文件存在, 10.11版本以下不支持该功能
+  // if (isMac && !isOldMacVersion && !await pathExists(macToolPath)) {
+  //   const helperPath = process.env.NODE_ENV === 'development'
+  //     ? path.join(__dirname, '../lib/proxy_conf_helper')
+  //     : path.join(exePath, '../../../Contents/proxy_conf_helper')
+  //   await sudoMacCommand(`cp ${helperPath} "${macToolPath}" && chown root:admin "${macToolPath}" && chmod a+rx "${macToolPath}" && chmod +s "${macToolPath}"`)
+  // }
   return readyPromise
 }
 

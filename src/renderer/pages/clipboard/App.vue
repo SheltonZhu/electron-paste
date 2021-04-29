@@ -15,8 +15,8 @@ export default {
   computed: mapState(['href']),
   methods: {
     open () {
-      ipcRenderer.send('test')
-      clipboard.writeText(this.href)
+      ipcRenderer.send('test', this.href)
+      this.$electron.remote.clipboard.writeText(this.href)
     }
   }
 }
