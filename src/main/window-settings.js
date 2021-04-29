@@ -34,8 +34,7 @@ export function createWindow() {
     title: "Settings",
     titleBarStyle: "hidden",
     center: true,
-    // show: !isProd,
-    show: false,
+    show: !isProd,
     webPreferences: {
       webSecurity: isProd,
       nodeIntegration: true,

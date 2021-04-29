@@ -20,7 +20,7 @@ const {entries, htmlPlugin} = require('./muti-page.config')
  * that provide pure *.vue files that need compiling
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/webpack-configurations.html#white-listing-externals
  */
-let whiteListedModules = ['vue', 'vuex', 'erguotou-iview', 'qr-image']
+let whiteListedModules = ['vue', 'vuex', 'element-ui']
 
 let rendererConfig = {
   devtool: '#cheap-module-eval-source-map',

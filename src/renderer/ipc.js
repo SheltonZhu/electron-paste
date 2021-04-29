@@ -1,7 +1,7 @@
 import { ipcRenderer } from "electron";
 import store from "./store";
-import { 
-  // showNotification, 
+import {
+  // showNotification,
   showHtmlNotification } from "./notification";
 import * as events from "../shared/events";
 
@@ -15,7 +15,7 @@ ipcRenderer
   })
   .on(events.EVENT_APP_SHOW_PAGE, (e, targetView) => {
     // 显示具体某页面
-    console.log("received view update: ", targetView.page, targetView.tab);
+    console.log("[settings][ipc]: received view update: ", targetView.page);
     store.commit("updateView", { ...targetView, fromMain: true });
   })
   .on(events.EVENT_APP_ERROR_MAIN, (e, err) => {
