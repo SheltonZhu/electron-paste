@@ -92,7 +92,7 @@ export function destroyTray() {
   if (tray) {
     tray.destroy();
     if (tray.isDestroyed()) {
-      tray = null
+      tray = null;
     }
   }
 }

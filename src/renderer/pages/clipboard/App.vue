@@ -7,21 +7,24 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import { hideAndPaste } from '../../ipc'
+import { mapState } from 'vuex';
+import { hideAndPaste } from '../../ipc';
 
 export default {
-  data () {
-    return {}
+  data() {
+    return {};
   },
   computed: mapState(['appConfig']),
   methods: {
-    copy () {
-      hideAndPaste({ content: "copy only"})
+    copy() {
+      hideAndPaste({ content: 'copy only' });
     },
-    paste () {
-      hideAndPaste({ content: "direct paste", directPaste: this.appConfig.directPaste })
-    }
-  }
-}
+    paste() {
+      hideAndPaste({
+        content: 'direct paste',
+        directPaste: this.appConfig.directPaste,
+      });
+    },
+  },
+};
 </script>

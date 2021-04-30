@@ -120,91 +120,84 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import { clone } from '../../../shared/utils'
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'General',
-  data () {
+  data() {
     return {
       // switch color
       activeColor: '#15bbf9',
-      inactiveColor: '#aaabab'
-    }
+      inactiveColor: '#aaabab',
+    };
   },
   computed: {
     ...mapState(['appConfig']),
     autoLaunch: {
-      get () {
-        return this.appConfig.autoLaunch
+      get() {
+        return this.appConfig.autoLaunch;
       },
-      set (value) {
-        this.updateConfigByClone({ 'autoLaunch': value })
-      }
+      set(value) {
+        this.changeConfig({ autoLaunch: value });
+      },
     },
     directPaste: {
-      get () {
-        return this.appConfig.directPaste
+      get() {
+        return this.appConfig.directPaste;
       },
-      set (value) {
-        this.updateConfigByClone({ 'directPaste': value })
-      }
+      set(value) {
+        this.changeConfig({ directPaste: value });
+      },
     },
     enableHideWhenBlur: {
-      get () {
-        return this.appConfig.enableHideWhenBlur
+      get() {
+        return this.appConfig.enableHideWhenBlur;
       },
-      set (value) {
-        this.updateConfigByClone({ 'enableHideWhenBlur': value })
-      }
+      set(value) {
+        this.changeConfig({ enableHideWhenBlur: value });
+      },
     },
     enableTrayIcon: {
-      get () {
-        return this.appConfig.enableTrayIcon
+      get() {
+        return this.appConfig.enableTrayIcon;
       },
-      set (value) {
-        this.updateConfigByClone({ 'enableTrayIcon': value })
-      }
+      set(value) {
+        this.changeConfig({ enableTrayIcon: value });
+      },
     },
     cardIconEnable: {
-      get () {
-        return this.appConfig.cardIconEnable
+      get() {
+        return this.appConfig.cardIconEnable;
       },
-      set (value) {
-        this.updateConfigByClone({ 'cardIconEnable': value })
-      }
+      set(value) {
+        this.changeConfig({ cardIconEnable: value });
+      },
     },
     historyCapacity: {
-      get () {
-        return this.appConfig.historyCapacity
+      get() {
+        return this.appConfig.historyCapacity;
       },
-      set (value) {
+      set(value) {
         const historyCapacityNumMap = {
           0: '10',
           1: '50',
           2: '100',
           3: '500',
-          4: '∞'
-        }
-        this.updateConfigByClone({ 'historyCapacity': value, 'historyCapacityNum': historyCapacityNumMap[value] })
-      }
-    }
+          4: '∞',
+        };
+        this.changeConfig({
+          historyCapacity: value,
+          historyCapacityNum: historyCapacityNumMap[value],
+        });
+      },
+    },
   },
   methods: {
     ...mapActions(['changeConfig']),
-    updateConfigByClone (config) {
-      const newConfig = clone(this.appConfig)
-      Object.keys(config).forEach(key => {
-        newConfig[key] = config[key]
-      })
-      this.changeConfig(newConfig)
-    },
-    clearHistory () {
-    },
-    changeHistoryCapacity () {
-    }
-  }
-}
+    clearHistory() {},
+    changeHistoryCapacity() {},
+  },
+};
 </script>
 
 <style scoped>
@@ -217,7 +210,7 @@ export default {
 }
 
 .type:after {
-  content: "：";
+  content: '：';
   text-align: left;
 }
 
@@ -229,7 +222,7 @@ export default {
 }
 
 .tip:after {
-  content: " ";
+  content: ' ';
 }
 
 .switch {
@@ -243,5 +236,10 @@ export default {
 .clear-history {
   margin-top: 10px;
   padding: 2px 20px;
+}
+
+.vertically-center {
+  display: flex;
+  align-items: center;
 }
 </style>

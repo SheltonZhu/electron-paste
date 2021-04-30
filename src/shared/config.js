@@ -16,7 +16,7 @@ const defaultConfig = {
   historyCapacityNum: 50,
   regexList: [],
   // 背景模糊
-  backgroundBlur: true,
+  enableBackgroundBlur: true,
   // 开启背景图片
   enableBackgroundPic: true,
   // 背景颜色

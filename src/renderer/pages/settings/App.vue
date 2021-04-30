@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <div class="title-bar" style="-webkit-app-region: drag">
-      <title-bar/>
+      <title-bar />
     </div>
     <div class="nav-menu">
-      <nav-menu/>
+      <nav-menu />
     </div>
     <div class="content">
       <router-view></router-view>
@@ -12,18 +12,18 @@
   </div>
 </template>
 <script>
-import TitleBar from '../../components/TitleBar'
-import NavMenu from '../../views/setting/NavMenu'
-import Personalization from '../../views/setting/Personalization'
+import TitleBar from '../../components/TitleBar';
+import NavMenu from '../../views/setting/NavMenu';
+import Personalization from '../../views/setting/Personalization';
 
 export default {
   components: { TitleBar, NavMenu, Personalization },
-  data () {
-    return {}
+  data() {
+    return {};
   },
   computed: {},
-  methods: {}
-}
+  methods: {},
+};
 </script>
 <style>
 body {
