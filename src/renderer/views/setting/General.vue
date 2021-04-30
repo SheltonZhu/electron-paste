@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="general">
     <el-row class="row">
       <el-col :span="12">
         <div class="type">开机启动</div>
@@ -83,6 +83,7 @@
       <el-col :span="12">
         <div class="switch">
           <el-slider
+            style="width: 350px"
             tooltip-class="capacity-slider"
             :show-tooltip="false"
             v-model="historyCapacity"
@@ -90,7 +91,7 @@
             :max="4"
             :step="1"
             :marks="{ 0: '10', 1: '50', 2: '100', 3: '500', 4: '∞' }"
-            @change="changeNum"
+            @change="changeHistoryCapacity"
           >
           </el-slider>
         </div>
@@ -119,88 +120,128 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { syncConfig } from '../../ipc';
+import { mapState, mapActions } from 'vuex'
+import { clone } from '../../../shared/utils'
 
 export default {
   name: 'General',
-  data() {
+  data () {
     return {
       // switch color
       activeColor: '#15bbf9',
-      inactiveColor: '#aaabab',
-    };
+      inactiveColor: '#aaabab'
+    }
   },
   computed: {
     ...mapState(['appConfig']),
     autoLaunch: {
-      get() {
-        return this.appConfig.autoLaunch;
+      get () {
+        return this.appConfig.autoLaunch
       },
-      set(value) {
-        this.appConfig.autoLaunch = value;
-        syncConfig(this.appConfig);
-      },
+      set (value) {
+        this.updateConfigByClone({ 'autoLaunch': value })
+      }
     },
     directPaste: {
-      get() {
-        return this.appConfig.directPaste;
+      get () {
+        return this.appConfig.directPaste
       },
-      set(value) {
-        this.appConfig.directPaste = value;
-        syncConfig(this.appConfig);
-      },
+      set (value) {
+        this.updateConfigByClone({ 'directPaste': value })
+      }
     },
     enableHideWhenBlur: {
-      get() {
-        return this.appConfig.enableHideWhenBlur;
+      get () {
+        return this.appConfig.enableHideWhenBlur
       },
-      set(value) {
-        this.appConfig.enableHideWhenBlur = value;
-        syncConfig(this.appConfig);
-      },
+      set (value) {
+        this.updateConfigByClone({ 'enableHideWhenBlur': value })
+      }
     },
     enableTrayIcon: {
-      get() {
-        return this.appConfig.enableTrayIcon;
+      get () {
+        return this.appConfig.enableTrayIcon
       },
-      set(value) {
-        this.appConfig.enableTrayIcon = value;
-        syncConfig(this.appConfig);
-      },
+      set (value) {
+        this.updateConfigByClone({ 'enableTrayIcon': value })
+      }
     },
     cardIconEnable: {
-      get() {
-        return this.appConfig.cardIconEnable;
+      get () {
+        return this.appConfig.cardIconEnable
       },
-      set(value) {
-        this.appConfig.cardIconEnable = value;
-        syncConfig(this.appConfig);
-      },
+      set (value) {
+        this.updateConfigByClone({ 'cardIconEnable': value })
+      }
     },
     historyCapacity: {
-      get() {
-        return this.appConfig.historyCapacity;
+      get () {
+        return this.appConfig.historyCapacity
       },
-      set(value) {
-        this.appConfig.historyCapacity = value;
+      set (value) {
         const historyCapacityNumMap = {
           0: '10',
           1: '50',
           2: '100',
           3: '500',
-          4: '∞',
-        };
-        this.appConfig.historyCapacityNum = historyCapacityNumMap[value];
-        syncConfig(this.appConfig);
-      },
-    },
+          4: '∞'
+        }
+        this.updateConfigByClone({ 'historyCapacity': value, 'historyCapacityNum': historyCapacityNumMap[value] })
+      }
+    }
   },
   methods: {
-    clearHistory() {},
-    changeNum() {},
-  },
-};
+    ...mapActions(['changeConfig']),
+    updateConfigByClone (config) {
+      const newConfig = clone(this.appConfig)
+      Object.keys(config).forEach(key => {
+        newConfig[key] = config[key]
+      })
+      this.changeConfig(newConfig)
+    },
+    clearHistory () {
+    },
+    changeHistoryCapacity () {
+    }
+  }
+}
 </script>
 
-<style scoped></style>
+<style scoped>
+.row {
+  padding: 10px 5px;
+}
+
+.type {
+  text-align: right;
+}
+
+.type:after {
+  content: "：";
+  text-align: left;
+}
+
+.tip {
+  text-align: right;
+  color: #aaabab;
+  font-size: smaller;
+  margin-top: 2px;
+}
+
+.tip:after {
+  content: " ";
+}
+
+.switch {
+  margin: 0 10px;
+}
+
+.warn-info {
+  color: #ffc259;
+}
+
+.clear-history {
+  margin-top: 10px;
+  padding: 2px 20px;
+}
+</style>

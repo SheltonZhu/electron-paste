@@ -32,7 +32,7 @@ body {
 }
 
 #app {
-  background: #fff;
+  background: #eae9ea;
 }
 
 .nav-menu {
@@ -42,6 +42,6 @@ body {
 }
 
 .content {
-  background: #eae9ea;
+  margin-top: 10px;
 }
 </style>

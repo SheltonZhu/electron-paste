@@ -7,7 +7,7 @@ import { createPersistedState, createSharedMutations } from 'electron-vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  strict: process.env.NODE_ENV !== 'production',
+  // strict: process.env.NODE_ENV !== 'production',
   state: {
     appConfig: defaultConfig,
     meta: {
@@ -59,8 +59,8 @@ export default new Vuex.Store({
       commit('updateConfig', [targetConfig, true])
     },
 
-    changePage ({ commit }, page) {
-      commit('updateView', { page: page })
+    changePage ({ commit }, targetView) {
+      commit('updateView', targetView)
     }
   },
   plugins: [

@@ -40,8 +40,8 @@ export function createWindow() {
     icon: appIcon,
     title: 'ClipBoard',
     titleBarStyle: 'hidden',
-    // show: !isProd,
-    show: false,
+    show: !isProd,
+    // show: false,
     webPreferences: {
       webSecurity: isProd,
       nodeIntegration: true,
