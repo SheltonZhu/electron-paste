@@ -91,7 +91,9 @@ export default function renderTray() {
 export function destroyTray() {
   if (tray) {
     tray.destroy();
-    tray = null;
+    if (tray.isDestroyed()) {
+      tray = null
+    }
   }
 }
 
