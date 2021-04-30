@@ -35,13 +35,13 @@ body {
   background: #eae9ea;
 }
 
-.nav-menu {
+#app > .nav-menu {
   background: #d6d0d5;
   text-align: center;
   height: 40px;
 }
 
-.content {
+#app > .content {
   margin-top: 10px;
 }
 </style>

@@ -10,19 +10,19 @@
       :router="true"
       active-text-color="#000"
     >
-      <el-menu-item index="1" :route="{ path: '/personalization' }"
+      <el-menu-item index="1" :route="{ name: 'personalization' }"
         ><i class="el-icon-magic-stick" />个性化</el-menu-item
       >
-      <el-menu-item index="2" :route="{ path: '/general' }"
+      <el-menu-item index="2" :route="{ name: 'general' }"
         ><i class="el-icon-cpu" />通用</el-menu-item
       >
-      <el-menu-item index="3" :route="{ path: '/shortcut' }"
+      <el-menu-item index="3" :route="{ name: 'shortcut' }"
         ><i class="el-icon-position" />快捷键</el-menu-item
       >
-      <el-menu-item index="4" :route="{ path: '/rules' }"
+      <el-menu-item index="4" :route="{ name: 'rules' }"
         ><i class="el-icon-s-marketing" />规则</el-menu-item
       >
-      <el-menu-item index="5" :route="{ path: '/about' }"
+      <el-menu-item index="5" :route="{ name: 'about' }"
         ><i class="el-icon-info" />关于</el-menu-item
       >
     </el-menu>

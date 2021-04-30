@@ -16,7 +16,6 @@ export default new Vuex.Store({
       defaultDownloadDir: '',
     },
     page: '1',
-    href: 'https://www.bilibili.com',
   },
 
   mutations: {
@@ -44,6 +43,11 @@ export default new Vuex.Store({
     // 更新设置页面
     updateView(state, targetView) {
       state.page = targetView.page;
+      // TODO 跳转到页面
+      // if (process.type === 'renderer') {
+      // const { router } = require('../router')
+      // router.push({ 'name': targetView.name }).then()
+      // }
       console.log('[store][updateMeta]: page updated: ', targetView);
     },
   },

@@ -12,6 +12,7 @@ import { appConfig$ } from './data';
 import { showNotification } from './notification';
 import { EVENT_APP_SHOW_PAGE } from '../shared/events';
 import { PAGE_SHORTCUT } from '../shared/env';
+
 const func = {
   showClipboard,
   hideClipboard,
@@ -90,7 +91,7 @@ app.on('ready', () => {
           '错误',
           () => {
             showSettings();
-            sendToSettings(EVENT_APP_SHOW_PAGE, { page: PAGE_SHORTCUT }).then();
+            sendToSettings(EVENT_APP_SHOW_PAGE, PAGE_SHORTCUT).then();
           }
         );
       }

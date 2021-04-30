@@ -91,7 +91,7 @@
             :max="4"
             :step="1"
             :marks="{ 0: '10', 1: '50', 2: '100', 3: '500', 4: '∞' }"
-            @change="changeHistoryCapacity"
+            @change="checkHistoryCapacity"
           >
           </el-slider>
         </div>
@@ -194,8 +194,12 @@ export default {
   },
   methods: {
     ...mapActions(['changeConfig']),
-    clearHistory() {},
-    changeHistoryCapacity() {},
+    clearHistory() {
+      // TODO 清空历史
+    },
+    checkHistoryCapacity() {
+      // TODO 检查历史容量
+    },
   },
 };
 </script>
