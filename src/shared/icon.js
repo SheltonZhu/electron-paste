@@ -14,11 +14,11 @@ function getImage(name, template = true, highlight = false) {
 }
 
 export let notificationIcon;
-export let appTray;
+export let appTrayIcon;
 export let appIcon;
 
 export function init() {
   notificationIcon = getImage('icon', false, false);
-  appTray = getImage('icon', false);
+  appTrayIcon = getImage('icon', false);
   appIcon = getImage('icon', false);
 }

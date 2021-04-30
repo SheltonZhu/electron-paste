@@ -7,9 +7,7 @@
       <nav-menu />
     </div>
     <div class="content">
-      <router-view>
-        <personalization />
-      </router-view>
+      <router-view> </router-view>
     </div>
     <!--    <input v-model="href"/>-->
   </div>

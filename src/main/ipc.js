@@ -9,7 +9,8 @@ import { showNotification } from './notification';
 import logger from './logger';
 import robot from 'robotjs';
 import store from '../renderer/store';
-
+import { toggleMenu } from './menu';
+import pkg from '../../package.json';
 /**
  * ipc-main事件
  */
@@ -30,7 +31,8 @@ ipcMain
     const res = {
       config: stored,
       meta: {
-        version: app.getVersion(),
+        version: pkg.version,
+        electron: app.getVersion(),
         defaultDownloadDir,
       },
     };
@@ -49,9 +51,15 @@ ipcMain
     const ret = await dialog.showOpenDialog(params);
     e.returnValue = ret.filePaths;
   })
-  .on('test', (e, copiedText) => {
-    clipboard.writeText(copiedText);
-    setTimeout(async () => {
-      robot.keyTap('v', 'control');
-    }, 10);
+  .on(events.EVENT_APP_TOGGLE_MENU, () => {
+    toggleMenu();
+  })
+  .on(events.EVENT_APP_CLIPBOARD_PASTE, async (e, params) => {
+    hideClipboard();
+    clipboard.writeText(params.content);
+    if (params.directPaste) {
+      setTimeout(async () => {
+        robot.keyTap('v', 'control');
+      }, 10);
+    }
   });

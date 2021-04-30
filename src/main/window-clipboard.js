@@ -1,12 +1,8 @@
 import { app, BrowserWindow, screen } from 'electron';
-import { isQuiting } from './data';
+import { appConfig$, isQuiting } from './data';
 import logger from './logger';
 import { appIcon } from '../shared/icon';
 import { isProd, isLinux } from '../shared/env';
-// import { registerShortcut, unregisterShortcut } from './shortcut'
-// import appConfig$ from './data'
-// import { showNotification } from './notification'
-// import { showWindow as showSettings } from './window-settings'
 
 const winURL = !isProd
   ? `http://localhost:9080/clipboard`
@@ -68,15 +64,17 @@ export function createWindow() {
     mainWindow = null;
   });
 
-  // mainWindow.on('show', () => {
-  //   logger.debug('show clipboard window.')
-  //   registerShortcut('hideClipboard', 'Esc')
-  // })
-  //
-  // mainWindow.on('hide', () => {
-  //   logger.debug('hide clipboard window.')
-  //   unregisterShortcut('Esc')
-  // })
+  // 窗口失去焦点隐藏
+  appConfig$.subscribe((data) => {
+    const [appConfig, changed] = data;
+    if (!changed.length || changed.indexOf('enableHideWhenBlur') > -1) {
+      if (appConfig.enableHideWhenBlur) {
+        mainWindow.on('blur', hideWindow);
+      } else {
+        mainWindow.removeAllListeners('blur');
+      }
+    }
+  });
 
   readyPromise = new Promise((resolve) => {
     mainWindow.webContents.once('did-finish-load', resolve);

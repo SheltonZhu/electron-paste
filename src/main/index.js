@@ -1,7 +1,7 @@
 import { app, screen } from 'electron';
 import AutoLaunch from 'auto-launch';
 import bootstrap from './bootstrap';
-import renderTray, { destroyTray } from './tray';
+import { destroyTray } from './tray';
 import { checkUpdate } from './updater';
 import './menu';
 import './ipc';
@@ -17,13 +17,11 @@ import {
   getWindow as getSettings,
   destroyWindow as destroySettings,
 } from './window-settings';
-import renderMenu from './menu';
 import logger from './logger';
 import { clearShortcuts } from './shortcut';
 import { isProd, isWin, isMac } from '../shared/env';
 import { isQuiting, appConfig$ } from './data';
 import { showNotification } from './notification';
-// import store from '../renderer/store'
 
 const isPrimaryInstance = app.requestSingleInstanceLock();
 if (!isPrimaryInstance) {
@@ -40,11 +38,9 @@ if (!isPrimaryInstance) {
   });
 
   bootstrap.then(() => {
-    logger.info('[app]: Bootstrap...');
     createClipboard();
     createSettings();
-    renderTray();
-    renderMenu();
+
     if (isWin || isMac) {
       app.setAsDefaultProtocolClient('paste');
     }
@@ -144,6 +140,5 @@ if (!isPrimaryInstance) {
         });
       }
     }
-    logger.info('[app]: Bootstrap...done.');
   });
 }

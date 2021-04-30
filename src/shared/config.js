@@ -9,11 +9,11 @@ const defaultConfig = {
   enableHideWhenBlur: true,
   // 显示托盘
   enableTrayIcon: true,
+  // 剪贴板卡片图标
+  cardIconEnable: true,
   // 剪贴板历史存储数量
   historyCapacity: 1,
   historyCapacityNum: 50,
-  // 剪贴板卡片图标
-  cardIconEnable: true,
   regexList: [],
   // 背景模糊
   backgroundBlur: true,

@@ -11,6 +11,7 @@ export default new Vuex.Store({
     appConfig: defaultConfig,
     meta: {
       version: '',
+      electron: '',
       defaultDownloadDir: '',
     },
     page: '1',
@@ -55,7 +56,7 @@ export default new Vuex.Store({
     initConfig({ commit }, { config, meta }) {
       commit('updateConfig', [config]);
       commit('updateMeta', meta);
-      if (meta.version) {
+      if (meta.version && process.type === 'renderer') {
         document.title = `${document.title} v${meta.version}`;
       }
     },

@@ -1,10 +1,11 @@
 import { Menu, nativeImage, Tray } from 'electron';
 import * as handler from './tray-handler';
 import { checkUpdate } from './updater';
-import { isMac } from '../shared/env';
-import { appTray } from '../shared/icon';
+import { appTrayIcon } from '../shared/icon';
 import logger from './logger';
+import { isMac, isWin } from '../shared/env';
 import pkg from '../../package.json';
+import { appConfig$ } from './data';
 
 let tray;
 
@@ -56,6 +57,7 @@ function updateTray() {
 function getTooltip() {
   return 'Electron Paste';
 }
+
 /**
  * 设置托盘图标
  * @param {string} trayIcon
@@ -70,13 +72,17 @@ function setTrayIcon(trayIcon) {
  */
 export default function renderTray() {
   // 生成tray
-  logger.debug('[tray]: render tray...');
-  tray = new Tray(nativeImage.createEmpty());
-  updateTray();
-  setTrayIcon(appTray);
-  // tray.on((isMac || isWin) ? 'double-click' : 'click', handler.toggleClipboardWindow)
-  tray.on('click', handler.toggleClipboardWindow);
-  logger.debug('[tray]: render tray done.');
+  if (!tray) {
+    logger.debug('[tray]: render tray...');
+    tray = new Tray(nativeImage.createEmpty());
+    updateTray();
+    setTrayIcon(appTrayIcon);
+    tray.on(
+      isMac || isWin ? 'double-click' : 'click',
+      handler.toggleClipboardWindow
+    );
+    logger.debug('[tray]: render tray done.');
+  }
 }
 
 /**
@@ -85,5 +91,18 @@ export default function renderTray() {
 export function destroyTray() {
   if (tray) {
     tray.destroy();
+    tray = null;
   }
 }
+
+// 监听tray配置
+appConfig$.subscribe((data) => {
+  const [appConfig, changed] = data;
+  if (!changed.length || changed.indexOf('enableTrayIcon') > -1) {
+    if (appConfig.enableTrayIcon) {
+      renderTray();
+    } else {
+      destroyTray();
+    }
+  }
+});

@@ -5,7 +5,6 @@ import {
   showHtmlNotification,
 } from './notification';
 import * as events from '../shared/events';
-
 /**
  * ipc-render事件
  */
@@ -67,4 +66,11 @@ export function hideClipboard() {
  */
 export function openDialog(options) {
   return ipcRenderer.sendSync(events.EVENT_APP_OPEN_DIALOG, options);
+}
+
+/**
+ * 隐藏并粘贴
+ */
+export function hideAndPaste(options) {
+  return ipcRenderer.send(events.EVENT_APP_CLIPBOARD_PASTE, options);
 }

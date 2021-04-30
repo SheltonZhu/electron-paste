@@ -35,5 +35,10 @@ export default new Router({
       name: 'about',
       component: About,
     },
+    {
+      path: '/',
+      name: 'index',
+      component: Personalization,
+    },
   ],
 });

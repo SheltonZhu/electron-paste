@@ -30,12 +30,11 @@ if (process.env.NODE_ENV !== 'development') {
 process.on('unhandledRejection', (reason, p) => {
   logger.error(`Unhandled Rejection at: Promise ${p}, reason: ${reason}`);
 });
+
 // 未捕获的exception
 process.on('uncaughtException', (error) => {
-  if (!(error instanceof ReferenceError)) {
-    logger.error(error.stack || JSON.stringify(error));
-    app.exit();
-  }
+  logger.error(error.stack || JSON.stringify(error));
+  app.exit();
 });
 // 应用配置存储目录
 export const appConfigDir = app.getPath('userData');
@@ -45,7 +44,7 @@ export const appConfigPath = path.join(appConfigDir, 'config.json');
 export const defaultDownloadDir = path.join(appConfigDir, 'electron-paste');
 
 // 当前可执行程序的路径
-// export const exePath = app.getPath('exe')
+export const exePath = app.getPath('exe');
 // // windows sysproxy.exe文件的路径
 // let _winToolPath
 // if (isWin) {

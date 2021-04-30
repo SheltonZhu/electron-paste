@@ -16,9 +16,6 @@ export const EVENT_APP_WEB_INIT = 'app.init.web';
 // 由`ipc-renderer`发出 用于选择本地文件/目录
 export const EVENT_APP_OPEN_DIALOG = 'app.open.dialog';
 
-// 由`ipc-main`发出 自动下载ssr的进度
-export const EVENT_SSR_DOWNLOAD_MAIN = 'ssr.download.main';
-
 // 由`ipc-main`发出 同步`rx`数据
 export const EVENT_RX_SYNC_MAIN = 'rx.sync.main';
 
@@ -30,3 +27,6 @@ export const EVENT_APP_ERROR_MAIN = 'app.error.main';
 
 // 由`ipc-main`发出 切换menu显示
 export const EVENT_APP_TOGGLE_MENU = 'app.toggle.menu';
+
+// 由`ipc-renderer`发出 自动粘贴
+export const EVENT_APP_CLIPBOARD_PASTE = 'app.clipboard.paste';

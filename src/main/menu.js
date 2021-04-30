@@ -3,7 +3,8 @@ import * as handler from './tray-handler';
 import { checkUpdate } from './updater';
 import { isMac, isLinux } from '../shared/env';
 import pkg from '../../package.json';
-
+import logger from '../main/logger';
+import { appConfig$ } from './data';
 let showLinuxMenu = false;
 /**
  * 渲染菜单
@@ -73,6 +74,7 @@ export default function renderMenu() {
  * 切换是否显示menu
  */
 export function toggleMenu() {
+  logger.debug('[menu]: toggleMenu');
   if (isLinux) {
     if (Menu.getApplicationMenu()) {
       showLinuxMenu = false;
@@ -83,3 +85,10 @@ export function toggleMenu() {
     }
   }
 }
+
+appConfig$.subscribe((data) => {
+  const [appConfig, changed] = data;
+  if (!changed.length) {
+    renderMenu(appConfig);
+  }
+});
