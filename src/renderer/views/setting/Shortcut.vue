@@ -13,9 +13,10 @@
       <el-col>
         <el-input
           style="width: 200px"
-          v-model="form.globalShortcuts[funcName].key"
+          :value="appConfig.globalShortcuts[funcName].key"
           readonly
-          :disabled="!form.globalShortcuts[funcName].enable"
+          :disabled="!appConfig.globalShortcuts[funcName].enable"
+          @blur="clearCache"
           @keydown.native="(e) => keydown(e, 'globalShortcuts', funcName)"
           @keyup.native="(e) => keyup(e, 'globalShortcuts', funcName)"
         >
@@ -36,9 +37,10 @@
       <el-col>
         <el-input
           style="width: 200px"
-          v-model="form.windowShortcuts[funcName].key"
+          :value="appConfig.windowShortcuts[funcName].key"
           readonly
-          :disabled="!form.windowShortcuts[funcName].enable"
+          :disabled="!appConfig.windowShortcuts[funcName].enable"
+          @blur="clearCache"
           @keydown.native="(e) => keydown(e, 'windowShortcuts', funcName)"
           @keyup.native="(e) => keyup(e, 'windowShortcuts', funcName)"
         >
@@ -57,13 +59,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { debounce } from '../../../shared/utils';
+import { mapActions, mapState } from 'vuex';
+import { debounce, clone } from '../../../shared/utils';
 
 export default {
   name: 'Shortcut',
   data() {
-    const appConfig = this.$store.state.appConfig;
     return {
       globalShortcutMaps: {
         showClipboard: '呼出剪贴板',
@@ -71,15 +72,11 @@ export default {
       windowShortcutsMaps: {
         hideClipboard: '隐藏剪贴板',
       },
-      form: {
-        globalShortcuts: appConfig.globalShortcuts,
-        windowShortcuts: appConfig.windowShortcuts,
-      },
       funcKeys: new Set(),
       actionKey: '',
     };
   },
-  // computed: mapState(['appConfig']),
+  computed: mapState(['appConfig']),
   methods: {
     ...mapActions(['changeConfig']),
     changeConfigDebounce: debounce(function (config) {
@@ -113,22 +110,33 @@ export default {
         }
         const shortcutStr = keys.join('+');
         // 全局快捷键的判断
-        if (parent === 'globalShortcuts') {
-          if (this.$electron.remote.globalShortcut.isRegistered(shortcutStr)) {
-            this.$message({
-              showClose: true,
-              message: `快捷键 ${shortcutStr} 已被注册，请更换`,
-              type: 'error',
-            });
-            return;
+        const config = clone(this.appConfig, true);
+        try {
+          if (parent === 'globalShortcuts') {
+            if (
+              this.$electron.remote.globalShortcut.isRegistered(shortcutStr)
+            ) {
+              this.$message({
+                showClose: true,
+                message: `快捷键 ${shortcutStr} 已被注册，请更换`,
+                type: 'error',
+              });
+              return;
+            }
           }
+          config[parent][field].key = shortcutStr;
+          this.changeConfigDebounce(config);
+        } catch (e) {
+          // console.log(e)
+        } finally {
+          this.clearCache();
         }
-        this.form[parent][field].key = shortcutStr;
-        this.funcKeys.clear();
-        this.actionKey = '';
-        this.changeConfigDebounce(this.form);
       }
     }, 200),
+    clearCache() {
+      this.funcKeys.clear();
+      this.actionKey = '';
+    },
   },
 };
 </script>

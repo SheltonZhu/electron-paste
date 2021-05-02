@@ -22,6 +22,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import RegexInput from '../../components/RegexInput';
+import { clone } from '../../../shared/utils';
 
 export default {
   name: 'Rules',
@@ -32,8 +33,8 @@ export default {
   methods: {
     ...mapActions(['changeConfig']),
     addRegex() {
-      this.appConfig.regexList.unshift('新规则');
-      const regexList = this.appConfig.regexList;
+      const regexList = clone(this.appConfig.regexList);
+      regexList.unshift('新规则');
       this.changeConfig({ regexList: regexList });
     },
   },
@@ -47,6 +48,7 @@ export default {
   overflow-y: scroll;
   margin: 10px 0;
 }
+
 .tip {
   padding-top: 5px;
   font-size: smaller;

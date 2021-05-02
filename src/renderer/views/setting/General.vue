@@ -195,10 +195,12 @@ export default {
           3: '500',
           4: '∞',
         };
-        this.changeConfigDebounce({
-          historyCapacity: value,
-          historyCapacityNum: historyCapacityNumMap[value],
-        });
+        if (this.appConfig.historyCapacity !== value) {
+          this.changeConfigDebounce({
+            historyCapacity: value,
+            historyCapacityNum: historyCapacityNumMap[value],
+          });
+        }
       },
     },
   },

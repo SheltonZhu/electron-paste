@@ -16,6 +16,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import { clone } from '../../shared/utils';
 
 export default {
   name: 'RegexInput',
@@ -51,15 +52,17 @@ export default {
     onBlur() {
       if (this.newData.trim() !== '' && this.newData.trim() !== this.data) {
         this.$nextTick(() => {
-          this.appConfig.regexList.splice(this.index, 1, this.newData);
-          this.changeConfig({ regexList: this.appConfig.regexList });
+          const regexList = clone(this.appConfig.regexList);
+          regexList.splice(this.index, 1, this.newData);
+          this.changeConfig({ regexList: regexList });
         });
       }
       this.editing = false;
     },
     removeRegex() {
-      this.appConfig.regexList.splice(this.index, 1);
-      this.changeConfig({ regexList: this.appConfig.regexList });
+      const regexList = clone(this.appConfig.regexList);
+      regexList.splice(this.index, 1);
+      this.changeConfig({ regexList: regexList });
     },
   },
 };

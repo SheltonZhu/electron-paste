@@ -2,12 +2,12 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import defaultConfig from '../../shared/config';
 import { getUpdatedKeys, merge } from '../../shared/utils';
-import { createPersistedState, createSharedMutations } from 'electron-vuex';
+import { createPersistedState, createSharedMutations } from 'vuex-electron';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  // strict: process.env.NODE_ENV !== 'production',
+  strict: process.env.NODE_ENV !== 'production',
   state: {
     appConfig: defaultConfig,
     meta: {
@@ -38,7 +38,7 @@ export default new Vuex.Store({
     // 更新应用元数据
     updateMeta(state, targetMeta) {
       merge(state.meta, targetMeta);
-      console.log('[store][updateMeta]: meta updated: ', targetMeta);
+      // console.log('[store][updateMeta]: meta updated: ', targetMeta);
     },
     // 更新设置页面
     updateView(state, targetView) {
@@ -48,7 +48,7 @@ export default new Vuex.Store({
       // const { router } = require('../router')
       // router.push({ 'name': targetView.name }).then()
       // }
-      console.log('[store][updateMeta]: page updated: ', targetView);
+      // console.log('[store][updateMeta]: page updated: ', targetView);
     },
   },
   actions: {
@@ -67,12 +67,5 @@ export default new Vuex.Store({
       commit('updateView', targetView);
     },
   },
-  plugins: [
-    createPersistedState({
-      whitelist: ['changeHref'],
-      storageName: 'electron-paste',
-      delay: 500,
-    }),
-    createSharedMutations(),
-  ],
+  plugins: [createPersistedState(), createSharedMutations()],
 });

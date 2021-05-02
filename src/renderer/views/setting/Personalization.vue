@@ -156,6 +156,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { debounce } from '../../../shared/utils';
+import { clone } from '../../../shared/utils';
 
 export default {
   name: 'Personalization',
@@ -231,7 +232,9 @@ export default {
         return this.appConfig.backgroundBlurValue;
       },
       set(value) {
-        this.changeConfigDebounce({ backgroundBlurValue: value });
+        if (this.appConfig.backgroundBlurValue !== value) {
+          this.changeConfigDebounce({ backgroundBlurValue: value });
+        }
       },
     },
     enableBackgroundPic: {
@@ -278,31 +281,35 @@ export default {
     },
     setBackgroundPic(e) {
       const url = e.target.src;
+      let backgroundPic;
       if (this.isLocalPic(url)) {
-        this.appConfig.backgroundPic = '/static/bg/' + url.split('/').pop();
+        backgroundPic = '/static/bg/' + url.split('/').pop();
       } else {
-        this.appConfig.backgroundPic = url;
+        backgroundPic = url;
       }
-      this.changeConfig({ backgroundPic: this.appConfig.backgroundPic });
+      this.changeConfig({ backgroundPic });
     },
     addBackgroundPic() {
       if (this.newPicUrl) {
-        this.appConfig.backgroundPicList.unshift(this.newPicUrl);
+        const backgroundPicList = clone(this.appConfig.backgroundPicList);
+        backgroundPicList.unshift(this.newPicUrl);
         this.changeConfig({
-          backgroundPicList: this.appConfig.backgroundPicList,
+          backgroundPicList,
         });
       }
       this.newPicUrl = '';
     },
     removeBackgroundPic(e, idx) {
-      this.appConfig.backgroundPicList.splice(idx, 1);
+      const backgroundPicList = clone(this.appConfig.backgroundPicList);
+      backgroundPicList.splice(idx, 1);
+      this.changeConfig({ backgroundPicList });
     },
     isLocalPic(url) {
       console.log(`pic url:  ${url}`);
       if (process.env.NODE_ENV !== 'production') {
         return url.startsWith('http://localhost:9080/static/bg/');
       } else {
-        return url.startsWith('file://${__dirname}/static/bg/');
+        return url.startsWith(`file://${__dirname}/static/bg/`);
       }
     },
   },

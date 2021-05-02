@@ -36,7 +36,6 @@
     "electron-clipboard-extended": "^1.1.1",
     "electron-log": "^2.2.17",
     "electron-updater": "^4.1.2",
-    "electron-vuex": "^1.0.5",
     "element-ui": "^2.3.6",
     "fs-extra": "^5.0.0",
     "lint-staged": "^10.5.4",
@@ -49,7 +48,8 @@
     "vue": "^2.6.11",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.5.1",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "vuex-electron": "^1.0.3"
   },
   "devDependencies": {
     "ajv": "^7.0.3",
