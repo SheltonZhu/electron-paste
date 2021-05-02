@@ -4,8 +4,8 @@
     class="bg"
     :style="{
       'background-image': appConfig.enableBackgroundPic
-        ? imageUrl
-          ? 'url(' + imageUrl + ')'
+        ? appConfig.backgroundPic
+          ? 'url(' + appConfig.backgroundPic + ')'
           : 'url(' + defaultBg + ')'
         : 'none',
     }"
@@ -43,8 +43,7 @@ export default {
   },
   data() {
     return {
-      imageUrl: '',
-      defaultBg: 'https://www.twcode01.com/images/demo/demo2.jpg',
+      defaultBg: '/static/bg/bg3.jpg',
     };
   },
   computed: { ...mapState(['appConfig']) },

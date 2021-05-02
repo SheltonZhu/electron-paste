@@ -45,6 +45,14 @@
         </el-input>
       </el-col>
     </el-row>
+    <!--    显示下一个标签-->
+    <!--    Alt + ]-->
+    <!--    显示上一个标签-->
+    <!--    Alt + [-->
+    <!--    快速粘贴-->
+    <!--    Alt + 1..9-->
+    <!--    搜索-->
+    <!--    Alt + S-->
   </div>
 </template>
 
@@ -92,9 +100,6 @@ export default {
         this.funcKeys.add('Alt');
       }
 
-      // if (e.) {
-      //   this.funcKeys.add('Alt')
-      // }
       // 不包括上述组合键
       if ([16, 17, 18, 19, 91, 93].indexOf(e.keyCode) < 0) {
         this.actionKey = e.key.toUpperCase();

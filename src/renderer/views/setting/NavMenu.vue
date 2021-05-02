@@ -22,11 +22,11 @@
       <el-menu-item index="4" :route="{ name: 'rules' }"
         ><i class="el-icon-s-marketing" />规则</el-menu-item
       >
-<!--      <el-menu-item index="5" :route="{ name: 'about' }"
+      <!--      <el-menu-item index="5" :route="{ name: 'about' }"
         ><i class="el-icon-upload" />同步</el-menu-item
       >-->
       <el-menu-item index="5" :route="{ name: 'about' }"
-      ><i class="el-icon-info" />关于</el-menu-item
+        ><i class="el-icon-info" />关于</el-menu-item
       >
     </el-menu>
   </div>

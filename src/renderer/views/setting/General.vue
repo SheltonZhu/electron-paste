@@ -209,6 +209,14 @@ export default {
     }, 100),
     clearHistory() {
       // TODO 清空历史
+      this.$confirm('清空剪贴板历史?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {})
+        .catch(() => {})
+        .finally(() => {});
     },
     checkHistoryCapacity() {
       // TODO 检查历史容量

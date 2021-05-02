@@ -2,7 +2,7 @@
   <div>
     <div style="text-align: center">
       <div>自定义关键字</div>
-      <div class="tip">（包含关键字内容不会被复制，可使用正则表达式）</div>
+      <div class="tip">（包含关键字的内容不会被复制，可使用正则表达式）</div>
       <div class="regex-container">
         <regex-input
           v-for="(regex, idx) in appConfig.regexList"

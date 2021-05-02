@@ -2,7 +2,20 @@
   <div class="personalization">
     <div>
       <el-divider>背景</el-divider>
-
+      <el-row class="row vertically-center">
+        <el-col :span="12">
+          <div class="type">背景颜色</div>
+        </el-col>
+        <el-col :span="12">
+          <div class="switch">
+            <el-color-picker
+              v-model="backgroundColor"
+              show-alpha
+              :predefine="predefineBackgroundColors"
+            ></el-color-picker>
+          </div>
+        </el-col>
+      </el-row>
       <el-row class="row">
         <el-col :span="12">
           <div class="type">背景虚化</div>
@@ -27,7 +40,7 @@
           <div class="type">背景虚化程度</div>
         </el-col>
         <el-col :span="12">
-          <div class="switch">
+          <div class="switch" style="margin-left: 10px">
             <el-slider
               style="width: 350px"
               show-input
@@ -38,36 +51,74 @@
           </div>
         </el-col>
       </el-row>
-      <el-row class="row">
-        <el-col :span="12">
-          <div class="type">使用背景图</div>
-        </el-col>
-        <el-col :span="12">
-          <div class="switch">
-            <el-switch
-              v-model="enableBackgroundPic"
-              :active-color="activeColor"
-              :inactive-color="inactiveColor"
-            >
-            </el-switch>
+
+      <!--   背景图 start   -->
+      <div>
+        <el-row class="row">
+          <el-col :span="12">
+            <div class="type">使用背景图</div>
+          </el-col>
+          <el-col :span="12">
+            <div class="switch">
+              <el-switch
+                v-model="enableBackgroundPic"
+                :active-color="activeColor"
+                :inactive-color="inactiveColor"
+              >
+              </el-switch>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row v-if="appConfig.enableBackgroundPic">
+          <div class="bg-box" ref="bgBox" @wheel.prevent="onMouseWheel">
+            <span v-for="(src, idx) in appConfig.backgroundPicList">
+              <el-image
+                :class="{ 'bg-selected': src === appConfig.backgroundPic }"
+                class="bg-pic"
+                :key="idx"
+                :src="src"
+                fit="fit"
+                width="100px"
+                @click="setBackgroundPic"
+              >
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+              <el-button
+                circle
+                :style="{
+                  padding: 0,
+                  position: 'relative',
+                  right: '25px',
+                  bottom: '85px',
+                  visibility:
+                    src === appConfig.backgroundPic ? 'hidden' : 'visible',
+                }"
+                class="el-icon-close"
+                @click="(e) => removeBackgroundPic(e, idx)"
+              ></el-button>
+            </span>
           </div>
-        </el-col>
-      </el-row>
-      <el-row class="row vertically-center">
-        <el-col :span="12">
-          <div class="type">背景颜色</div>
-        </el-col>
-        <el-col :span="12">
-          <div class="switch">
-            <el-color-picker
-              v-model="backgroundColor"
-              show-alpha
-              :predefine="predefineBackgroundColors"
-            ></el-color-picker>
-          </div>
-        </el-col>
-      </el-row>
+        </el-row>
+        <el-row class="vertically-center" v-if="appConfig.enableBackgroundPic">
+          <el-input
+            style="margin-top: 10px; width: 250px"
+            placeholder="图片地址"
+            v-model="newPicUrl"
+            @keyup.enter.native="addBackgroundPic"
+          >
+            <el-button
+              slot="append"
+              icon="el-icon-plus"
+              @click="addBackgroundPic"
+            ></el-button>
+          </el-input>
+        </el-row>
+      </div>
+      <!--   背景图 end   -->
     </div>
+
     <div>
       <el-divider>收藏栏</el-divider>
       <el-row class="row">
@@ -110,6 +161,7 @@ export default {
   name: 'Personalization',
   data() {
     return {
+      newPicUrl: '',
       activeColor: '#15bbf9',
       inactiveColor: '#aaabab',
       predefineBackgroundColors: [
@@ -158,6 +210,14 @@ export default {
   },
   computed: {
     ...mapState(['appConfig']),
+    backgroundColor: {
+      get() {
+        return this.appConfig.backgroundColor;
+      },
+      set(value) {
+        this.changeConfig({ backgroundColor: value });
+      },
+    },
     enableBackgroundBlur: {
       get() {
         return this.appConfig.enableBackgroundBlur;
@@ -180,14 +240,6 @@ export default {
       },
       set(value) {
         this.changeConfig({ enableBackgroundPic: value });
-      },
-    },
-    backgroundColor: {
-      get() {
-        return this.appConfig.backgroundColor;
-      },
-      set(value) {
-        this.changeConfig({ backgroundColor: value });
       },
     },
     favoritesFontColor: {
@@ -220,6 +272,39 @@ export default {
     changeConfigDebounce: debounce(function (config) {
       this.changeConfig(config);
     }, 100),
+    onMouseWheel(e) {
+      e.preventDefault();
+      this.$refs.bgBox.scrollLeft += parseInt(e.deltaY);
+    },
+    setBackgroundPic(e) {
+      const url = e.target.src;
+      if (this.isLocalPic(url)) {
+        this.appConfig.backgroundPic = '/static/bg/' + url.split('/').pop();
+      } else {
+        this.appConfig.backgroundPic = url;
+      }
+      this.changeConfig({ backgroundPic: this.appConfig.backgroundPic });
+    },
+    addBackgroundPic() {
+      if (this.newPicUrl) {
+        this.appConfig.backgroundPicList.unshift(this.newPicUrl);
+        this.changeConfig({
+          backgroundPicList: this.appConfig.backgroundPicList,
+        });
+      }
+      this.newPicUrl = '';
+    },
+    removeBackgroundPic(e, idx) {
+      this.appConfig.backgroundPicList.splice(idx, 1);
+    },
+    isLocalPic(url) {
+      console.log(`pic url:  ${url}`);
+      if (process.env.NODE_ENV !== 'production') {
+        return url.startsWith('http://localhost:9080/static/bg/');
+      } else {
+        return url.startsWith('file://${__dirname}/static/bg/');
+      }
+    },
   },
 };
 </script>
@@ -243,8 +328,32 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
+.bg-box {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  max-height: 105px;
+  white-space: nowrap;
+  margin: 10px 40px 5px;
+  text-align: center;
+}
+
+.bg-pic {
+  width: 100px;
+  height: 100px;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.bg-selected {
+  border: 2px solid #409eff;
+}
 </style>
 <style>
+::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
+}
+
 .bg-blur .el-input--small .el-input__inner {
   height: 32px !important;
 }

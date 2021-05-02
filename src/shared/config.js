@@ -20,6 +20,13 @@ const defaultConfig = {
   backgroundBlurValue: 5,
   // 开启背景图片
   enableBackgroundPic: true,
+  // 背景图地址
+  backgroundPic: '/static/bg/bg1.jpg',
+  backgroundPicList: [
+    '/static/bg/bg1.jpg',
+    '/static/bg/bg2.jpg',
+    '/static/bg/bg3.jpg',
+  ],
   // 背景颜色
   backgroundColor: '#ffffffbf',
 

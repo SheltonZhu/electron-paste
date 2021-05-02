@@ -15,7 +15,11 @@
               margin: 0 20px 10px 100px;
               cursor: pointer;
             "
-          />
+          >
+            <div slot="error" class="image-slot">
+              <i class="el-icon-picture-outline"></i>
+            </div>
+          </el-image>
         </external-link>
 
         <div style="font-size: 30px; font-weight: bold">
