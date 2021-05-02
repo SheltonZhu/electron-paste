@@ -17,6 +17,7 @@ const defaultConfig = {
   regexList: [],
   // 背景模糊
   enableBackgroundBlur: true,
+  backgroundBlurValue: 5,
   // 开启背景图片
   enableBackgroundPic: true,
   // 背景颜色

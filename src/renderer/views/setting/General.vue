@@ -46,6 +46,8 @@
         </div>
       </el-col>
     </el-row>
+    <el-divider>图标</el-divider>
+
     <el-row class="row">
       <el-col :span="12">
         <div class="type">在通知区域显示图标</div>
@@ -76,6 +78,9 @@
         </div>
       </el-col>
     </el-row>
+
+    <el-divider>剪贴板</el-divider>
+
     <el-row class="row vertically-center">
       <el-col :span="12">
         <div class="type">历史记录容量</div>
@@ -121,6 +126,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { debounce } from '../../../shared/utils';
 
 export default {
   name: 'General',
@@ -185,7 +191,7 @@ export default {
           3: '500',
           4: '∞',
         };
-        this.changeConfig({
+        this.changeConfigDebounce({
           historyCapacity: value,
           historyCapacityNum: historyCapacityNumMap[value],
         });
@@ -194,6 +200,9 @@ export default {
   },
   methods: {
     ...mapActions(['changeConfig']),
+    changeConfigDebounce: debounce(function (config) {
+      this.changeConfig(config);
+    }, 100),
     clearHistory() {
       // TODO 清空历史
     },
