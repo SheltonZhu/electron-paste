@@ -42,7 +42,7 @@ const defaultConfig = {
       enable: isLinux,
     },
     hideClipboard: {
-      key: 'Esc',
+      key: 'ESCAPE',
       enable: true,
     },
   },

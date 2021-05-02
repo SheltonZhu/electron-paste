@@ -5,6 +5,7 @@ import {
   showHtmlNotification,
 } from './notification';
 import * as events from '../shared/events';
+import { changeBind } from './shortcut';
 
 /**
  * ipc-render事件
@@ -27,6 +28,9 @@ ipcRenderer
     // 同步数据
     console.log('received sync data: %o', appConfig);
     store.dispatch('changeConfig', [appConfig]).then();
+  })
+  .on(events.EVENT_APP_CHANGE_BIND, (e, shortcut) => {
+    changeBind(shortcut.funcName, shortcut.oldKey, shortcut.newKey);
   });
 
 /**
@@ -43,8 +47,6 @@ export function syncConfig(appConfig) {
  */
 export function getInitConfig() {
   console.log('[renderer][ipc]: get init config data');
-  // const res = ipcRenderer.sendSync(events.EVENT_APP_WEB_INIT)
-  // store.dispatch('initConfig', res)
   ipcRenderer.sendSync(events.EVENT_APP_WEB_INIT);
 }
 

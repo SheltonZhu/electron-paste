@@ -1,5 +1,7 @@
 <template>
   <div class="general">
+    <el-divider>基本设置</el-divider>
+
     <el-row class="row">
       <el-col :span="12">
         <div class="type">开机启动</div>
@@ -31,21 +33,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-row class="row">
-      <el-col :span="12">
-        <div class="type">窗口失焦隐藏剪贴板</div>
-      </el-col>
-      <el-col :span="12">
-        <div class="switch">
-          <el-switch
-            v-model="enableHideWhenBlur"
-            :active-color="activeColor"
-            :inactive-color="inactiveColor"
-          >
-          </el-switch>
-        </div>
-      </el-col>
-    </el-row>
+
     <el-divider>图标</el-divider>
 
     <el-row class="row">
@@ -80,6 +68,22 @@
     </el-row>
 
     <el-divider>剪贴板</el-divider>
+
+    <el-row class="row">
+      <el-col :span="12">
+        <div class="type">窗口失焦隐藏剪贴板</div>
+      </el-col>
+      <el-col :span="12">
+        <div class="switch">
+          <el-switch
+            v-model="enableHideWhenBlur"
+            :active-color="activeColor"
+            :inactive-color="inactiveColor"
+          >
+          </el-switch>
+        </div>
+      </el-col>
+    </el-row>
 
     <el-row class="row vertically-center">
       <el-col :span="12">

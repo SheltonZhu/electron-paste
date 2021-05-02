@@ -31,8 +31,16 @@
 <script>
 import { mapState } from 'vuex';
 import { hideAndPaste } from '../../ipc';
+import { init as initShortcut } from '../../shortcut';
+import { getInitConfig } from '../../ipc';
 
 export default {
+  components: {},
+  mounted() {
+    // 启动应用时获取初始化数据
+    getInitConfig();
+    initShortcut(this.appConfig);
+  },
   data() {
     return {
       imageUrl: '',

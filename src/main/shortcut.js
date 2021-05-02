@@ -12,6 +12,7 @@ import { appConfig$ } from './data';
 import { showNotification } from './notification';
 import { EVENT_APP_SHOW_PAGE } from '../shared/events';
 import { PAGE_SHORTCUT } from '../shared/env';
+import { changeBindKey } from './ipc';
 
 const func = {
   showClipboard,
@@ -23,7 +24,7 @@ const func = {
  * @param {String} name 要注册的快捷键的事件
  * @param {String} key 要注册的快捷键的按键
  */
-function _registerShortcut(name, key) {
+function registerShortcut(name, key) {
   if (!key) return false;
   logger.info(`[shortcut]: Register shortcut: ${name}, ${key}`);
   const ret = globalShortcut.register(key, func[name]);
@@ -31,10 +32,6 @@ function _registerShortcut(name, key) {
     return false;
   }
   return globalShortcut.isRegistered(key);
-}
-
-export function registerShortcut(name, key) {
-  return _registerShortcut(name, key);
 }
 
 /**
@@ -115,6 +112,19 @@ app.on('ready', () => {
           }
         });
       }
+    }
+    if (changed.indexOf('windowShortcuts') > -1) {
+      Object.keys(appConfig.windowShortcuts).forEach((funcName) => {
+        const oldShortcut = oldConfig.windowShortcuts[funcName];
+        const newShortcut = appConfig.windowShortcuts[funcName];
+        // 配置项变更时才更新快捷键
+        if (
+          oldShortcut.key !== newShortcut.key ||
+          oldShortcut.enable !== newShortcut.enable
+        ) {
+          changeBindKey(funcName, oldShortcut.key, newShortcut.key);
+        }
+      });
     }
   });
 });

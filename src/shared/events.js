@@ -30,3 +30,5 @@ export const EVENT_APP_TOGGLE_MENU = 'app.toggle.menu';
 
 // 由`ipc-renderer`发出 自动粘贴
 export const EVENT_APP_CLIPBOARD_PASTE = 'app.clipboard.paste';
+
+export const EVENT_APP_CHANGE_BIND = 'app.change.bind';

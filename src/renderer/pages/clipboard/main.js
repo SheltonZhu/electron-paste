@@ -7,8 +7,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/zh-cn';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import { init as initShortcut } from '../../shortcut';
-import { getInitConfig } from '../../ipc';
+
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
@@ -22,9 +21,6 @@ Object.defineProperties(Vue.prototype, {
     },
   },
 });
-// 启动应用时获取初始化数据
-getInitConfig();
-initShortcut(store.state.appConfig);
 
 /* eslint-disable no-new */
 new Vue({

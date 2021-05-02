@@ -3,7 +3,7 @@ import * as handler from './tray-handler';
 import { checkUpdate } from './updater';
 import { appTrayIcon } from '../shared/icon';
 import logger from './logger';
-import { isMac, isWin } from '../shared/env';
+import { isMac } from '../shared/env';
 import pkg from '../../package.json';
 import { appConfig$ } from './data';
 
@@ -77,10 +77,11 @@ export default function renderTray() {
     tray = new Tray(nativeImage.createEmpty());
     updateTray();
     setTrayIcon(appTrayIcon);
-    tray.on(
-      isMac || isWin ? 'double-click' : 'click',
-      handler.toggleClipboardWindow
-    );
+    // tray.on(
+    //   isMac || isWin ? 'double-click' : 'click',
+    //   handler.toggleClipboardWindow
+    // );
+    tray.on('click', handler.toggleClipboardWindow);
     logger.debug('[tray]: render tray done.');
   }
 }

@@ -79,6 +79,7 @@ export function createWindow() {
   readyPromise = new Promise((resolve) => {
     mainWindow.webContents.once('did-finish-load', resolve);
   });
+
   if (!isProd) {
     openDevtool().then();
   }

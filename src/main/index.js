@@ -24,6 +24,10 @@ import { isQuiting, appConfig$ } from './data';
 import { showNotification } from './notification';
 
 const isPrimaryInstance = app.requestSingleInstanceLock();
+
+// 解决透明闪烁
+app.commandLine.appendSwitch('wm-window-animations-disabled');
+
 if (!isPrimaryInstance) {
   // cannot find module '../dialog'
   // https://github.com/electron/electron/issues/8862#issuecomment-294303518
