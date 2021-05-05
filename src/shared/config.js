@@ -1,67 +1,76 @@
-import { isLinux } from './env'
+import { isLinux } from './env';
 
 const defaultConfig = {
-  // 配置集合
-  configs: [],
-  // 选中的配置
-  index: 0,
-  // 是否启用
-  enable: true,
   // 开机自启
   autoLaunch: false,
-  // 是否局域网共享
-  shareOverLan: false,
-  // 本地socks端口
-  localPort: 1080,
-  // 本地ssr目录
-  ssrPath: '',
-  // pac端口号
-  pacPort: 2333,
-  // 系统代理启用模式 0 不启用 1 PAC 2 全局
-  sysProxyMode: 1,
-  // 订阅列表
-  serverSubscribes: [],
-  // 是否开启http proxy
-  httpProxyEnable: true,
+  // 自动插入
+  directPaste: true,
+  // 失去焦点隐藏
+  enableHideWhenBlur: true,
+  // 显示托盘
+  enableTrayIcon: true,
+  // 剪贴板卡片图标
+  cardIconEnable: true,
+  // 剪贴板历史存储数量
+  historyCapacity: 1,
+  historyCapacityNum: 50,
+  regexList: [],
+  // 背景模糊
+  enableBackgroundBlur: true,
+  backgroundBlurValue: 5,
+  // 开启背景图片
+  enableBackgroundPic: true,
+  // 背景图地址
+  backgroundPic: '../static/bg/bg1.jpg',
+  backgroundPicList: [
+    '../static/bg/bg1.jpg',
+    '../static/bg/bg2.jpg',
+    '../static/bg/bg3.jpg',
+  ],
+  // 背景颜色
+  backgroundColor: '#ffffffbf',
+
+  // 收藏便签 字体颜色 选中字体颜色 选中背景颜色
+  favoritesFontColor: '#2c3e50',
+  favoritesFontColorSelected: '#fff',
+  favoritesBgColorSelected: '#b9b9b9d1',
+
   // 全局快捷键
   globalShortcuts: {
-    toggleWindow: {
-      key: isLinux ? 'Ctrl+Shift+W' : '',
-      enable: isLinux
+    showClipboard: {
+      key: 'Alt+V',
+      enable: true,
     },
-    switchSystemProxy: {
-      key: '',
-      enable: false
-    }
   },
   // 窗口快捷键
   windowShortcuts: {
     toggleMenu: {
-      key: isLinux ? 'Ctrl+Shift+B' : '',
-      enable: isLinux
-    }
+      key: isLinux ? 'Ctrl+Shift+B' : 'Ctrl+Shift+B',
+      enable: isLinux,
+    },
+    hideClipboard: {
+      key: 'ESCAPE',
+      enable: true,
+    },
   },
-  // http proxy端口
-  httpProxyPort: 12333,
-  // 是否自动更新订阅服务器
-  autoUpdateSubscribes: true,
-  // 订阅服务器自动更新周期，单位：小时
-  subscribeUpdateInterval: 24
-}
+};
 
-export default defaultConfig
+export default defaultConfig;
 
 // 合并默认配置，做好配置升级
-export function mergeConfig (appConfig) {
-  Object.keys(defaultConfig).forEach(key => {
-    if (appConfig[key] === undefined || typeof appConfig[key] !== typeof defaultConfig[key]) {
-      appConfig[key] = defaultConfig[key]
+export function mergeConfig(appConfig) {
+  Object.keys(defaultConfig).forEach((key) => {
+    if (
+      appConfig[key] === undefined ||
+      typeof appConfig[key] !== typeof defaultConfig[key]
+    ) {
+      appConfig[key] = defaultConfig[key];
     } else if (typeof appConfig[key] === 'object') {
       for (const index in appConfig[key]) {
         if (appConfig[key][index] === undefined) {
-          appConfig[key][index] = defaultConfig[key][index]
+          appConfig[key][index] = defaultConfig[key][index];
         }
       }
     }
-  })
+  });
 }
