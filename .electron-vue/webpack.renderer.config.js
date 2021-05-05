@@ -90,7 +90,7 @@ let rendererConfig = {
           loader: "url-loader",
           query: {
             limit: 10000,
-            name: "imgs/[name]--[folder].[ext]",
+            name: "images/[name]--[folder].[ext]",
           },
         },
       },
@@ -111,7 +111,7 @@ let rendererConfig = {
         use: {
           loader: "url-loader",
           query: {
-            limit: 10000,
+            limit: 100000,
             name: "fonts/[name]--[folder].[ext]",
           },
         },
@@ -162,6 +162,7 @@ let rendererConfig = {
 if (process.env.NODE_ENV !== "production") {
   rendererConfig.plugins.push(
     new webpack.DefinePlugin({
+      "@": path.join(__dirname, "../src/renderer"),
       __static: `"${path.join(__dirname, "../static").replace(/\\/g, "\\\\")}"`,
     })
   );

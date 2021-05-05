@@ -31,11 +31,11 @@ process.on('unhandledRejection', (reason, p) => {
   logger.error(`Unhandled Rejection at: Promise ${p}, reason: ${reason}`);
 });
 
-// 未捕获的exception
+// // 未捕获的exception
 process.on('uncaughtException', (error) => {
   logger.error(error.stack || JSON.stringify(error));
-  app.exit();
 });
+
 // 应用配置存储目录
 export const appConfigDir = app.getPath('userData');
 // 应用配置存储路径

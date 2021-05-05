@@ -5,8 +5,8 @@
     :style="{
       'background-image': appConfig.enableBackgroundPic
         ? appConfig.backgroundPic
-          ? 'url(' + appConfig.backgroundPic + ')'
-          : 'url(' + defaultBg + ')'
+          ? backgroundPicUrl
+          : defaultBgUrl
         : 'none',
     }"
   >
@@ -43,10 +43,15 @@ export default {
   },
   data() {
     return {
-      defaultBg: '/static/bg/bg3.jpg',
+      defaultBgUrl: 'url("../static/bg/bg1.jpg")',
     };
   },
-  computed: { ...mapState(['appConfig']) },
+  computed: {
+    ...mapState(['appConfig']),
+    backgroundPicUrl() {
+      return 'url("' + this.appConfig.backgroundPic + '")';
+    },
+  },
   methods: {
     copy() {
       hideAndPaste({ content: 'copy only' });

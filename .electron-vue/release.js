@@ -9,41 +9,28 @@ const BLUE = "\x1b[34m";
 const END = "\x1b[0m";
 
 let targets;
-const extraFiles = [];
 
 function release() {
   let files = [
     "dist/electron/**/*",
-    "!dist/electron/imgs/ionicons--fonts.svg",
-    "!dist/electron/fonts/ionicons--fonts.eot",
-    "!dist/electron/fonts/ionicons--fonts.ttf",
-    "!dist/electron/static/plane.svg",
-    "!node_modules/{babel-runtime,batch-processor,core-js,deepmerge,element-resize-detector,erguotou-iview,mousetrap,rxjs,popper.js,qr-image,vue*}${/*}",
-    "!node_modules/unbzip2-stream/dist${/*}",
-    "node_modules/mousetrap/{mousetrap.js,package.json}",
+    "!dist/electron/fonts/element-icons--fonts.ttf",
+    "!dist/electron/fonts/element-icons--fonts.woff",
+    // "!node_modules/{babel-runtime,batch-processor,core-js,deepmerge,element-resize-detector,mousetrap,rxjs,vue*`}${/*}",
+    // "!node_modules/unbzip2-stream/dist${/*}",
+    // "node_modules/mousetrap/{mousetrap.js,package.json}",
     "!**/*.{md,markdown,MD,txt}",
     "!**/{test.js,license,LICENSE,.jscsrc}",
     "!**/sample?(s)${/*}",
   ];
-  const macImages = [
-    "!dist/electron/static/enabled@(Template|Highlight)?(@2x).png",
-    "!dist/electron/static/pac@(Template|Highlight)?(@2x).png",
-    "!dist/electron/static/global@(Template|Highlight)?(@2x).png",
-  ];
-  const winImages = [
-    "!dist/electron/static/enabled?(@2x).png",
-    "!dist/electron/static/pac?(@2x).png",
-    "!dist/electron/static/global?(@2x).png",
-  ];
+  const macImages = [];
+  const winImages = [];
   switch (platform) {
     case "darwin":
       targets = Platform.MAC.createTarget();
-      extraFiles.push({ from: "src/lib/proxy_conf_helper", to: "./" });
       files = files.concat(winImages);
       break;
     case "win32":
       targets = Platform.WINDOWS.createTarget();
-      extraFiles.push({ from: "src/lib/sysproxy.exe", to: "./" });
       files = files.concat(macImages);
       break;
     case "linux":
@@ -54,13 +41,12 @@ function release() {
     .build({
       targets: targets,
       config: {
-        productName: "electron-paste",
+        productName: "Electron Paste",
         appId: "sheltonzhu.github.io",
         artifactName: "${productName}-${version}.${ext}",
         compression: "normal",
         copyright: "Copyright © 2021 SheltonZhu",
-        files,
-        extraFiles: extraFiles,
+        files: files,
         directories: {
           output: "build",
         },
@@ -96,7 +82,9 @@ function release() {
           target: [
             {
               target: "nsis",
-              arch: ["ia32", "x64"],
+              arch: [
+                // "ia32",
+                "x64"],
             },
           ],
         },
@@ -105,6 +93,12 @@ function release() {
           oneClick: false,
           perMachine: true,
           allowToChangeInstallationDirectory: true,
+          installerIcon: "build/icons/icon.ico", // 安装图标
+          uninstallerIcon: "build/icons/icon.ico", //卸载图标
+          installerHeaderIcon: "build/icons/icon.ico", // 安装时头部图标
+          createDesktopShortcut: true, // 创建桌面图标
+          createStartMenuShortcut: true, // 创建开始菜单图标
+          shortcutName: "Electron Paste", // 图标名称
         },
         linux: {
           icon: "build/icons",
@@ -119,9 +113,9 @@ function release() {
             StartupWMClass: "electron-paste",
           },
         },
-        // appImage: {
-        //   license: 'LICENSE'
-        // }
+        appImage: {
+          license: "LICENSE",
+        },
       },
     })
     .then(() => {

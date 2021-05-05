@@ -10,10 +10,10 @@ import {
 import { sendData as sendToSettings } from './window-settings';
 import defaultConfig, { mergeConfig } from '../shared/config';
 import { showNotification } from './notification';
-import logger from './logger';
-import robot from 'robotjs';
-import store from '../renderer/store';
 import { toggleMenu } from './menu';
+import logger from './logger';
+// import robot from 'robotjs';
+import store from '../renderer/store';
 import pkg from '../../package.json';
 
 /**
@@ -24,7 +24,7 @@ ipcMain
     // 隐藏窗口
     hideClipboard();
   })
-  .on(events.EVENT_APP_WEB_INIT, () => {
+  .on(events.EVENT_APP_WEB_INIT, (e) => {
     // 页面初始化
     let stored;
     try {
@@ -41,6 +41,7 @@ ipcMain
         defaultDownloadDir,
       },
     };
+    // e.returnValue = res;
     store.dispatch('initConfig', res).then();
   })
   .on(events.EVENT_RX_SYNC_RENDERER, (_, data) => {
@@ -64,7 +65,7 @@ ipcMain
     clipboard.writeText(params.content);
     if (params.directPaste) {
       setTimeout(async () => {
-        robot.keyTap('v', 'control');
+        // robot.keyTap('v', 'control');
       }, 10);
     }
   });

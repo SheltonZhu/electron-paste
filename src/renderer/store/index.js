@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import defaultConfig from '../../shared/config';
 import { getUpdatedKeys, merge } from '../../shared/utils';
-import { createPersistedState, createSharedMutations } from 'vuex-electron';
+import { createPersistedState, createSharedMutations } from 'electron-vuex';
 
 Vue.use(Vuex);
 

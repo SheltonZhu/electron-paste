@@ -7,7 +7,7 @@
       >
         <external-link :href="homepage">
           <el-image
-            src="/static/icon.png"
+            src="../static/icon.png"
             fit="center"
             style="
               width: 100px;

@@ -157,6 +157,7 @@
 import { mapState, mapActions } from 'vuex';
 import { debounce } from '../../../shared/utils';
 import { clone } from '../../../shared/utils';
+import path from 'path';
 
 export default {
   name: 'Personalization',
@@ -282,8 +283,8 @@ export default {
     setBackgroundPic(e) {
       const url = e.target.src;
       let backgroundPic;
-      if (this.isLocalPic(url)) {
-        backgroundPic = '/static/bg/' + url.split('/').pop();
+      if (this.isBuiltinPic(url)) {
+        backgroundPic = '../static/bg/' + url.split('/').pop();
       } else {
         backgroundPic = url;
       }
@@ -304,12 +305,13 @@ export default {
       backgroundPicList.splice(idx, 1);
       this.changeConfig({ backgroundPicList });
     },
-    isLocalPic(url) {
-      console.log(`pic url:  ${url}`);
+    isBuiltinPic(url) {
       if (process.env.NODE_ENV !== 'production') {
         return url.startsWith('http://localhost:9080/static/bg/');
       } else {
-        return url.startsWith(`file://${__dirname}/static/bg/`);
+        return url.startsWith(
+          `file:///${path.join(__static, '/bg/').replace(path.sep, '/')}`
+        );
       }
     },
   },
