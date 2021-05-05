@@ -11,7 +11,7 @@
     }"
   >
     <div
-      style="height: 500px"
+      style="height: 472px"
       :style="{
         'background-color': appConfig.backgroundColor,
         'backdrop-filter': appConfig.enableBackgroundBlur
@@ -21,10 +21,8 @@
           : 'none',
       }"
     >
-      <h1>Hello clipboard!</h1>
       <el-button @click="copy">复制</el-button>
       <el-button @click="paste">粘贴</el-button>
-      <h1>{{ appConfig }}</h1>
     </div>
   </div>
 </template>
@@ -77,5 +75,8 @@ body {
 .bg {
   height: 472px;
   background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 </style>

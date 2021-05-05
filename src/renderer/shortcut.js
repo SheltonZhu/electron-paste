@@ -16,16 +16,16 @@ export function init(appConfig) {
 
 export function unBind(oldKey) {
   Mousetrap.unbind(oldKey.toLowerCase());
-  console.log(`[shortcut]: Unregister shortcut: ${oldKey}`);
+  // console.log(`[shortcut]: Unregister shortcut: ${oldKey}`);
 }
 
 export function bind(funcName, newKey) {
   Mousetrap.bind(newKey.toLowerCase(), func[funcName]);
-  console.log(`[shortcut]: Register shortcut: ${newKey}`);
+  // console.log(`[shortcut]: Register shortcut: ${newKey}`);
 }
 
 export function changeBind(funcName, oldKey, newKey) {
-  console.log(funcName, oldKey, newKey);
   unBind(oldKey);
   bind(funcName, newKey);
+  // console.log(funcName, oldKey, newKey);
 }

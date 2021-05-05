@@ -77,7 +77,7 @@
                 class="bg-pic"
                 :key="idx"
                 :src="src"
-                fit="fit"
+                fit="cover"
                 width="100px"
                 @click="setBackgroundPic"
               >
@@ -102,18 +102,29 @@
           </div>
         </el-row>
         <el-row class="vertically-center" v-if="appConfig.enableBackgroundPic">
-          <el-input
-            style="margin-top: 10px; width: 250px"
-            placeholder="图片地址"
-            v-model="newPicUrl"
-            @keyup.enter.native="addBackgroundPic"
+          <!--          <el-input-->
+          <!--            style="margin-right: 10px; width: 250px"-->
+          <!--            placeholder="图片URI地址"-->
+          <!--            v-model="newPicUrl"-->
+          <!--            @keyup.enter.native="addBackgroundPic"-->
+          <!--          >-->
+          <!--            <el-button-->
+          <!--              size="mini"-->
+          <!--              slot="append"-->
+          <!--              icon="el-icon-plus"-->
+          <!--              @click="addBackgroundPic"-->
+          <!--            ></el-button>-->
+          <!--          </el-input>-->
+
+          <el-upload
+            style="margin-top: 10px"
+            class="upload-demo"
+            action=""
+            :limit="1"
+            :before-upload="addLocalPic"
           >
-            <el-button
-              slot="append"
-              icon="el-icon-plus"
-              @click="addBackgroundPic"
-            ></el-button>
-          </el-input>
+            <el-button size="small" type="primary">浏览本地图片</el-button>
+          </el-upload>
         </el-row>
       </div>
       <!--   背景图 end   -->
@@ -310,9 +321,14 @@ export default {
         return url.startsWith('http://localhost:9080/static/bg/');
       } else {
         return url.startsWith(
-          `file:///${path.join(__static, '/bg/').replace(path.sep, '/')}`
+          `file:///${path.join(__dirname, '../static/bg/').replace(/\\/g, '/')}`
         );
       }
+    },
+    addLocalPic(file) {
+      this.newPicUrl = `file:///${file.path.replace(/\\/g, '/')}`;
+      this.addBackgroundPic();
+      return false;
     },
   },
 };

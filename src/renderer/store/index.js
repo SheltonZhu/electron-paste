@@ -28,7 +28,7 @@ export default new Vuex.Store({
           extractConfig[key] = targetConfig[key];
         });
         merge(state.appConfig, extractConfig);
-        console.log('[store][updateConfig]: config updated: ', extractConfig);
+        // console.log('[store][updateConfig]: config updated: ', extractConfig);
         if (sync && process.type === 'renderer') {
           const { syncConfig } = require('../ipc');
           syncConfig(extractConfig);

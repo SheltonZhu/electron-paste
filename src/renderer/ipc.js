@@ -17,7 +17,7 @@ ipcRenderer
   })
   .on(events.EVENT_APP_SHOW_PAGE, (e, targetView) => {
     // 显示具体某页面
-    console.log('[renderer][ipc]: received view update: ', targetView.page);
+    // console.log('[renderer][ipc]: received view update: ', targetView.page);
     store.dispatch('changePage', { ...targetView, fromMain: true }).then();
   })
   .on(events.EVENT_APP_ERROR_MAIN, (e, err) => {
@@ -26,7 +26,7 @@ ipcRenderer
   })
   .on(events.EVENT_RX_SYNC_MAIN, (e, appConfig) => {
     // 同步数据
-    console.log('received sync data: %o', appConfig);
+    // console.log('received sync data: %o', appConfig);
     store.dispatch('changeConfig', [appConfig]).then();
   })
   .on(events.EVENT_APP_CHANGE_BIND, (e, shortcut) => {
@@ -38,7 +38,7 @@ ipcRenderer
  * @param {Object} appConfig 用于更新的应用配置
  */
 export function syncConfig(appConfig) {
-  console.log('start sync data: %o', appConfig);
+  // console.log('start sync data: %o', appConfig);
   ipcRenderer.send(events.EVENT_RX_SYNC_RENDERER, appConfig);
 }
 
@@ -46,7 +46,7 @@ export function syncConfig(appConfig) {
  * 主动获取初始化数据
  */
 export function getInitConfig() {
-  console.log('[renderer][ipc]: get init config data');
+  // console.log('[renderer][ipc]: get init config data');
   ipcRenderer.send(events.EVENT_APP_WEB_INIT);
   // const res = ipcRenderer.sendSync(events.EVENT_APP_WEB_INIT);
   // store.dispatch('changeConfig', res).then();
