@@ -169,7 +169,7 @@ import { mapState, mapActions } from 'vuex';
 import { debounce } from '../../../shared/utils';
 import { clone } from '../../../shared/utils';
 import path from 'path';
-
+import os from 'os';
 export default {
   name: 'Personalization',
   data() {
@@ -326,7 +326,11 @@ export default {
       }
     },
     addLocalPic(file) {
-      this.newPicUrl = `file:///${file.path.replace(/\\/g, '/')}`;
+      if (os.platform() === 'win32') {
+        this.newPicUrl = `file:///${file.path.replace(/\\/g, '/')}`;
+      } else {
+        this.newPicUrl = `file://${file.path.replace(/\\/g, '/')}`;
+      }
       this.addBackgroundPic();
       return false;
     },
@@ -359,7 +363,7 @@ export default {
   overflow-y: hidden;
   max-height: 105px;
   white-space: nowrap;
-  margin: 10px 40px 5px;
+  margin: 5px 40px 5px;
   text-align: center;
 }
 
