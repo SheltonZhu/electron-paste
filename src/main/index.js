@@ -17,11 +17,11 @@ import {
   getWindow as getSettings,
   destroyWindow as destroySettings,
 } from './window-settings';
-import logger from './logger';
 import { clearShortcuts } from './shortcut';
 import { isProd, isWin, isMac } from '../shared/env';
 import { isQuiting, appConfig$ } from './data';
 import { showNotification } from './notification';
+import logger from './logger';
 
 const isPrimaryInstance = app.requestSingleInstanceLock();
 

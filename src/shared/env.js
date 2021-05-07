@@ -6,11 +6,13 @@ export const isWin = platform === 'win32';
 export const isMac = platform === 'darwin';
 export const isLinux = platform === 'linux';
 export const isProd = process.env.NODE_ENV !== 'development';
+export const defaultHistoryFavorite = 'historyFavorite';
 export const PAGE_PERSONALIZATION = { name: 'personalization', page: '1' };
 export const PAGE_GENERAL = { name: 'general', page: '2' };
 export const PAGE_SHORTCUT = { name: 'shortcut', page: '3' };
 export const PAGE_RULES = { name: 'rules', page: '4' };
 export const PAGE_ABOUT = { name: 'about', page: '5' };
+
 // mac版本号
 export let macVersion;
 // mac版本是否低于10.11

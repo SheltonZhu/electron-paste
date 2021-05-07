@@ -2,69 +2,72 @@ export const clipboardCardIconSchema = {
   type: 'object',
   properties: {
     content: {
-      type: 'string'
+      type: 'string',
     },
     id: {
-      type: 'string'
-    }
+      type: 'string',
+    },
   },
-  required: ['content', 'checksum'],
-  additionalProperties: false
-}
+  required: ['content', 'id'],
+  additionalProperties: false,
+};
 
 export const clipboardCardSchema = {
   type: 'object',
   properties: {
     favorite: {
-      type: 'string'
+      type: 'string',
     },
     type: {
-      type: 'string'
+      // Link, Text, Image, File
+      type: 'string',
     },
     copyDate: {
-      type: 'object'
+      type: 'object',
     },
     text: {
-      type: 'string'
+      type: 'string',
     },
     rtf: {
-      type: 'string'
+      type: 'string',
     },
     html: {
-      type: 'string'
+      type: 'string',
     },
     base64data: {
-      type: 'string'
+      // Image
+      type: 'string',
     },
     path: {
-      type: 'string'
+      // File
+      type: 'string',
     },
-    info: {
-      type: 'object'
+    meta: {
+      type: 'object',
     },
     name: {
-      type: 'string'
+      type: 'string',
     },
     icon: {
-      type: 'string'
-    }
+      type: 'string',
+    },
   },
-  required: ['type', 'copyDate', 'text', 'rtf', 'html', 'base64data', 'path'],
-  additionalProperties: false
-}
+  required: ['type', 'copyDate'],
+  additionalProperties: false,
+};
 export const favoritesSchema = {
   type: 'object',
   properties: {
     name: {
-      type: 'string'
+      type: 'string',
     },
     color: {
-      type: 'string'
+      type: 'string',
     },
     sort: {
-      type: 'number'
-    }
+      type: 'number',
+    },
   },
   required: ['name', 'color', 'sort'],
-  additionalProperties: false
-}
+  additionalProperties: false,
+};

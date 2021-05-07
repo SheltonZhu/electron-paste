@@ -40,7 +40,10 @@ const dbFactory = (file, scheme) => {
 const db = {
   favorites: dbFactory('favorites.db', favoritesSchema),
   clipboardCard: dbFactory('clipboard_card.db', clipboardCardSchema),
-  clipboardCardIcon: dbFactory('clipboard_card_icon.db', clipboardCardIconSchema),
+  clipboardCardIcon: dbFactory(
+    'clipboard_card_icon.db',
+    clipboardCardIconSchema
+  ),
 };
 
 export default db;

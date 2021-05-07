@@ -15,6 +15,7 @@ import logger from './logger';
 // import robot from 'robotjs';
 import store from '../renderer/store';
 import pkg from '../../package.json';
+import './db';
 
 /**
  * ipc-main事件
@@ -62,7 +63,17 @@ ipcMain
   })
   .on(events.EVENT_APP_CLIPBOARD_PASTE, async (e, params) => {
     hideClipboard();
-    clipboard.writeText(params.content);
+    // clipboard.writeHTML('<b>Hi</b>');
+    // clipboard.writeText(params.content);
+    const text = 'text';
+    const html = '<b>html</b>';
+    const rtf =
+      '{\\rtf1\\ansi{\\fonttbl\\f0\\fswiss Helvetica;}\\f0\\pard\nThis is some {\\b bold} text.\\par\n}';
+    clipboard.write({
+      text: text,
+      html: html,
+      rtf: rtf,
+    });
     if (params.directPaste) {
       setTimeout(async () => {
         // robot.keyTap('v', 'control');

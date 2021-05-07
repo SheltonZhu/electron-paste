@@ -116,15 +116,11 @@
         ⚠设置为无限会使用更多的存储，进而导致卡顿⚠
       </el-col>
     </el-row>
-    <el-row class="row">
-      <el-col :offset="12" :span="12">
-        <div>
-          <el-button class="clear-history" @click="clearHistory">
-            清除剪贴板历史
-          </el-button>
-        </div>
-      </el-col>
-    </el-row>
+    <div style="text-align: center">
+      <el-button class="clear-history" @click="clearHistory">
+        清除剪贴板历史
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -258,10 +254,9 @@ export default {
 
 .warn-info {
   color: #ffc259;
+  font-size: small;
 }
-
 .clear-history {
-  margin-top: 10px;
   padding: 2px 20px;
 }
 
