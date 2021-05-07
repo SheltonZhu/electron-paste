@@ -1,14 +1,14 @@
 export const clipboardCardIconSchema = {
   type: 'object',
   properties: {
-    content: {
+    base64data: {
       type: 'string',
     },
-    id: {
+    checksum: {
       type: 'string',
     },
   },
-  required: ['content', 'id'],
+  required: ['content', 'checksum'],
   additionalProperties: false,
 };
 

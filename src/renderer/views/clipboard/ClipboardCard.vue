@@ -24,37 +24,48 @@
       <div style="display: inline-flex; height: 64px">
         <div style="width: 246px">
           <div class="type">
-            <p class="type">{{ data['name'] || data.copyType }}</p>
+            <p class="type">{{ data['name'] || data.type }}</p>
           </div>
           <div class="time">
-            <p class="time">{{ $date(data.copyTime).fromNow() }}</p>
+            <p class="time">{{ $date(data.copyDate).fromNow() }}</p>
           </div>
         </div>
 
-        <div class="card-icon" v-if="iconEnable">
+        <div class="card-icon" v-if="appConfig.cardIconEnable">
           <el-image
             style="width: 64px; height: 64px"
             :src="iconUrl"
             fit="cover"
-          ></el-image>
+          >
+            <div slot="error" class="image-slot">
+              <i class="el-icon-picture-outline"></i>
+            </div>
+          </el-image>
         </div>
       </div>
     </div>
     <div class="card-text">
       <p v-if="isText">
-        {{ data.copyContent }}
+        <span v-if="data.html" v-html="data.html" />
+        <span v-else>
+          {{ data.text }}
+        </span>
       </p>
       <el-link type="primary" icon="el-icon-link" v-if="isLink"
-        >{{ data.copyContent }}
+        >{{ data.text }}
       </el-link>
-      <img v-if="isImage" :src="data.copyContent" />
+      <el-image v-if="isImage" :src="data.base64data">
+        <div slot="error" class="image-slot">
+          <i class="el-icon-picture-outline"></i>
+        </div>
+      </el-image>
     </div>
-    <div class="other-info">
+    <div class="meta-info">
       <div class="shortcut">
         {{ shortcut }}
       </div>
       <div class="info">
-        {{ formattedOtherInfo }}
+        {{ metaInfo }}
       </div>
       <div class="other">
         {{ shortcut }}
@@ -72,7 +83,7 @@ export default {
       type: Object,
       default: null,
     },
-    table: {
+    favorite: {
       type: String,
       default: '',
     },
@@ -81,50 +92,49 @@ export default {
     },
     cardIcons: {
       type: Array,
-      default: () => {
-        return [];
-      },
+      default: [],
     },
   },
   mounted() {
     this.$nextTick(() => {
-      const config = this.$electron.remote.getGlobal('config');
-      this.defaultIcon = config.get('defaultIcon');
+      // this.defaultIcon = config.get('defaultIcon')
     });
   },
   data: () => {
     return { defaultIcon: '/default_icon.png' };
   },
   computed: {
-    ...mapState(['labelsData', 'iconEnable']),
+    ...mapState(['appConfig', 'favoritesData']),
     shortcut() {
       if (this.index < 9) return `Alt+${this.index + 1}`;
       return '';
     },
     isText() {
-      return this.data.copyType === 'Text';
+      return this.data.type === 'Text';
     },
     isImage() {
-      return this.data.copyType === 'Image';
+      return this.data.type === 'Image';
     },
     isLink() {
-      return this.data.copyType === 'Link';
+      return this.data.type === 'Link';
     },
-    formattedOtherInfo() {
-      if (this.isText) {
-        return `${this.data.otherInfo.characterLength} 个字符`;
-      } else if (this.isImage) {
-        return `${this.data.otherInfo.width} ✖ ${this.data.otherInfo.height} 个像素`;
+    metaInfo() {
+      switch (true) {
+        case this.isText:
+          return `${this.data.meta.charLength} 个字符`;
+        case this.isImage:
+          return `${this.data.meta.size.width} ✖ ${this.data.meta.size.height} 个像素`;
+        default:
+          return '';
       }
-      return '';
     },
     iconUrl() {
-      return this.iconMap[this.data.checksum] || this.defaultIcon;
+      return this.iconMap[this.data.icon] || this.defaultIcon;
     },
     iconMap() {
-      let iconMap = {};
-      for (let item of this.cardIcons) {
-        iconMap[item.checksum] = item.content;
+      const iconMap = {};
+      for (const icon of this.cardIcons) {
+        iconMap[icon.checksum] = icon.base64data;
       }
       return iconMap;
     },
@@ -132,11 +142,11 @@ export default {
   methods: {
     onDragStart() {
       window.log.info('dragStart');
-      this.$store.commit('updateDragData', this.data);
+      // this.$store.commit('updateDragData', this.data);
     },
     onDragEnd() {
       window.log.info('dragEnd');
-      this.$store.commit('updateDragData', null);
+      // this.$store.commit('updateDragData', null);
     },
     hideMainWindow() {
       this.$electron.remote.getCurrentWindow().hide();
@@ -167,25 +177,25 @@ export default {
       this.write2clipboardAndPaste();
     },
     write2clipboard() {
-      if (this.isImage) {
-        let image = this.$electron.remote.nativeImage.createFromDataURL(
-          this.data.copyContent
-        );
-        this.$electron.remote.clipboard.writeImage(image);
-      } else {
-        this.$electron.remote.clipboard.writeText(this.data.copyContent);
-      }
+      // if (this.isImage) {
+      //   const image = this.$electron.remote.nativeImage.createFromDataURL(
+      //     this.data.copyContent
+      //   );
+      //   this.$electron.remote.clipboard.writeImage(image);
+      // } else {
+      //   this.$electron.remote.clipboard.writeText(this.data.copyContent);
+      // }
     },
     write2clipboardAndPaste() {
-      this.write2clipboard();
-      if (this.$electron.remote.getGlobal('config').get('directPaste'))
-        setTimeout(async () => {
-          this.$electron.remote.getGlobal('robot').keyTap('v', 'control');
-        }, 10);
+      // this.write2clipboard();
+      // if (this.$electron.remote.getGlobal('config').get('directPaste'))
+      //   setTimeout(async () => {
+      //     this.$electron.remote.getGlobal('robot').keyTap('v', 'control');
+      //   }, 10);
     },
     openLink() {
       this.hideMainWindow();
-      this.execShellOpenLink(this.data.copyContent);
+      this.execShellOpenLink(this.data.text);
     },
     share2twitter() {
       this.execShellOpenLink('https://twitter.com/compose/tweet');
@@ -198,51 +208,47 @@ export default {
     execShellOpenLink(link) {
       this.$electron.shell.openExternal(link);
     },
-    deleteOneData() {
-      // 有动画, clipboard 组件
-      // this.$parent.$parent.$parent.deleteOneData(this.data);
-      this.$parent.deleteOneData(this.data);
-    },
+    deleteOneData() {},
     rename() {
-      this.$electron.remote.getGlobal('shortcut').unregisterEsc();
+      // this.$electron.remote.getGlobal('shortcut').unregisterEsc();
       this.$prompt('', '重命名', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       })
         .then(({ value }) => {
-          this.$electron.remote
-            .getGlobal('db')
-            .rename(this.data._id, value)
-            .then((ret) => {
-              this.data.name = ret.name;
-              this.$forceUpdate();
-              window.log.info('renameCard: ', ret);
-            });
+          // this.$electron.remote
+          //   .getGlobal('db')
+          //   .rename(this.data._id, value)
+          //   .then((ret) => {
+          //     this.data.name = ret.name;
+          //     this.$forceUpdate();
+          //     window.log.info('renameCard: ', ret);
+          //   });
         })
         .catch(() => {})
         .finally(() => {
-          this.$electron.remote.getGlobal('shortcut').registerEsc();
+          // this.$electron.remote.getGlobal('shortcut').registerEsc();
         });
     },
-    //dataURL to blob
+    // dataURL to blob
     dataURLtoBlob(dataUrl) {
-      let arr = dataUrl.split(',');
-      let mime = arr[0].match(/:(.*?);/)[1];
-      let bstr = atob(arr[1]);
+      const arr = dataUrl.split(',');
+      const mime = arr[0].match(/:(.*?);/)[1];
+      const bstr = atob(arr[1]);
       let n = bstr.length;
-      let u8arr = new Uint8Array(n);
+      const u8arr = new Uint8Array(n);
       while (n--) {
         u8arr[n] = bstr.charCodeAt(n);
       }
       return new Blob([u8arr], { type: mime });
     },
     contextMenuSaveImage() {
-      let blob = this.dataURLtoBlob(this.data.copyContent);
-      let type = blob.type.split('/')[1];
-      let reader = new FileReader();
+      const blob = this.dataURLtoBlob(this.data.base64data);
+      const type = blob.type.split('/')[1];
+      const reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onload = (e) => {
-        let link = document.createElement('a');
+        const link = document.createElement('a');
         link.download = `${this.data._id}.${type}`;
         link.href = e.target.result;
         link.style.display = 'none';
@@ -252,142 +258,142 @@ export default {
       };
     },
     add2favorite(_id) {
-      let newData = Object.assign({}, this.data);
-      newData.table = _id;
-      delete newData._id;
-
-      this.$electron.remote
-        .getGlobal('db')
-        .create(newData)
-        .then((ret) => {
-          window.log.info('add favorite :', ret);
-        });
+      // const newData = Object.assign({}, this.data);
+      // newData.table = _id;
+      // delete newData._id;
+      //
+      // this.$electron.remote
+      //   .getGlobal('db')
+      //   .create(newData)
+      //   .then((ret) => {
+      //     window.log.info('add favorite :', ret);
+      //   });
     },
     googleTranslate(url) {
       this.hideMainWindow();
-      this.execShellOpenLink(`${url}${this.data.copyContent}`);
+      this.execShellOpenLink(`${url}${this.data.text}`);
     },
-    //生成右键菜单
-    onContextmenu(event) {
-      let children = [];
-      for (let label of this.labelsData) {
-        if (label._id !== this.table) {
-          children.push({
-            label: label.name,
-            icon: 'el-icon-star-off',
-            onClick: () => {
-              this.add2favorite(label._id);
-            },
-          });
-        }
-      }
-      let items = [
-        {
-          label: '复制',
-          icon: 'el-icon-document-copy',
-          onClick: this.copyAndHide,
-        },
-        {
-          label: '粘贴',
-          icon: 'el-icon-document-add',
-          onClick: this.copyPasteAndHide,
-        },
-        { label: '重命名', icon: 'el-icon-edit', onClick: this.rename },
+    // 生成右键菜单
+    // /*onContextmenu(event) {*/
+    /*  const children = [];*/
+    /*  for (const label of this.labelsData) {*/
+    /*    if (label._id !== this.table) {*/
+    /*      children.push({*/
+    /*        label: label.name,*/
+    /*        icon: 'el-icon-star-off',*/
+    /*        onClick: () => {*/
+    /*          this.add2favorite(label._id);*/
+    /*        },*/
+    /*      });*/
+    /*    }*/
+    /*  }*/
+    /*  const items = [*/
+    /*    {*/
+    /*      label: '复制',*/
+    /*      icon: 'el-icon-document-copy',*/
+    /*      onClick: this.copyAndHide,*/
+    /*    },*/
+    /*    {*/
+    /*      label: '粘贴',*/
+    /*      icon: 'el-icon-document-add',*/
+    /*      onClick: this.copyPasteAndHide,*/
+    /*    },*/
+    /*    { label: '重命名', icon: 'el-icon-edit', onClick: this.rename },*/
 
-        {
-          label: '删除',
-          icon: 'el-icon-delete',
-          divided: true,
-          onClick: this.deleteOneData,
-        },
-        {
-          label: '打开链接',
-          icon: 'el-icon-link',
-          onClick: this.openLink,
-          hidden: !this.isLink,
-        },
-        {
-          label: '保存图片',
-          icon: 'el-icon-picture-outline',
-          onClick: this.contextMenuSaveImage,
-          hidden: !this.isImage,
-        },
-        {
-          label: '快速查看（TODO）',
-          icon: 'el-icon-view',
-          hidden: true,
-        },
-        {
-          label: '添加到收藏',
-          icon: 'el-icon-collection-tag',
-          children: children,
-        },
-        {
-          label: '使用谷歌翻译',
-          icon: 'el-icon-camera',
-          hidden: !this.isText,
-          children: [
-            {
-              label: '中文(简)',
-              icon: 'el-icon-caret-right',
-              onClick: () => {
-                this.googleTranslate(
-                  'https://translate.google.cn/?sl=auto&tl=zh-CN&text='
-                );
-              },
-            },
-            {
-              label: '英语',
-              icon: 'el-icon-caret-right',
-              onClick: () => {
-                this.googleTranslate(
-                  'https://translate.google.cn/?sl=auto&tl=zh-CN&text='
-                );
-              },
-            },
-            {
-              label: '日语',
-              icon: 'el-icon-caret-right',
-              onClick: () => {
-                this.googleTranslate(
-                  'https://translate.google.cn/?sl=auto&tl=ja&text='
-                );
-              },
-            },
-            {
-              label: '中文(繁)',
-              icon: 'el-icon-caret-right',
-              onClick: () => {
-                this.googleTranslate(
-                  'https://translate.google.cn/?sl=auto&tl=zh-TW&text='
-                );
-              },
-            },
-          ],
-        },
-        {
-          label: '分享',
-          icon: 'el-icon-share',
-          minWidth: 0,
-          children: [
-            {
-              label: '邮件',
-              icon: 'el-icon-message',
-              onClick: this.share2email,
-            },
-            { label: 'Twitter', onClick: this.share2twitter },
-          ],
-        },
-      ];
-
-      this.$contextmenu({
-        items: items,
-        event,
-        customClass: 'context-menu',
-        zIndex: 3,
-      });
-      return false;
-    },
+    /*    {*/
+    /*      label: '删除',*/
+    /*      icon: 'el-icon-delete',*/
+    /*      divided: true,*/
+    /*      onClick: this.deleteOneData,*/
+    /*    },*/
+    /*    {*/
+    /*      label: '打开链接',*/
+    /*      icon: 'el-icon-link',*/
+    /*      onClick: this.openLink,*/
+    /*      hidden: !this.isLink,*/
+    /*    },*/
+    /*    {*/
+    /*      label: '保存图片',*/
+    /*      icon: 'el-icon-picture-outline',*/
+    /*      onClick: this.contextMenuSaveImage,*/
+    /*      hidden: !this.isImage,*/
+    /*    },*/
+    /*    {*/
+    /*      label: '快速查看（TODO）',*/
+    /*      icon: 'el-icon-view',*/
+    /*      hidden: true,*/
+    /*    },*/
+    /*    {*/
+    /*      label: '添加到收藏',*/
+    /*      icon: 'el-icon-collection-tag',*/
+    /*      children: children,*/
+    /*    },*/
+    /*    {*/
+    /*      label: '使用谷歌翻译',*/
+    /*      icon: 'el-icon-camera',*/
+    /*      hidden: !this.isText,*/
+    /*      children: [*/
+    /*        {*/
+    /*          label: '中文(简)',*/
+    /*          icon: 'el-icon-caret-right',*/
+    /*          onClick: () => {*/
+    /*            this.googleTranslate(*/
+    /*              'https://translate.google.cn/?sl=auto&tl=zh-CN&text='*/
+    /*            );*/
+    /*          },*/
+    /*        },*/
+    /*        {*/
+    /*          label: '英语',*/
+    /*          icon: 'el-icon-caret-right',*/
+    /*          onClick: () => {*/
+    /*            this.googleTranslate(*/
+    /*              'https://translate.google.cn/?sl=auto&tl=zh-CN&text='*/
+    /*            );*/
+    /*          },*/
+    /*        },*/
+    /*        {*/
+    /*          label: '日语',*/
+    /*          icon: 'el-icon-caret-right',*/
+    /*          onClick: () => {*/
+    /*            this.googleTranslate(*/
+    /*              'https://translate.google.cn/?sl=auto&tl=ja&text='*/
+    /*            );*/
+    /*          },*/
+    /*        },*/
+    /*        {*/
+    /*          label: '中文(繁)',*/
+    /*          icon: 'el-icon-caret-right',*/
+    /*          onClick: () => {*/
+    /*            this.googleTranslate(*/
+    /*              'https://translate.google.cn/?sl=auto&tl=zh-TW&text='*/
+    /*            );*/
+    /*          },*/
+    /*        },*/
+    /*      ],*/
+    /*    },*/
+    /*    {*/
+    /*      label: '分享',*/
+    /*      icon: 'el-icon-share',*/
+    /*      minWidth: 0,*/
+    /*      children: [*/
+    /*        {*/
+    /*          label: '邮件',*/
+    /*          icon: 'el-icon-message',*/
+    /*          onClick: this.share2email,*/
+    /*        },*/
+    /*        { label: 'Twitter', onClick: this.share2twitter },*/
+    /*      ],*/
+    //     },
+    //   ];
+    //
+    //   this.$contextmenu({
+    //     items: items,
+    //     event,
+    //     customClass: 'context-menu',
+    //     zIndex: 3,
+    //   });
+    //   return false;
+    // },
   },
 };
 </script>
@@ -436,24 +442,24 @@ export default {
   text-align: left;
 }
 
-.box-card .other-info {
-  color: #dbdbdb;
+.box-card .meta-info {
+  color: #bbb9b9;
   font-size: smaller;
   margin-top: 1px;
   text-align: center;
 }
 
-.box-card .other-info .info {
+.box-card .meta-info .info {
   display: inline-block;
 }
 
-.box-card .other-info .shortcut {
+.box-card .meta-info .shortcut {
   float: left;
   display: inline-block;
   margin-top: 1px;
 }
 
-.box-card .other-info .other {
+.box-card .meta-info .other {
   float: right;
   display: inline-block;
   margin-top: 1px;
@@ -515,19 +521,6 @@ export default {
 
 .box-card {
   border-radius: 10px !important;
-}
-
-.context-menu {
-  background-color: #ffffffb8 !important;
-  backdrop-filter: saturate(180%) blur(5px) !important;
-}
-
-.context-menu .menu_item__available:hover,
-.context-menu .menu_item__available:active,
-.context-menu .menu_item_expand {
-  background: #aaababbf !important;
-  color: #fff !important;
-  backdrop-filter: saturate(180%) blur(5px) !important;
 }
 
 .el-message-box input {

@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import defaultConfig from '../../shared/config';
 import { getUpdatedKeys, merge } from '../../shared/utils';
 import { createPersistedState, createSharedMutations } from 'electron-vuex';
+import { defaultHistoryFavorite } from '../../shared/env';
 
 Vue.use(Vuex);
 
@@ -16,8 +17,24 @@ export default new Vuex.Store({
       defaultDownloadDir: '',
     },
     page: '1',
+    favorite: defaultHistoryFavorite,
+    searchType: '',
+    query: '',
+    clipboardData: [
+      {
+        type: 'Text',
+        text: 'text',
+        // html: '<h1>html</h1>',
+        html: `<html><head><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body><pre style="background-color:#2b2b2b;color:#a9b7c6;font-family:'JetBrains Mono',monospace;font-size:9.
+8pt;"><span style="color:#e8bf6a;">&lt;span&#32;</span><span style="color:#bababa;">v-if</span><span style="color:#a5c261;">="</span><span style="color:#9876aa;">data</span>.<span style="color:#9876aa;">ht
+ml</span><span style="color:#a5c261;">"&#32;</span><span style="color:#bababa;">v-html</span><span style="color:#a5c261;">="</span><span style="color:#9876aa;">data</span>.<span style="color:#9876aa;">html
+</span><span style="color:#a5c261;">"&#32;</span><span style="color:#e8bf6a;">/&gt;</span></pre></body></html>`,
+        meta: { charLength: 25 },
+      },
+    ],
+    favoritesData: [],
+    dragData: {},
   },
-
   mutations: {
     // 更新应用配置
     updateConfig(state, [targetConfig, sync = false]) {
@@ -67,5 +84,11 @@ export default new Vuex.Store({
       commit('updateView', targetView);
     },
   },
-  plugins: [createPersistedState(), createSharedMutations()],
+  plugins: [
+    createPersistedState({
+      storageName: 'electron-paste',
+      delay: 500,
+    }),
+    createSharedMutations(),
+  ],
 });

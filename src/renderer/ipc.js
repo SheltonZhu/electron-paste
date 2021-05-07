@@ -79,3 +79,10 @@ export function openDialog(options) {
 export function hideAndPaste(options) {
   return ipcRenderer.send(events.EVENT_APP_CLIPBOARD_PASTE, options);
 }
+
+/**
+ * 打开设置
+ * */
+export function openSetting(options) {
+  return ipcRenderer.send(events.EVENT_APP_OPEN_WINDOW_SETTING, options);
+}

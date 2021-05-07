@@ -63,9 +63,8 @@
 </template>
 
 <script>
-import Spot from '@/renderer/components/Spot';
+import Spot from '../../components/Spot';
 import { mapState } from 'vuex';
-import Vue from 'vue';
 
 export default {
   name: 'FavoriteLabel',
@@ -107,16 +106,16 @@ export default {
     });
   },
   computed: {
-    ...mapState(['table', 'dragData']),
+    ...mapState(['favorite', 'dragData']),
     isSelected() {
-      return this.table === this.labelData._id;
+      return this.favorite === this.labelData._id;
     },
   },
   methods: {
     onCardDrop() {
       window.log.info('drop');
       if (this.labelData._id !== this.dragData.table) {
-        let newData = Object.assign({}, this.dragData);
+        const newData = Object.assign({}, this.dragData);
         newData.table = this.labelData._id;
         delete newData._id;
         this.$electron.remote
@@ -144,9 +143,7 @@ export default {
         this.$store.commit('updateTable', this.labelData._id);
     },
     removeLabel() {
-      //加了动画多了一个parenet
-      // this.$parent.$parent.$parent.doRemoveLabel(this.labelData);
-      this.$parent.doRemoveLabel(this.labelData);
+      // this.$parent.doRemoveLabel(this.labelData);
     },
     onRenameLabel() {
       this.isRenaming = true;
@@ -160,102 +157,102 @@ export default {
         this.newName = this.labelData.name;
         this.isRenaming = false;
       } else {
-        this.$electron.remote
-          .getGlobal('labelDb')
-          .rename(this.labelData._id, this.newName)
-          .then((newLabel) => {
-            window.log.info('update: ', newLabel);
-            this.labelData.name = newLabel.name;
-            this.isRenaming = false;
-          });
+        // this.$electron.remote
+        //   .getGlobal('labelDb')
+        //   .rename(this.labelData._id, this.newName)
+        //   .then((newLabel) => {
+        //     window.log.info('update: ', newLabel);
+        //     this.labelData.name = newLabel.name;
+        //     this.isRenaming = false;
+        //   });
       }
     },
     onSelectColor(color) {
       if (color !== this.labelData.color) {
-        this.$electron.remote
-          .getGlobal('labelDb')
-          .recolor(this.labelData._id, color)
-          .then((newLabel) => {
-            window.log.info('update: ', newLabel);
-            this.labelData.color = newLabel.color;
-            this.$forceUpdate();
-          });
+        // this.$electron.remote
+        //   .getGlobal('labelDb')
+        //   .recolor(this.labelData._id, color)
+        //   .then((newLabel) => {
+        //     window.log.info('update: ', newLabel);
+        //     this.labelData.color = newLabel.color;
+        //     this.$forceUpdate();
+        //   });
       }
     },
-    initColorfulSpots() {
-      /* 红: #ff625c 橘色：#fe9700 黄: #ffd74a 绿: #84e162 蓝#15bbf9 紫: #d58fe6 灰: #aaabab */
-      let colorList = [
-        '#ff625c',
-        '#fe9700',
-        '#ffd74a',
-        '#84e162',
-        '#15bbf9',
-        '#d58fe6',
-        '#aaabab',
-      ];
-      const createNodeList = (createElement) => {
-        let spotList = [];
-        for (let color of colorList) {
-          let node = createElement(
-            'div',
-            {
-              attrs: { class: 'circle-border' },
-              on: {
-                click: () => {
-                  this.onSelectColor(color);
-                },
-              },
-            },
-            [
-              createElement('div', {
-                attrs: { class: 'circle' },
-                style: `background:${color};`,
-              }),
-            ]
-          );
-          spotList.push(node);
-        }
-        return spotList;
-      };
-
-      let component = Vue.extend({
-        render(createElement) {
-          return createElement(
-            'div',
-            { attrs: { class: 'color-selector' } },
-            createNodeList(createElement)
-          );
-        },
-      });
-      let dom = new component().$mount().$el;
-      const el = document.getElementsByClassName(
-        `context-menu__${this.labelData._id}`
-      )[0].children[0];
-      el.appendChild(dom);
-    },
-    onContextmenu(event) {
-      let items = [
-        {
-          label: '重命名',
-          icon: 'el-icon-edit-outline',
-          onClick: this.onRenameLabel,
-        },
-        {
-          label: '删除',
-          icon: 'el-icon-delete',
-          onClick: this.removeLabel,
-          divided: true,
-        },
-      ];
-      this.$contextmenu({
-        items: items,
-        event,
-        customClass: `context-menu__${this.labelData._id} context-menu`,
-        zIndex: 3,
-      });
-      this.$nextTick(this.initColorfulSpots);
-      return false;
-    },
+    // initColorfulSpots() {
+    //   /* 红: #ff625c 橘色：#fe9700 黄: #ffd74a 绿: #84e162 蓝#15bbf9 紫: #d58fe6 灰: #aaabab */
+    //   const colorList = [
+    //     '#ff625c',
+    //     '#fe9700',
+    //     '#ffd74a',
+    //     '#84e162',
+    //     '#15bbf9',
+    //     '#d58fe6',
+    //     '#aaabab',
+    //   ];
+    //   const createNodeList = (createElement) => {
+    //     const spotList = [];
+    //     for (const color of colorList) {
+    //       const node = createElement(
+    //         'div',
+    //         {
+    //           attrs: { class: 'circle-border' },
+    //           on: {
+    //             click: () => {
+    //               this.onSelectColor(color);
+    //             },
+    //           },
+    //         },
+    //         [
+    //           createElement('div', {
+    //             attrs: { class: 'circle' },
+    //             style: `background:${color};`,
+    //           }),
+    //         ]
+    //       );
+    //       spotList.push(node);
+    //     }
+    //     return spotList;
+    //   };
+    //
+    //   const component = Vue.extend({
+    //     render(createElement) {
+    //       return createElement(
+    //         'div',
+    //         { attrs: { class: 'color-selector' } },
+    //         createNodeList(createElement)
+    //       );
+    //     },
+    //   });
+    //   const dom = new component().$mount().$el;
+    //   const el = document.getElementsByClassName(
+    //     `context-menu__${this.labelData._id}`
+    //   )[0].children[0];
+    //   el.appendChild(dom);
+    // },
+    // onContextmenu(event) {
+    //   const items = [
+    //     {
+    //       label: '重命名',
+    //       icon: 'el-icon-edit-outline',
+    //       onClick: this.onRenameLabel,
+    //     },
+    //     {
+    //       label: '删除',
+    //       icon: 'el-icon-delete',
+    //       onClick: this.removeLabel,
+    //       divided: true,
+    //     },
+    //   ];
+    //   this.$contextmenu({
+    //     items: items,
+    //     event,
+    //     customClass: `context-menu__${this.labelData._id} context-menu`,
+    //     zIndex: 3,
+    //   });
+    //   this.$nextTick(this.initColorfulSpots);
+    //   return false;
+    // },
   },
 };
 </script>
@@ -275,27 +272,6 @@ export default {
 .color-selector {
   display: flex;
   margin: 5px 10px 5px;
-}
-
-.context-menu .circle {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin: 5px 5px;
-}
-
-.context-menu .circle-border {
-  border-radius: 50%;
-  justify-content: center;
-  flex-wrap: nowrap;
-  border-color: #ffffff00;
-  border-width: 1px;
-  border-style: double;
-  cursor: pointer;
-}
-
-.context-menu .circle-border:hover {
-  border-color: #0a98cb;
 }
 
 .rename-label input {

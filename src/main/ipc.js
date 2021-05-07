@@ -7,7 +7,10 @@ import {
   hideWindow as hideClipboard,
   sendData as sendToClipboard,
 } from './window-clipboard';
-import { sendData as sendToSettings } from './window-settings';
+import {
+  sendData as sendToSetting,
+  showWindow as showSetting,
+} from './window-settings';
 import defaultConfig, { mergeConfig } from '../shared/config';
 import { showNotification } from './notification';
 import { toggleMenu } from './menu';
@@ -58,6 +61,9 @@ ipcMain
     const ret = await dialog.showOpenDialog(params);
     e.returnValue = ret.filePaths;
   })
+  .on(events.EVENT_APP_OPEN_WINDOW_SETTING, async (e) => {
+    showSetting();
+  })
   .on(events.EVENT_APP_TOGGLE_MENU, () => {
     toggleMenu();
   })
@@ -87,7 +93,7 @@ ipcMain
  */
 export function showMainError(err) {
   sendToClipboard(events.EVENT_APP_ERROR_MAIN, err).then();
-  sendToSettings(events.EVENT_APP_ERROR_MAIN, err).then();
+  sendToSetting(events.EVENT_APP_ERROR_MAIN, err).then();
 }
 
 export function changeBindKey(funcName, oldKey, newKey) {

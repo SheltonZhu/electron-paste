@@ -126,7 +126,7 @@
           <!--          <el-dropdown-item icon="el-icon-delete" @click.native="clearClipboard"-->
           <!--            >清空剪贴板历史-->
           <!--          </el-dropdown-item>-->
-          <el-dropdown-item icon="el-icon-setting" @click.native="openSettings"
+          <el-dropdown-item icon="el-icon-setting" @click.native="openSetting"
             >设置
           </el-dropdown-item>
           <el-dropdown-item
@@ -151,8 +151,9 @@
 </template>
 
 <script>
-import Spot from '@/renderer/components/Spot';
-import FavoriteLabel from '@/renderer/components/FavoriteLabel';
+import Spot from '../../components/Spot';
+import FavoriteLabel from './FavoriteLabel';
+import { openSetting } from '../../ipc';
 import { mapState } from 'vuex';
 
 export default {
@@ -188,17 +189,17 @@ export default {
     };
   },
   mounted() {
-    this.initLabels();
-    this.initShortCut();
-    this.delay = this.Debounce();
+    // this.initLabels();
+    // this.initShortCut();
+    // this.delay = this.Debounce();
   },
   watch: {
-    selectType() {
-      this.changeSearchType();
-    },
-    table() {
-      this.resetSearch();
-    },
+    // selectType() {
+    // this.changeSearchType();
+    // },
+    // table() {
+    //   this.resetSearch();
+    // },
   },
   computed: {
     ...mapState(['clipboardData', 'query', 'table', 'searchType']),
@@ -208,25 +209,25 @@ export default {
   },
   methods: {
     initLabels() {
-      this.$electron.remote
-        .getGlobal('labelDb')
-        .readAll()
-        .then((ret) => {
-          this.labels = ret;
-          this.$store.commit('updateLabelsData', this.labels);
-        });
+      // this.$electron.remote
+      //   .getGlobal('labelDb')
+      //   .readAll()
+      //   .then((ret) => {
+      //     this.labels = ret;
+      //     this.$store.commit('updateLabelsData', this.labels);
+      //   });
     },
     initShortCut() {
-      this.$electron.remote.getCurrentWindow().on('show', () => {
-        this.$electron.remote.globalShortcut.register('Alt+S', () => {
-          if (!this.isSearching) {
-            this.$refs.searchBtn.$el.click();
-          } else {
-            this.$refs.searchBar.focus();
-            this.$refs.searchBar.select();
-          }
-        });
-      });
+      // this.$electron.remote.getCurrentWindow().on('show', () => {
+      //   this.$electron.remote.globalShortcut.register('Alt+S', () => {
+      //     if (!this.isSearching) {
+      //       this.$refs.searchBtn.$el.click();
+      //     } else {
+      //       this.$refs.searchBar.focus();
+      //       this.$refs.searchBar.select();
+      //     }
+      //   });
+      // });
     },
 
     clickLabelAdder() {
@@ -241,23 +242,23 @@ export default {
         this.newLabelValue = '未命名';
         this.newLabelVisible = false;
       } else {
-        this.$electron.remote
-          .getGlobal('labelDb')
-          .create({
-            name: this.newLabelValue,
-            color: '#fe9700',
-          })
-          .then((ret) => {
-            this.labels.push(ret);
-            this.newLabelVisible = false;
-            window.log.info('addOneLabel: ', ret);
-            this.$store.commit('updateLabelsData', this.labels);
-            this.newLabelValue = '未命名';
-          });
+        // this.$electron.remote
+        //   .getGlobal('labelDb')
+        //   .create({
+        //     name: this.newLabelValue,
+        //     color: '#fe9700',
+        //   })
+        //   .then((ret) => {
+        //     this.labels.push(ret);
+        //     this.newLabelVisible = false;
+        //     window.log.info('addOneLabel: ', ret);
+        //     this.$store.commit('updateLabelsData', this.labels);
+        //     this.newLabelValue = '未命名';
+        //   });
       }
     },
     doRemoveLabel(labelData) {
-      this.$electron.remote.getGlobal('shortcut').unregisterEsc();
+      // this.$electron.remote.getGlobal('shortcut').unregisterEsc();
       this.$confirm(
         `确定删除【${labelData.name}】?删除的记录不可恢复！`,
         '提示',
@@ -268,18 +269,18 @@ export default {
         }
       )
         .then(() => {
-          this.$electron.remote
-            .getGlobal('labelDb')
-            .removeLabelAndData(labelData._id)
-            .then((numRemoved) => {
-              window.log.info(`${numRemoved} removed.`);
-              const position = this.labels.indexOf(labelData);
-              this.labels.splice(position, 1);
-              this.$store.commit('updateLabelsData', this.labels);
-              if (this.isSelected) {
-                this.$store.commit('updateTable', 'historyData');
-              }
-            });
+          // this.$electron.remote
+          //   .getGlobal('labelDb')
+          //   .removeLabelAndData(labelData._id)
+          //   .then((numRemoved) => {
+          //     window.log.info(`${numRemoved} removed.`);
+          //     const position = this.labels.indexOf(labelData);
+          //     this.labels.splice(position, 1);
+          //     this.$store.commit('updateLabelsData', this.labels);
+          //     if (this.isSelected) {
+          //       this.$store.commit('updateTable', 'historyData');
+          //     }
+          //   });
           this.$message({
             type: 'success',
             message: `【${labelData.name}】删除成功!`,
@@ -288,7 +289,7 @@ export default {
         })
         .catch(() => {})
         .finally(() => {
-          this.$electron.remote.getGlobal('shortcut').registerEsc();
+          // this.$electron.remote.getGlobal('shortcut').registerEsc();
         });
     },
     clickSearchBtn() {
@@ -319,80 +320,82 @@ export default {
       this.resetSearch();
     },
     resetSearch() {
-      this.searchValue = '';
-      if (this.selectType) {
-        this.selectType = '';
-      } else {
-        this.execSearchDebounce();
-      }
+      // this.searchValue = '';
+      // if (this.selectType) {
+      //   this.selectType = '';
+      // } else {
+      //   this.execSearchDebounce();
+      // }
     },
     changeSearchType() {
       this.execSearch();
     },
     execSearch() {
-      this.$store.commit('loading', true);
-      this.$store.commit('updateQuery', this.searchValue.trim());
-      this.$store.commit('updateSearchType', this.selectType);
-      this.$electron.remote
-        .getGlobal('db')
-        .readAll(this.table, this.query, this.searchType)
-        .then((ret) => {
-          this.$store.commit('updateClipboardData', ret);
-          this.$store.commit('loading', false);
-        });
+      // this.$store.commit('loading', true);
+      // this.$store.commit('updateQuery', this.searchValue.trim());
+      // this.$store.commit('updateSearchType', this.selectType);
+      // this.$electron.remote
+      //   .getGlobal('db')
+      //   .readAll(this.table, this.query, this.searchType)
+      //   .then((ret) => {
+      //     this.$store.commit('updateClipboardData', ret);
+      //     this.$store.commit('loading', false);
+      //   });
     },
     clearClipboard() {
       if (!this.clipboardData.length > 0) {
         return;
       }
-      this.$electron.remote.getGlobal('shortcut').unregisterEsc();
+      // this.$electron.remote.getGlobal('shortcut').unregisterEsc();
       this.$confirm('清空剪贴板历史?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       })
         .then(async () => {
-          const numRemoved = await this.$electron.remote
-            .getGlobal('db')
-            .removeAll('historyData');
-          this.$store.commit('updateClipboardData', []);
-          this.$message({
-            message: `${numRemoved} 条已删除！`,
-            type: 'success',
-            duration: 1000,
-          });
-          window.log.info(`${numRemoved} clear.`);
+          // const numRemoved = await this.$electron.remote
+          //   .getGlobal('db')
+          //   .removeAll('historyData');
+          // this.$store.commit('updateClipboardData', []);
+          // this.$message({
+          //   message: `${numRemoved} 条已删除！`,
+          //   type: 'success',
+          //   duration: 1000,
+          // });
+          // window.log.info(`${numRemoved} clear.`);
         })
         .catch(() => {})
         .finally(() => {
-          this.$electron.remote.getGlobal('shortcut').registerEsc();
+          // this.$electron.remote.getGlobal('shortcut').registerEsc();
         });
     },
     mainLabelClick() {
-      if (!this.isSelected) this.$store.commit('updateTable', 'historyData');
+      // if (!this.isSelected) this.$store.commit('updateTable', 'historyData');
     },
     quitApp() {
-      this.$electron.remote.app.exit();
+      this.$electron.remote.app.quit();
     },
     openAbout() {
-      this.$electron.remote.dialog.showMessageBox({
-        title: 'Electron Clipboard',
-        message: 'Electron Clipboard',
-        detail: this.$electron.remote.getGlobal('config').get('about'),
-      });
+      // this.$electron.remote.dialog.showMessageBox({
+      //   title: 'Electron Clipboard',
+      //   message: 'Electron Clipboard',
+      //   detail: this.$electron.remote.getGlobal('config').get('about'),
+      // });
     },
     openHelp() {
-      this.$electron.remote.dialog.showMessageBox({
-        title: '使用手册',
-        message: '使用手册',
-        detail: this.$electron.remote.getGlobal('config').get('helpInfo'),
-      });
+      // this.$electron.remote.dialog.showMessageBox({
+      //   title: '使用手册',
+      //   message: '使用手册',
+      //   detail: this.$electron.remote.getGlobal('config').get('helpInfo'),
+      // });
     },
-    openSettings() {
-      this.$electron.remote.getGlobal('settingsWindow').show();
+    openSetting() {
+      openSetting();
     },
   },
 };
+
+export class FavoritesBar {}
 </script>
 
 <style scoped>
@@ -480,9 +483,11 @@ export default {
   background-color: #ffffffbf !important;
   backdrop-filter: saturate(180%) blur(5px) !important;
 }
+
 .el-dropdown-menu__item--divided:before {
   content: none !important;
 }
+
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }

@@ -32,3 +32,5 @@ export const EVENT_APP_TOGGLE_MENU = 'app.toggle.menu';
 export const EVENT_APP_CLIPBOARD_PASTE = 'app.clipboard.paste';
 
 export const EVENT_APP_CHANGE_BIND = 'app.change.bind';
+
+export const EVENT_APP_OPEN_WINDOW_SETTING = 'app.open.window.setting';

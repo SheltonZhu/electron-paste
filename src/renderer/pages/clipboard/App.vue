@@ -21,8 +21,6 @@
           : 'none',
       }"
     >
-      <el-button @click="copy">复制</el-button>
-      <el-button @click="paste">粘贴</el-button>
       <el-header>
         <favorites-bar
           :labelFontColor="appConfig.favoritesFontColor"
@@ -31,7 +29,7 @@
         />
       </el-header>
       <el-main>
-        <clipboard :table="table" :clipboardData="this.clipboardData" />
+        <clipboard-panel />
       </el-main>
     </div>
   </div>
@@ -41,11 +39,14 @@ import { mapState } from 'vuex';
 import { hideAndPaste } from '../../ipc';
 import { init as initShortcut } from '../../shortcut';
 import { getInitConfig } from '../../ipc';
-import { FavoritesBar } from '../../views/clipboard/FavoritesBar';
-import { Clipboard } from '../../views/clipboard/Clipboard';
+import FavoritesBar from '../../views/clipboard/FavoritesBar';
+import ClipboardPanel from '../../views/clipboard/ClipboardPanel';
 
 export default {
-  components: { FavoritesBar, Clipboard },
+  components: {
+    FavoritesBar,
+    ClipboardPanel,
+  },
   mounted() {
     // 启动应用时获取初始化数据
     getInitConfig();
@@ -60,7 +61,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['appConfig']),
+    ...mapState(['appConfig', 'favorite']),
     backgroundPicUrl() {
       return 'url("' + this.appConfig.backgroundPic + '")';
     },
@@ -70,7 +71,7 @@ export default {
       this.initFileDragEvent();
     },
     initFileDragEvent() {
-      const holder = document.getElementById('home');
+      const holder = document.getElementById('app');
       holder.ondragover = () => false;
       holder.ondragleave = () => false;
       holder.ondragend = () => false;
@@ -110,5 +111,23 @@ body {
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.el-main {
+  padding: 0 20px !important;
+  height: 410px;
+}
+
+.el-header {
+  height: unset !important;
+}
+
+.el-message-box__wrapper {
+  backdrop-filter: saturate(180%) blur(5px);
+}
+
+.el-message-box {
+  background-color: #ffffffbf !important;
+  backdrop-filter: saturate(180%) blur(5px);
 }
 </style>
