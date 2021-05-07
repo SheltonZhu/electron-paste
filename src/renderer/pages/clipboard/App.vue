@@ -23,6 +23,16 @@
     >
       <el-button @click="copy">复制</el-button>
       <el-button @click="paste">粘贴</el-button>
+      <el-header>
+        <favorites-bar
+          :labelFontColor="appConfig.favoritesFontColor"
+          :labelFontColorSelect="appConfig.favoritesFontColorSelected"
+          :labelBgColorSelect="appConfig.favoritesBgColorSelected"
+        />
+      </el-header>
+      <el-main>
+        <clipboard :table="table" :clipboardData="this.clipboardData" />
+      </el-main>
     </div>
   </div>
 </template>
@@ -31,13 +41,18 @@ import { mapState } from 'vuex';
 import { hideAndPaste } from '../../ipc';
 import { init as initShortcut } from '../../shortcut';
 import { getInitConfig } from '../../ipc';
+import { FavoritesBar } from '../../views/clipboard/FavoritesBar';
+import { Clipboard } from '../../views/clipboard/Clipboard';
 
 export default {
-  components: {},
+  components: { FavoritesBar, Clipboard },
   mounted() {
     // 启动应用时获取初始化数据
     getInitConfig();
     initShortcut(this.appConfig);
+    this.$nextTick(() => {
+      this.init();
+    });
   },
   data() {
     return {
@@ -51,6 +66,23 @@ export default {
     },
   },
   methods: {
+    init() {
+      this.initFileDragEvent();
+    },
+    initFileDragEvent() {
+      const holder = document.getElementById('home');
+      holder.ondragover = () => false;
+      holder.ondragleave = () => false;
+      holder.ondragend = () => false;
+      holder.ondrop = (e) => {
+        e.preventDefault();
+        for (const f of e.dataTransfer.files) {
+          console.log('File(s) you dragged here: ', f.path);
+          console.log(f.name, f.type, f.size);
+        }
+        return false;
+      };
+    },
     copy() {
       hideAndPaste({ content: 'copy only' });
     },
