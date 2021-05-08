@@ -1,6 +1,5 @@
 <template>
   <el-card
-    @contextmenu.native="onContextmenu"
     @keyup.enter.native="cardOnEnter"
     @dblclick.native="cardOnDblClick"
     class="box-card"
@@ -24,7 +23,7 @@
       <div style="display: inline-flex; height: 64px">
         <div style="width: 246px">
           <div class="type">
-            <p class="type">{{ data['name'] || data.type }}</p>
+            <p class="type">{{ data['name'] || data.cardType }}</p>
           </div>
           <div class="time">
             <p class="time">{{ $date(data.copyDate).fromNow() }}</p>
@@ -110,13 +109,13 @@ export default {
       return '';
     },
     isText() {
-      return this.data.type === 'Text';
+      return this.data.cardType === 'Text';
     },
     isImage() {
-      return this.data.type === 'Image';
+      return this.data.cardType === 'Image';
     },
     isLink() {
-      return this.data.type === 'Link';
+      return this.data.cardType === 'Link';
     },
     metaInfo() {
       switch (true) {

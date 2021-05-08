@@ -26,7 +26,7 @@ class clipboardCardBuilder {
 export class TextDataBuilder extends clipboardCardBuilder {
   constructor() {
     super();
-    this.data.type = 'Text';
+    this.data.cardType = 'Text';
   }
 
   setMainData(text, rtf, html) {
@@ -46,7 +46,7 @@ export class TextDataBuilder extends clipboardCardBuilder {
 export class ImageDataBuilder extends clipboardCardBuilder {
   constructor() {
     super();
-    this.data.type = 'Image';
+    this.data.cardType = 'Image';
   }
 
   setMainData(image) {
@@ -64,7 +64,7 @@ export class ImageDataBuilder extends clipboardCardBuilder {
 export class LinkDataBuilder extends clipboardCardBuilder {
   constructor() {
     super();
-    this.data.type = 'Link';
+    this.data.cardType = 'Link';
   }
 
   setMainData(text) {

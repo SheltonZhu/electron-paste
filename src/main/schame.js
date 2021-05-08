@@ -18,7 +18,7 @@ export const clipboardCardSchema = {
     favorite: {
       type: 'string',
     },
-    type: {
+    cardType: {
       // Link, Text, Image, File
       type: 'string',
     },
@@ -52,7 +52,7 @@ export const clipboardCardSchema = {
       type: 'string',
     },
   },
-  required: ['type', 'copyDate'],
+  required: ['cardType', 'copyDate'],
   additionalProperties: false,
 };
 export const favoritesSchema = {
