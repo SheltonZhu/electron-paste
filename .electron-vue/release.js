@@ -1,39 +1,39 @@
-const builder = require("electron-builder");
-const os = require("os");
-const pkg = require("../package.json");
+const builder = require('electron-builder');
+const os = require('os');
+const pkg = require('../package.json');
 
 const platform = os.platform();
 const Platform = builder.Platform;
-const YELLOW = "\x1b[33m";
-const BLUE = "\x1b[34m";
-const END = "\x1b[0m";
+const YELLOW = '\x1b[33m';
+const BLUE = '\x1b[34m';
+const END = '\x1b[0m';
 
 let targets;
 
 function release() {
   let files = [
-    "dist/electron/**/*",
-    "!dist/electron/fonts/element-icons--fonts.ttf",
-    "!dist/electron/fonts/element-icons--fonts.woff",
+    'dist/electron/**/*',
+    '!dist/electron/fonts/element-icons--fonts.ttf',
+    '!dist/electron/fonts/element-icons--fonts.woff',
     // "!node_modules/{babel-runtime,batch-processor,core-js,deepmerge,element-resize-detector,mousetrap,rxjs,vue*`}${/*}",
     // "!node_modules/unbzip2-stream/dist${/*}",
     // "node_modules/mousetrap/{mousetrap.js,package.json}",
-    "!**/*.{md,markdown,MD,txt}",
-    "!**/{test.js,license,LICENSE,.jscsrc}",
-    "!**/sample?(s)${/*}",
+    '!**/*.{md,markdown,MD,txt}',
+    '!**/{test.js,license,LICENSE,.jscsrc}',
+    '!**/sample?(s)${/*}',
   ];
   const macImages = [];
   const winImages = [];
   switch (platform) {
-    case "darwin":
+    case 'darwin':
       targets = Platform.MAC.createTarget();
       files = files.concat(winImages);
       break;
-    case "win32":
+    case 'win32':
       targets = Platform.WINDOWS.createTarget();
       files = files.concat(macImages);
       break;
-    case "linux":
+    case 'linux':
       targets = Platform.LINUX.createTarget();
       files = files.concat(macImages);
   }
@@ -41,17 +41,17 @@ function release() {
     .build({
       targets: targets,
       config: {
-        productName: "Electron Paste",
-        appId: "sheltonzhu.github.io",
-        artifactName: "${productName}-${version}.${ext}",
-        compression: "normal",
-        copyright: "Copyright © 2021 SheltonZhu",
+        productName: 'Electron Paste',
+        appId: 'sheltonzhu.github.io',
+        artifactName: '${productName}-${version}.${ext}',
+        compression: 'normal',
+        copyright: 'Copyright © 2021 SheltonZhu',
         files: files,
         directories: {
-          output: "build",
+          output: 'build',
         },
         publish: {
-          provider: "github",
+          provider: 'github',
           url: pkg.homepage,
         },
         dmg: {
@@ -59,62 +59,63 @@ function release() {
             {
               x: 410,
               y: 150,
-              type: "link",
-              path: "/Applications",
+              type: 'link',
+              path: '/Applications',
             },
             {
               x: 130,
               y: 150,
-              type: "file",
+              type: 'file',
             },
           ],
         },
         mac: {
-          icon: "build/icons/icon.icns",
-          category: "public.app-category.developer-tools",
-          target: ["zip", "dmg"],
+          icon: 'build/icons/icon.icns',
+          category: 'public.app-category.developer-tools',
+          target: ['zip', 'dmg'],
           extendInfo: {
-            LSUIElement: "YES",
+            LSUIElement: 'YES',
           },
         },
         win: {
-          icon: "build/icons/icon.ico",
+          icon: 'build/icons/icon.ico',
           target: [
             {
-              target: "nsis",
+              target: 'nsis',
               arch: [
                 // "ia32",
-                "x64"],
+                'x64',
+              ],
             },
           ],
         },
         nsis: {
-          license: "LICENSE",
+          license: 'LICENSE',
           oneClick: false,
           perMachine: true,
           allowToChangeInstallationDirectory: true,
-          installerIcon: "build/icons/icon.ico", // 安装图标
-          uninstallerIcon: "build/icons/icon.ico", //卸载图标
-          installerHeaderIcon: "build/icons/icon.ico", // 安装时头部图标
+          installerIcon: 'build/icons/icon.ico', // 安装图标
+          uninstallerIcon: 'build/icons/icon.ico', //卸载图标
+          installerHeaderIcon: 'build/icons/icon.ico', // 安装时头部图标
           createDesktopShortcut: true, // 创建桌面图标
           createStartMenuShortcut: true, // 创建开始菜单图标
-          shortcutName: "Electron Paste", // 图标名称
+          shortcutName: 'Electron Paste', // 图标名称
         },
         linux: {
-          icon: "build/icons",
-          category: "Utility",
+          icon: 'build/icons',
+          category: 'Utility',
           synopsis: pkg.description,
-          target: ["deb", "rpm", "tar.gz", "pacman", "appImage"],
+          target: ['deb', 'rpm', 'tar.gz', 'pacman', 'appImage'],
           desktop: {
-            Name: "electron-paste",
-            Encoding: "UTF-8",
-            Type: "Application",
+            Name: 'electron-paste',
+            Encoding: 'UTF-8',
+            Type: 'Application',
             Comment: pkg.description,
-            StartupWMClass: "electron-paste",
+            StartupWMClass: 'electron-paste',
           },
         },
         appImage: {
-          license: "LICENSE",
+          license: 'LICENSE',
         },
       },
     })

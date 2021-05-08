@@ -69,8 +69,6 @@ ipcMain
   })
   .on(events.EVENT_APP_CLIPBOARD_PASTE, async (e, params) => {
     hideClipboard();
-    // clipboard.writeHTML('<b>Hi</b>');
-    // clipboard.writeText(params.content);
     const text = 'text';
     const html = '<b>html</b>';
     const rtf =
@@ -80,7 +78,7 @@ ipcMain
       html: html,
       rtf: rtf,
     });
-    if (params.directPaste) {
+    if (params.directPaste && store.state.appConfig.directPaste) {
       setTimeout(async () => {
         // robot.keyTap('v', 'control');
       }, 10);

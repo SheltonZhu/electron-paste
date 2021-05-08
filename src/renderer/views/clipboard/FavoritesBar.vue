@@ -375,20 +375,8 @@ export default {
     quitApp() {
       this.$electron.remote.app.quit();
     },
-    openAbout() {
-      // this.$electron.remote.dialog.showMessageBox({
-      //   title: 'Electron Clipboard',
-      //   message: 'Electron Clipboard',
-      //   detail: this.$electron.remote.getGlobal('config').get('about'),
-      // });
-    },
-    openHelp() {
-      // this.$electron.remote.dialog.showMessageBox({
-      //   title: '使用手册',
-      //   message: '使用手册',
-      //   detail: this.$electron.remote.getGlobal('config').get('helpInfo'),
-      // });
-    },
+    openAbout() {},
+    openHelp() {},
     openSetting() {
       openSetting();
     },
@@ -400,7 +388,11 @@ export class FavoritesBar {}
 
 <style scoped>
 .nav {
-  margin: 15px 0;
+  padding: 15px 0;
+}
+
+.nav .nav-content {
+  text-align: center;
 }
 
 .nav .clipboard-tag {

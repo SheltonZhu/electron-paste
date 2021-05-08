@@ -1,19 +1,19 @@
-"use strict";
+'use strict';
 
-process.env.BABEL_ENV = "renderer";
+process.env.BABEL_ENV = 'renderer';
 
-const path = require("path");
-const { dependencies } = require("../package.json");
-const webpack = require("webpack");
+const path = require('path');
+const { dependencies } = require('../package.json');
+const webpack = require('webpack');
 
-const BabiliWebpackPlugin = require("babili-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { VueLoaderPlugin } = require("vue-loader");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+const BabiliWebpackPlugin = require('babili-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
-const { entries, htmlPlugin } = require("./muti-page.config");
+const { entries, htmlPlugin } = require('./muti-page.config');
 /**
  * List of node_modules to include in webpack bundle
  *
@@ -21,10 +21,10 @@ const { entries, htmlPlugin } = require("./muti-page.config");
  * that provide pure *.vue files that need compiling
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/webpack-configurations.html#white-listing-externals
  */
-let whiteListedModules = ["vue", "vuex", "element-ui"];
+let whiteListedModules = ['vue', 'vuex', 'element-ui'];
 
 let rendererConfig = {
-  devtool: "#cheap-module-eval-source-map",
+  devtool: '#cheap-module-eval-source-map',
   entry: entries(),
   // entry: {
   //   renderer: path.join(__dirname, '../src/renderer/main.js')
@@ -38,48 +38,48 @@ let rendererConfig = {
     rules: [
       {
         test: /\.(js|vue)$/,
-        enforce: "pre",
+        enforce: 'pre',
         exclude: /node_modules/,
         use: {
-          loader: "eslint-loader",
+          loader: 'eslint-loader',
           options: {
-            formatter: require("eslint-friendly-formatter"),
+            formatter: require('eslint-friendly-formatter'),
           },
         },
       },
       {
         test: /\.css$/,
-        use: ["vue-style-loader", "css-loader"],
+        use: ['vue-style-loader', 'css-loader'],
       },
       {
         test: /\.styl(us)?$/,
-        use: ["vue-style-loader", "css-loader", "stylus-loader"],
+        use: ['vue-style-loader', 'css-loader', 'stylus-loader'],
       },
       {
         test: /\.html$/,
-        use: "vue-html-loader",
+        use: 'vue-html-loader',
       },
       {
         test: /\.js$/,
-        use: "babel-loader",
+        use: 'babel-loader',
         exclude: /node_modules/,
       },
       {
         test: /\.node$/,
-        use: "node-loader",
+        use: 'node-loader',
       },
       {
         test: /\.vue$/,
         use: {
-          loader: "vue-loader",
+          loader: 'vue-loader',
           options: {
-            extractCSS: process.env.NODE_ENV === "production",
+            extractCSS: process.env.NODE_ENV === 'production',
             loaders: {
-              sass: "vue-style-loader!css-loader!sass-loader?indentedSyntax=1",
-              scss: "vue-style-loader!css-loader!sass-loader",
-              less: "vue-style-loader!css-loader!less-loader",
-              styl: "vue-style-loader!css-loader!stylus-loader",
-              stylus: "vue-style-loader!css-loader!stylus-loader",
+              sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
+              scss: 'vue-style-loader!css-loader!sass-loader',
+              less: 'vue-style-loader!css-loader!less-loader',
+              styl: 'vue-style-loader!css-loader!stylus-loader',
+              stylus: 'vue-style-loader!css-loader!stylus-loader',
             },
           },
         },
@@ -87,44 +87,44 @@ let rendererConfig = {
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           query: {
             limit: 10000,
-            name: "images/[name]--[folder].[ext]",
+            name: 'images/[name]--[folder].[ext]',
           },
         },
       },
       {
         test: /assets.*\.svg$/,
-        loader: "vue-svg-loader",
+        loader: 'vue-svg-loader',
       },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-        loader: "url-loader",
+        loader: 'url-loader',
         options: {
           limit: 10000,
-          name: "media/[name]--[folder].[ext]",
+          name: 'media/[name]--[folder].[ext]',
         },
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           query: {
             limit: 100000,
-            name: "fonts/[name]--[folder].[ext]",
+            name: 'fonts/[name]--[folder].[ext]',
           },
         },
       },
     ],
   },
   node: {
-    __dirname: process.env.NODE_ENV !== "production",
-    __filename: process.env.NODE_ENV !== "production",
+    __dirname: process.env.NODE_ENV !== 'production',
+    __filename: process.env.NODE_ENV !== 'production',
   },
   plugins: [
     new VueLoaderPlugin(),
-    new MiniCssExtractPlugin({ filename: "styles.css" }),
+    new MiniCssExtractPlugin({ filename: 'styles.css' }),
     // new HtmlWebpackPlugin({
     //   filename: 'index.html',
     //   template: path.resolve(__dirname, '../src/index.ejs'),
@@ -142,28 +142,28 @@ let rendererConfig = {
   ].concat(htmlPlugin()),
   output: {
     // filename: '[name].js',
-    filename: "[name]/index.js",
-    libraryTarget: "commonjs2",
-    path: path.join(__dirname, "../dist/electron"),
+    filename: '[name]/index.js',
+    libraryTarget: 'commonjs2',
+    path: path.join(__dirname, '../dist/electron'),
   },
   resolve: {
     alias: {
-      "@": path.join(__dirname, "../src/renderer"),
-      vue$: "vue/dist/vue.esm.js",
+      '@': path.join(__dirname, '../src/renderer'),
+      vue$: 'vue/dist/vue.esm.js',
     },
-    extensions: [".js", ".vue", ".json", ".css", ".node"],
+    extensions: ['.js', '.vue', '.json', '.css', '.node'],
   },
-  target: "electron-renderer",
+  target: 'electron-renderer',
 };
 
 /**
  * Adjust rendererConfig for development settings
  */
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   rendererConfig.plugins.push(
     new webpack.DefinePlugin({
-      "@": path.join(__dirname, "../src/renderer"),
-      __static: `"${path.join(__dirname, "../static").replace(/\\/g, "\\\\")}"`,
+      '@': path.join(__dirname, '../src/renderer'),
+      __static: `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`,
     })
   );
 }
@@ -171,20 +171,20 @@ if (process.env.NODE_ENV !== "production") {
 /**
  * Adjust rendererConfig for production settings
  */
-if (process.env.NODE_ENV === "production") {
-  rendererConfig.devtool = "";
+if (process.env.NODE_ENV === 'production') {
+  rendererConfig.devtool = '';
 
   rendererConfig.plugins.push(
     new BabiliWebpackPlugin(),
     new CopyWebpackPlugin([
       {
-        from: path.join(__dirname, "../static"),
-        to: path.join(__dirname, "../dist/electron/static"),
-        ignore: [".*"],
+        from: path.join(__dirname, '../static'),
+        to: path.join(__dirname, '../dist/electron/static'),
+        ignore: ['.*'],
       },
     ]),
     new webpack.DefinePlugin({
-      "process.env.NODE_ENV": '"production"',
+      'process.env.NODE_ENV': '"production"',
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,

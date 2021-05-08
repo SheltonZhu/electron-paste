@@ -5,34 +5,40 @@ import General from '../views/setting/General';
 import Shortcut from '../views/setting/Shortcut';
 import Rules from '../views/setting/Rules';
 import About from '../views/setting/About';
+import {
+  PAGE_PERSONALIZATION,
+  PAGE_SHORTCUT,
+  PAGE_ABOUT,
+  PAGE_GENERAL,
+  PAGE_RULES,
+} from '../../shared/env';
 
 Vue.use(Router);
-
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/personalization',
-      name: 'personalization',
+      name: PAGE_PERSONALIZATION.name,
       component: Personalization,
     },
     {
       path: '/general',
-      name: 'general',
+      name: PAGE_GENERAL.name,
       component: General,
     },
     {
       path: '/shortcut',
-      name: 'shortcut',
+      name: PAGE_SHORTCUT.name,
       component: Shortcut,
     },
     {
       path: '/rules',
-      name: 'rules',
+      name: PAGE_RULES.name,
       component: Rules,
     },
     {
       path: '/about',
-      name: 'about',
+      name: PAGE_ABOUT.name,
       component: About,
     },
     {
@@ -42,3 +48,5 @@ export default new Router({
     },
   ],
 });
+
+export default router;
