@@ -1,26 +1,13 @@
 <template>
   <div class="personalization">
+    <!--  背景设置  -->
     <div>
       <el-divider>背景</el-divider>
       <el-row class="row vertically-center">
-        <el-col :span="12">
-          <div class="type">背景颜色</div>
+        <el-col :span="6">
+          <div class="type">背景模糊</div>
         </el-col>
-        <el-col :span="12">
-          <div class="switch">
-            <el-color-picker
-              v-model="backgroundColor"
-              show-alpha
-              :predefine="predefineBackgroundColors"
-            ></el-color-picker>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row class="row">
-        <el-col :span="12">
-          <div class="type">背景虚化</div>
-        </el-col>
-        <el-col :span="12">
+        <el-col :span="1">
           <div>
             <el-switch
               v-model="enableBackgroundBlur"
@@ -30,16 +17,10 @@
             </el-switch>
           </div>
         </el-col>
-      </el-row>
-
-      <el-row
-        class="row vertically-center bg-blur"
-        v-if="appConfig.enableBackgroundBlur"
-      >
-        <el-col :span="12">
-          <div class="type">背景虚化程度</div>
+        <el-col :span="6" class="bg-blur">
+          <div class="type">背景模糊程度</div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="11" class="bg-blur">
           <div class="switch" style="margin-left: 10px">
             <el-slider
               style="width: 350px"
@@ -47,18 +28,18 @@
               :max="50"
               :min="1"
               v-model="backgroundBlurValue"
+              :disabled="!appConfig.enableBackgroundBlur"
             ></el-slider>
           </div>
         </el-col>
       </el-row>
-
       <!--   背景图 start   -->
       <div>
-        <el-row class="row">
-          <el-col :span="12">
+        <el-row class="row vertically-center">
+          <el-col :span="6">
             <div class="type">使用背景图</div>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="1">
             <div class="switch">
               <el-switch
                 v-model="enableBackgroundPic"
@@ -66,6 +47,18 @@
                 :inactive-color="inactiveColor"
               >
               </el-switch>
+            </div>
+          </el-col>
+          <el-col :span="6">
+            <div class="type">背景颜色</div>
+          </el-col>
+          <el-col :span="11">
+            <div class="switch">
+              <el-color-picker
+                v-model="backgroundColor"
+                show-alpha
+                :predefine="predefineBackgroundColors"
+              ></el-color-picker>
             </div>
           </el-col>
         </el-row>
@@ -117,7 +110,7 @@
           <!--          </el-input>-->
 
           <el-upload
-            style="margin-top: 10px"
+            style="margin: 10px 0"
             class="upload-demo"
             action=""
             :limit="1"
@@ -130,34 +123,92 @@
       <!--   背景图 end   -->
     </div>
 
+    <!--  收藏栏设置  -->
     <div>
       <el-divider>收藏栏</el-divider>
-      <el-row class="row">
-        <el-col :span="8" class="vertically-center">
-          <span class="type"> 收藏栏字体颜色 </span>
-          <el-color-picker
-            v-model="favoritesFontColor"
-            show-alpha
-            :predefine="predefineFavoritesFontColors"
-          >
-          </el-color-picker>
+      <el-row class="row vertically-center">
+        <el-col :span="6">
+          <div class="type">字体颜色</div>
         </el-col>
-        <el-col :span="8" class="vertically-center">
-          <span class="type"> 收藏栏选中字体颜色 </span>
-          <el-color-picker
-            v-model="favoritesFontColorSelected"
-            show-alpha
-            :predefine="predefineFavoritesFontColorsSelected"
-          ></el-color-picker>
+        <el-col :span="3">
+          <div class="switch">
+            <el-color-picker
+              v-model="favoritesFontColor"
+              show-alpha
+              :predefine="predefineFavoritesFontColors"
+            >
+            </el-color-picker>
+          </div>
         </el-col>
-        <el-col :span="8" class="vertically-center">
-          <span class="type"> 收藏栏选中背景颜色 </span>
-          <el-color-picker
-            v-model="favoritesBgColorSelected"
-            show-alpha
-            :predefine="predefineFavoritesBgColorSelected"
-          >
-          </el-color-picker>
+        <el-col :span="4">
+          <div class="type">选中字体颜色</div>
+        </el-col>
+        <el-col :span="3">
+          <div class="switch">
+            <el-color-picker
+              v-model="favoritesFontColorSelected"
+              show-alpha
+              :predefine="predefineFavoritesFontColorsSelected"
+            ></el-color-picker>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="type">选中背景颜色</div>
+        </el-col>
+        <el-col :span="4">
+          <div class="switch">
+            <el-color-picker
+              v-model="favoritesBgColorSelected"
+              show-alpha
+              :predefine="predefineFavoritesBgColorSelected"
+            >
+            </el-color-picker>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+
+    <!--  卡片设置  -->
+    <div>
+      <el-divider>卡片</el-divider>
+      <el-row class="row vertically-center">
+        <el-col :span="6">
+          <div class="type">字体颜色</div>
+        </el-col>
+        <el-col :span="4">
+          <div class="switch">
+            <el-color-picker
+              v-model="cardFontColor"
+              show-alpha
+              :predefine="predefineFavoritesFontColors"
+            >
+            </el-color-picker>
+          </div>
+        </el-col>
+        <el-col :span="3">
+          <div class="type">背景颜色</div>
+        </el-col>
+        <el-col :span="3">
+          <div class="switch">
+            <el-color-picker
+              v-model="cardBgColor"
+              show-alpha
+              :predefine="predefineFavoritesFontColorsSelected"
+            ></el-color-picker>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="type">元信息字体颜色</div>
+        </el-col>
+        <el-col :span="4">
+          <div class="switch">
+            <el-color-picker
+              v-model="cardMetaColor"
+              show-alpha
+              :predefine="predefineFavoritesBgColorSelected"
+            >
+            </el-color-picker>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -170,6 +221,7 @@ import { debounce } from '../../../shared/utils';
 import { clone } from '../../../shared/utils';
 import path from 'path';
 import os from 'os';
+
 export default {
   name: 'Personalization',
   data() {
@@ -281,6 +333,30 @@ export default {
         this.changeConfig({ favoritesBgColorSelected: value });
       },
     },
+    cardFontColor: {
+      get() {
+        return this.appConfig.cardFontColor;
+      },
+      set(value) {
+        this.changeConfig({ cardFontColor: value });
+      },
+    },
+    cardBgColor: {
+      get() {
+        return this.appConfig.cardBgColor;
+      },
+      set(value) {
+        this.changeConfig({ cardBgColor: value });
+      },
+    },
+    cardMetaColor: {
+      get() {
+        return this.appConfig.cardMetaColor;
+      },
+      set(value) {
+        this.changeConfig({ cardMetaColor: value });
+      },
+    },
   },
   methods: {
     ...mapActions(['changeConfig']),
@@ -340,7 +416,7 @@ export default {
 
 <style scoped>
 .row {
-  padding: 10px 5px;
+  padding: 5px 5px;
 }
 
 .type {

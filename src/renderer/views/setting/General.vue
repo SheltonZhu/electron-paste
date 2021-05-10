@@ -34,11 +34,26 @@
       </el-col>
     </el-row>
 
+    <el-row class="row">
+      <el-col :span="12">
+        <div class="type">纯文本模式</div>
+      </el-col>
+      <el-col :span="12">
+        <div class="switch">
+          <el-switch
+            v-model="textMode"
+            :active-color="activeColor"
+            :inactive-color="inactiveColor"
+          >
+          </el-switch>
+        </div>
+      </el-col>
+    </el-row>
     <el-divider>图标</el-divider>
 
     <el-row class="row">
       <el-col :span="12">
-        <div class="type">在通知区域显示图标</div>
+        <div class="type">在通知区域显示托盘图标</div>
       </el-col>
       <el-col :span="12">
         <div class="switch">
@@ -53,7 +68,7 @@
     </el-row>
     <el-row class="row">
       <el-col :span="12">
-        <div class="type">卡片图标</div>
+        <div class="type">显示卡片图标</div>
       </el-col>
       <el-col :span="12">
         <div class="switch">
@@ -155,6 +170,14 @@ export default {
         this.changeConfig({ directPaste: value });
       },
     },
+    textMode: {
+      get() {
+        return this.appConfig.textMode;
+      },
+      set(value) {
+        this.changeConfig({ textMode: value });
+      },
+    },
     enableHideWhenBlur: {
       get() {
         return this.appConfig.enableHideWhenBlur;
@@ -230,7 +253,7 @@ export default {
 
 <style scoped>
 .row {
-  padding: 10px 5px;
+  padding: 8px 5px;
 }
 
 .type {

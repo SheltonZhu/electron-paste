@@ -4,6 +4,7 @@
     @dblclick.native="cardOnDblClick"
     class="box-card"
     :class="{ 'image-card': isImage, 'text-card': isText, 'link-card': isLink }"
+    :style="{ 'background-color': appConfig.cardBgColor }"
     tabindex="100"
     @keyup.right.native="
       (e) => {
@@ -47,7 +48,7 @@
         </div>
       </div>
     </div>
-    <div class="card-text">
+    <div class="card-text" :style="{ color: appConfig.cardFontColor }">
       <div v-if="isText">
         <span
           v-if="data.html"
@@ -76,7 +77,7 @@
         </div>
       </el-image>
     </div>
-    <div class="meta-info">
+    <div class="meta-info" :style="{ color: appConfig.cardMetaColor }">
       <div class="shortcut">
         {{ shortcut }}
       </div>
@@ -464,7 +465,6 @@ export default {
 }
 
 .box-card .meta-info {
-  color: #bbb9b9;
   font-size: smaller;
   margin-top: 1px;
   padding: 0 20px;

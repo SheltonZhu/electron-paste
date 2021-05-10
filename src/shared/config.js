@@ -1,25 +1,14 @@
 import { isLinux } from './env';
 
 const defaultConfig = {
-  // 开机自启
-  autoLaunch: false,
-  // 自动插入
-  directPaste: true,
-  // 失去焦点隐藏
-  enableHideWhenBlur: true,
-  // 显示托盘
-  enableTrayIcon: true,
-  // 剪贴板卡片图标
-  cardIconEnable: true,
-  // 剪贴板历史存储数量
-  historyCapacity: 1,
-  historyCapacityNum: '50',
-  regexList: [],
   // 背景模糊
   enableBackgroundBlur: true,
+  // 背景模糊值
   backgroundBlurValue: 5,
   // 开启背景图片
   enableBackgroundPic: true,
+  // 背景颜色
+  backgroundColor: '#ffffffbf',
   // 背景图地址
   backgroundPic: '../static/bg/bg1.jpg',
   backgroundPicList: [
@@ -27,18 +16,29 @@ const defaultConfig = {
     '../static/bg/bg2.jpg',
     '../static/bg/bg3.jpg',
   ],
-  // 背景颜色
-  backgroundColor: '#ffffffbf',
-
-  // 卡片背景 字体 元信息 颜色
-  cardBgColor: '#fff',
-  cardFontColor: '#000',
-  cardMetaColor: '#bbb9b9',
-
   // 收藏便签 字体颜色 选中字体颜色 选中背景颜色
   favoritesFontColor: '#2c3e50',
   favoritesFontColorSelected: '#fff',
   favoritesBgColorSelected: '#b9b9b9d1',
+  // 卡片字体 背景 元信息 颜色
+  cardFontColor: '#000',
+  cardBgColor: '#fff',
+  cardMetaColor: '#bbb9b9',
+
+  // 开机自启
+  autoLaunch: false,
+  // 自动插入
+  directPaste: true,
+  textMode: false,
+  // 显示托盘
+  enableTrayIcon: true,
+  // 剪贴板卡片图标
+  cardIconEnable: true,
+  // 失去焦点隐藏
+  enableHideWhenBlur: true,
+  // 剪贴板历史存储数量
+  historyCapacity: 1,
+  historyCapacityNum: '50',
 
   // 全局快捷键
   globalShortcuts: {
@@ -58,6 +58,9 @@ const defaultConfig = {
       enable: true,
     },
   },
+
+  // 正则
+  regexList: [],
 };
 
 export default defaultConfig;
