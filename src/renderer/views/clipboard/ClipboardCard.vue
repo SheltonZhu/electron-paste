@@ -45,13 +45,26 @@
     </div>
     <div class="card-text">
       <p v-if="isText">
-        <span v-if="data.html" v-html="data.html" />
+        <span
+          v-if="data.html"
+          v-html="data.html"
+          style="pointer-events: none; position: relative"
+        />
         <span v-else>
           {{ data.text }}
         </span>
       </p>
-      <el-link type="primary" icon="el-icon-link" v-if="isLink"
-        >{{ data.text }}
+      <div style="height: 200px" v-if="isLink">
+        <iframe
+          :src="data.text"
+          class="viewPort"
+          frameborder="0"
+          scrolling="no"
+          style="pointer-events: none"
+        />
+      </div>
+      <el-link type="primary" icon="el-icon-link" v-if="isLink">
+        {{ data.text }}
       </el-link>
       <el-image v-if="isImage" :src="data.base64data">
         <div slot="error" class="image-slot">
@@ -395,6 +408,13 @@ export default {
 </script>
 
 <style scoped>
+.viewPort {
+  width: 1280px;
+  height: 720px;
+  -webkit-transform: scale(0.25);
+  -webkit-transform-origin: 0 0;
+}
+
 .clearfix:before,
 .clearfix:after {
   display: table;

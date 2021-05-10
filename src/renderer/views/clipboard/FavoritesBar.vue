@@ -22,9 +22,9 @@
             placeholder="请选择"
           >
             <el-option label="全部" value=""></el-option>
-            <el-option label="文本" value="Text"></el-option>
-            <el-option label="链接" value="Link"></el-option>
-            <el-option label="图片" value="Image"></el-option>
+            <el-option label="文本" :value="CARD_TYPE.TEXT"></el-option>
+            <el-option label="链接" :value="CARD_TYPE.LINK"></el-option>
+            <el-option label="图片" :value="CARD_TYPE.IMAGE"></el-option>
           </el-select>
           <el-button
             slot="append"
@@ -155,7 +155,7 @@ import Spot from '../../components/Spot';
 import FavoriteLabel from './FavoriteLabel';
 import { openSetting } from '../../ipc';
 import { mapState } from 'vuex';
-
+import { CARD_TYPE } from '../../../shared/env';
 export default {
   name: 'FavoritesBar',
   components: {
@@ -178,6 +178,7 @@ export default {
   },
   data: () => {
     return {
+      CARD_TYPE: CARD_TYPE,
       activeIndex: '/',
       searchValue: '',
       selectType: '',
