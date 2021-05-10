@@ -62,7 +62,7 @@
             }"
             @click="mainLabelClick"
           >
-            <spot color="#aaabab" />
+            <span class="el-icon-timer" style="font-weight: bolder" />
             <transition name="bounce" mode="out-in">
               <div
                 v-if="!isSearching"
@@ -311,7 +311,7 @@ export default {
       };
     },
     execSearchDebounce() {
-      return this.delay('execSearch', 200);
+      // return this.delay('execSearch', 200);
     },
     doSearch() {
       this.execSearchDebounce();
