@@ -13,7 +13,7 @@ const defaultConfig = {
   cardIconEnable: true,
   // 剪贴板历史存储数量
   historyCapacity: 1,
-  historyCapacityNum: 50,
+  historyCapacityNum: '50',
   regexList: [],
   // 背景模糊
   enableBackgroundBlur: true,
@@ -29,6 +29,11 @@ const defaultConfig = {
   ],
   // 背景颜色
   backgroundColor: '#ffffffbf',
+
+  // 卡片背景 字体 元信息 颜色
+  cardBgColor: '#fff',
+  cardFontColor: '#000',
+  cardMetaColor: '#bbb9b9',
 
   // 收藏便签 字体颜色 选中字体颜色 选中背景颜色
   favoritesFontColor: '#2c3e50',

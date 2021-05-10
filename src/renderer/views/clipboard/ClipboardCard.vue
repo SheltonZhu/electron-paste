@@ -20,8 +20,8 @@
     draggable
   >
     <div slot="header" class="clearfix">
-      <div style="display: inline-flex; height: 64px">
-        <div style="width: 246px">
+      <div style="display: inline-flex">
+        <div style="width: 200px; height: 80px">
           <div class="type">
             <p class="type">{{ data['name'] || data.cardType }}</p>
           </div>
@@ -30,9 +30,13 @@
           </div>
         </div>
 
-        <div class="card-icon" v-if="appConfig.cardIconEnable">
+        <div
+          class="card-icon"
+          style="height: 80px"
+          v-if="appConfig.cardIconEnable"
+        >
           <el-image
-            style="width: 64px; height: 64px"
+            style="width: 110px; height: 80px"
             :src="iconUrl"
             fit="cover"
           >
@@ -44,16 +48,16 @@
       </div>
     </div>
     <div class="card-text">
-      <p v-if="isText">
+      <div v-if="isText">
         <span
           v-if="data.html"
           v-html="data.html"
           style="pointer-events: none; position: relative"
         />
-        <span v-else>
+        <p v-else style="padding: 10px 20px">
           {{ data.text }}
-        </span>
-      </p>
+        </p>
+      </div>
       <div style="height: 200px" v-if="isLink">
         <iframe
           :src="data.text"
@@ -66,7 +70,7 @@
       <el-link type="primary" icon="el-icon-link" v-if="isLink">
         {{ data.text }}
       </el-link>
-      <el-image v-if="isImage" :src="data.base64data">
+      <el-image style="width: 330px" v-if="isImage" :src="data.base64data">
         <div slot="error" class="image-slot">
           <i class="el-icon-picture-outline"></i>
         </div>
@@ -409,9 +413,9 @@ export default {
 
 <style scoped>
 .viewPort {
-  width: 1280px;
-  height: 720px;
-  -webkit-transform: scale(0.25);
+  width: 1360px;
+  height: 768px;
+  -webkit-transform: scale(0.2425);
   -webkit-transform-origin: 0 0;
 }
 
@@ -432,21 +436,21 @@ export default {
 }
 
 .box-card p.type {
-  margin: 10px 0 5px 0;
+  margin: 16px 0 5px 0;
   font-size: large;
   color: #fff;
 }
 
 .box-card .card-text {
-  height: 285px;
+  height: 265px;
   overflow: hidden;
   white-space: normal;
   word-break: break-all;
 }
 
 .box-card .card-text img {
-  max-height: 285px;
-  max-width: 300px;
+  max-height: 265px;
+  max-width: 330px;
 }
 
 .box-card .card-text p {
@@ -456,12 +460,14 @@ export default {
 
 .box-card .card-text a {
   text-align: left;
+  padding: 0 20px;
 }
 
 .box-card .meta-info {
   color: #bbb9b9;
   font-size: smaller;
   margin-top: 1px;
+  padding: 0 20px;
   text-align: center;
 }
 
@@ -485,7 +491,7 @@ export default {
 .box-card {
   display: inline-block;
   width: 330px;
-  height: 380px;
+  height: 365px;
   margin-left: 20px;
   cursor: pointer;
   border: 5px solid #ffffff00;
@@ -501,9 +507,16 @@ export default {
 <style>
 .box-card .el-card__header {
   padding: 0 20px !important;
+  height: 80px !important;
   text-align: left;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  border-bottom: none;
+}
+
+.box-card .el-card__header .card-icon .el-image__error,
+.box-card .el-card__header .card-icon .el-image__inner {
+  width: 120% !important;
 }
 
 /*灰: #aaabab 红: #ff625c 绿: #84e162 紫: #d58fe6 黄: #ffd74a 蓝#15bbf9*/
@@ -532,7 +545,7 @@ export default {
 }
 
 .box-card .el-card__body {
-  padding: 10px 15px !important;
+  padding: 0 0 !important;
 }
 
 .box-card {

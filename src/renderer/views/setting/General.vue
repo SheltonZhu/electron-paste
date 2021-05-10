@@ -100,7 +100,6 @@
             :max="4"
             :step="1"
             :marks="{ 0: '10', 1: '50', 2: '100', 3: '500', 4: '∞' }"
-            @change="checkHistoryCapacity"
           >
           </el-slider>
         </div>
@@ -205,6 +204,9 @@ export default {
     ...mapActions(['changeConfig']),
     changeConfigDebounce: debounce(function (config) {
       this.changeConfig(config);
+      if (config.historyCapacityNum) {
+        checkHistoryCapacity();
+      }
     }, 100),
     clearHistory() {
       this.$confirm('清空剪贴板历史?', '提示', {
@@ -221,9 +223,6 @@ export default {
           });
         })
         .catch();
-    },
-    checkHistoryCapacity() {
-      checkHistoryCapacity();
     },
   },
 };

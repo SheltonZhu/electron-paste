@@ -87,6 +87,14 @@ ipcMain
   })
   .on(events.EVENT_APP_CHECK_HISTORY_CAPACITY, async (e) => {
     await db.clipboardCard.checkHistoryCapacity();
+    if (store.state.favorite === defaultHistoryFavorite) {
+      const retData = await db.clipboardCard.list(
+        defaultHistoryFavorite,
+        store.state.query,
+        store.state.searchType
+      );
+      store.commit('updateClipboardData', retData);
+    }
   })
   .on(events.EVENT_APP_CLIPBOARD_PASTE, async (e, params) => {
     hideClipboard();
