@@ -17,8 +17,8 @@
 </template>
 <script>
 import ClipboardCard from './ClipboardCard';
-import { mapState } from 'vuex';
-
+import { mapState, mapMutations } from 'vuex';
+import { listClipboardData } from '../../ipc';
 export default {
   name: 'ClipboardPanel',
   components: {
@@ -41,7 +41,10 @@ export default {
     },
   },
   methods: {
-    init() {},
+    ...mapMutations(['updateClipboardData']),
+    init() {
+      listClipboardData(this.favorite, this.query, this.searchType);
+    },
     onMouseWheel(e) {
       e.preventDefault();
       this.$refs.clipboard.scrollLeft += parseInt(e.deltaY);

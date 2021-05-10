@@ -74,6 +74,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
+import { CARD_TYPE } from '../../../shared/env';
 
 export default {
   name: 'ClipboardCard',
@@ -94,13 +95,9 @@ export default {
       default: [],
     },
   },
-  mounted() {
-    this.$nextTick(() => {
-      // this.defaultIcon = config.get('defaultIcon')
-    });
-  },
+  mounted() {},
   data: () => {
-    return { defaultIcon: '/default_icon.png' };
+    return { defaultIcon: '../static/icon.png' };
   },
   computed: {
     ...mapState(['appConfig', 'favoritesData']),
@@ -109,13 +106,13 @@ export default {
       return '';
     },
     isText() {
-      return this.data.cardType === 'Text';
+      return this.data.cardType === CARD_TYPE.TEXT;
     },
     isImage() {
-      return this.data.cardType === 'Image';
+      return this.data.cardType === CARD_TYPE.IMAGE;
     },
     isLink() {
-      return this.data.cardType === 'Link';
+      return this.data.cardType === CARD_TYPE.LINK;
     },
     metaInfo() {
       switch (true) {

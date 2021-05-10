@@ -18,7 +18,7 @@ import logger from './logger';
 // import robot from 'robotjs';
 import store from '../renderer/store';
 import pkg from '../../package.json';
-import './db';
+import db from './db';
 
 /**
  * ipc-main事件
@@ -66,6 +66,14 @@ ipcMain
   })
   .on(events.EVENT_APP_TOGGLE_MENU, () => {
     toggleMenu();
+  })
+  .on(events.EVENT_APP_LIST_CLIPBOARD_DATA, async (e, params) => {
+    const retData = await db.clipboardCard.list(
+      params.favorite,
+      params.query,
+      params.cardType
+    );
+    store.commit('updateClipboardData', retData);
   })
   .on(events.EVENT_APP_CLIPBOARD_PASTE, async (e, params) => {
     hideClipboard();

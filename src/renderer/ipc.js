@@ -86,3 +86,14 @@ export function hideAndPaste(options) {
 export function openSetting(options) {
   return ipcRenderer.send(events.EVENT_APP_OPEN_WINDOW_SETTING, options);
 }
+
+/**
+ * 查询数据
+ * */
+export function listClipboardData(favorite, query, cardType) {
+  return ipcRenderer.send(events.EVENT_APP_LIST_CLIPBOARD_DATA, {
+    favorite,
+    query,
+    cardType,
+  });
+}

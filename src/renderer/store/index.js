@@ -23,17 +23,7 @@ export default new Vuex.Store({
     favorite: defaultHistoryFavorite,
     searchType: '',
     query: '',
-    clipboardData: [
-      {
-        type: 'Text',
-        text: 'text',
-        html: `<html><head><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body><pre style="background-color:#2b2b2b;color:#a9b7c6;font-family:'JetBrains Mono',monospace;font-size:9.
-8pt;"><span style="color:#e8bf6a;">&lt;span&#32;</span><span style="color:#bababa;">v-if</span><span style="color:#a5c261;">="</span><span style="color:#9876aa;">data</span>.<span style="color:#9876aa;">ht
-ml</span><span style="color:#a5c261;">"&#32;</span><span style="color:#bababa;">v-html</span><span style="color:#a5c261;">="</span><span style="color:#9876aa;">data</span>.<span style="color:#9876aa;">html
-</span><span style="color:#a5c261;">"&#32;</span><span style="color:#e8bf6a;">/&gt;</span></pre></body></html>`,
-        meta: { charLength: 25 },
-      },
-    ],
+    clipboardData: [],
     favoritesData: [],
     dragData: {},
   },
@@ -62,6 +52,9 @@ ml</span><span style="color:#a5c261;">"&#32;</span><span style="color:#bababa;">
     // 更新设置页面
     updateView(state, targetView) {
       state.page = targetView.page;
+    },
+    updateClipboardData(state, data) {
+      state.clipboardData = data;
     },
   },
   actions: {

@@ -34,3 +34,5 @@ export const EVENT_APP_CLIPBOARD_PASTE = 'app.clipboard.paste';
 export const EVENT_APP_CHANGE_BIND = 'app.change.bind';
 
 export const EVENT_APP_OPEN_WINDOW_SETTING = 'app.open.window.setting';
+
+export const EVENT_APP_LIST_CLIPBOARD_DATA = 'app.list.clipboard.data';

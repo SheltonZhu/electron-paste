@@ -1,6 +1,7 @@
 import { clipboard } from 'electron';
 import { defaultHistoryFavorite } from '../shared/env';
 import store from '../renderer/store';
+import { CARD_TYPE } from './schame';
 
 class clipboardCardBuilder {
   constructor() {
@@ -26,7 +27,7 @@ class clipboardCardBuilder {
 export class TextDataBuilder extends clipboardCardBuilder {
   constructor() {
     super();
-    this.data.cardType = 'Text';
+    this.data.cardType = CARD_TYPE.TEXT;
   }
 
   setMainData(text, rtf, html) {
@@ -46,7 +47,7 @@ export class TextDataBuilder extends clipboardCardBuilder {
 export class ImageDataBuilder extends clipboardCardBuilder {
   constructor() {
     super();
-    this.data.cardType = 'Image';
+    this.data.cardType = CARD_TYPE.IMAGE;
   }
 
   setMainData(image) {
@@ -64,7 +65,7 @@ export class ImageDataBuilder extends clipboardCardBuilder {
 export class LinkDataBuilder extends clipboardCardBuilder {
   constructor() {
     super();
-    this.data.cardType = 'Link';
+    this.data.cardType = CARD_TYPE.LINK;
   }
 
   setMainData(text) {
