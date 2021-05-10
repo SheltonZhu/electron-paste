@@ -127,6 +127,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { debounce } from '../../../shared/utils';
+import { clearClipboardData, checkHistoryCapacity } from '../../ipc';
 
 export default {
   name: 'General',
@@ -206,18 +207,23 @@ export default {
       this.changeConfig(config);
     }, 100),
     clearHistory() {
-      // TODO 清空历史
       this.$confirm('清空剪贴板历史?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       })
-        .then(() => {})
-        .catch(() => {})
-        .finally(() => {});
+        .then(async () => {
+          const affectedNum = clearClipboardData();
+          this.$message({
+            message: `${affectedNum} 条记录已删除！`,
+            type: 'success',
+            duration: 1000,
+          });
+        })
+        .catch();
     },
     checkHistoryCapacity() {
-      // TODO 检查历史容量
+      checkHistoryCapacity();
     },
   },
 };
@@ -256,6 +262,7 @@ export default {
   color: #ffc259;
   font-size: small;
 }
+
 .clear-history {
   padding: 2px 20px;
 }

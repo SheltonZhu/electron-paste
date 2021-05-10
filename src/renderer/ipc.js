@@ -91,9 +91,23 @@ export function openSetting(options) {
  * 查询数据
  * */
 export function listClipboardData(favorite, query, cardType) {
-  return ipcRenderer.send(events.EVENT_APP_LIST_CLIPBOARD_DATA, {
+  return ipcRenderer.send(events.EVENT_APP_CLIPBOARD_DATA_LIST, {
     favorite,
     query,
     cardType,
   });
+}
+
+/**
+ * 清除历史记录
+ * */
+export function clearClipboardData() {
+  return ipcRenderer.sendSync(events.EVENT_APP_CLIPBOARD_DATA_CLEAR);
+}
+
+/**
+ * 清除历史记录
+ * */
+export function checkHistoryCapacity() {
+  return ipcRenderer.send(events.EVENT_APP_CHECK_HISTORY_CAPACITY);
 }

@@ -10883,11 +10883,6 @@ vm-browserify@^1.0.1:
   resolved "https://registry.npm.taobao.org/vm-browserify/download/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha1-eGQcSIuObKkadfUR56OzKobl3aA=
 
-vue-devtools@^5.1.4:
-  version "5.1.4"
-  resolved "https://registry.npm.taobao.org/vue-devtools/download/vue-devtools-5.1.4.tgz#265a7458ade2affb291739176964256b597fa302"
-  integrity sha1-Jlp0WK3ir/spFzkXaWQla1l/owI=
-
 vue-electron@^1.0.6:
   version "1.0.6"
   resolved "https://registry.npm.taobao.org/vue-electron/download/vue-electron-1.0.6.tgz#e798e03180b8933539defe31f92e53b9242b9406"

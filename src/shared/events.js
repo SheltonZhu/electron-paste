@@ -35,4 +35,8 @@ export const EVENT_APP_CHANGE_BIND = 'app.change.bind';
 
 export const EVENT_APP_OPEN_WINDOW_SETTING = 'app.open.window.setting';
 
-export const EVENT_APP_LIST_CLIPBOARD_DATA = 'app.list.clipboard.data';
+export const EVENT_APP_CLIPBOARD_DATA_LIST = 'app.clipboard.data.list';
+
+export const EVENT_APP_CLIPBOARD_DATA_CLEAR = 'app.clipboard.data.clear';
+
+export const EVENT_APP_CHECK_HISTORY_CAPACITY = 'app.check.history.capacity';

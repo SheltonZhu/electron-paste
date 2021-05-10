@@ -14,6 +14,9 @@ import {
 import defaultConfig, { mergeConfig } from '../shared/config';
 import { showNotification } from './notification';
 import { toggleMenu } from './menu';
+import { CARD_TYPE, defaultHistoryFavorite } from '../shared/env';
+import { clone } from '../shared/utils';
+
 import logger from './logger';
 // import robot from 'robotjs';
 import store from '../renderer/store';
@@ -67,13 +70,23 @@ ipcMain
   .on(events.EVENT_APP_TOGGLE_MENU, () => {
     toggleMenu();
   })
-  .on(events.EVENT_APP_LIST_CLIPBOARD_DATA, async (e, params) => {
+  .on(events.EVENT_APP_CLIPBOARD_DATA_LIST, async (e, params) => {
     const retData = await db.clipboardCard.list(
       params.favorite,
       params.query,
       params.cardType
     );
     store.commit('updateClipboardData', retData);
+  })
+  .on(events.EVENT_APP_CLIPBOARD_DATA_CLEAR, async (e) => {
+    const affectedNum = await db.clipboardCard.clear(defaultHistoryFavorite);
+    if (store.state.favorite === defaultHistoryFavorite) {
+      store.commit('updateClipboardData', []);
+    }
+    e.returnValue = affectedNum;
+  })
+  .on(events.EVENT_APP_CHECK_HISTORY_CAPACITY, async (e) => {
+    await db.clipboardCard.checkHistoryCapacity();
   })
   .on(events.EVENT_APP_CLIPBOARD_PASTE, async (e, params) => {
     hideClipboard();
@@ -108,4 +121,37 @@ export function changeBindKey(funcName, oldKey, newKey) {
     oldKey,
     newKey,
   }).then();
+}
+
+export function addOneClipboardData(data) {
+  if (store.state.favorite === defaultHistoryFavorite) {
+    if (store.state.query) {
+      if (data.cardType === CARD_TYPE.IMAGE) {
+        if (store.state.searchType === CARD_TYPE.IMAGE)
+          updateClipboardData(data);
+      } else {
+        if (
+          (!store.state.searchType ||
+            store.state.searchType === data.cardType) &&
+          new RegExp(store.state.query, 'i').test(data.copyContent)
+        ) {
+          updateClipboardData(data);
+        }
+      }
+    } else {
+      if (!store.state.searchType || store.state.searchType === data.cardType) {
+        updateClipboardData(data);
+      }
+    }
+  }
+}
+
+function updateClipboardData(data) {
+  const list = clone(store.state.clipboardData, true);
+  list.unshift(data);
+
+  if (list.length > store.state.appConfig.historyCapacityNum) {
+    list.pop();
+  }
+  store.commit('updateClipboardData', list);
 }

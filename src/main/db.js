@@ -7,7 +7,7 @@ import {
   favoritesSchema,
   clipboardCardIconSchema,
 } from './schame';
-import { CARD_TYPE } from '../shared/env'
+import { CARD_TYPE } from '../shared/env';
 import md5 from 'md5';
 import { defaultHistoryFavorite } from '../shared/env';
 import store from '../renderer/store';
@@ -82,19 +82,20 @@ clipboardCard.list = async (favorite, query, cardType) => {
       if (!cardType) {
         queryObj.copyType = { $ne: CARD_TYPE.IMAGE };
       }
-      // queryObj.copyContent = {$or:{ $regex: new RegExp(`.*${queryKey}.*`, "i")} };
       queryObj['$or'] = [
         { name: { $regex: new RegExp(`.*${query}.*`, 'i') } },
         { copyContent: { $regex: new RegExp(`.*${query}.*`, 'i') } },
       ];
     }
   }
-  return clipboardCard
+  return await clipboardCard
     .find(queryObj, { createdAt: -1, updatedAt: -1 })
     .sort({ copyDate: -1 })
     .exec();
 };
-
+clipboardCard.clear = async (favorite) => {
+  return await clipboardCard.remove({ favorite }, { multi: true });
+};
 const db = {
   clipboardCard: clipboardCard,
   clipboardCardIcon: clipboardCardIcon,

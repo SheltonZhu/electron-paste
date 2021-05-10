@@ -1,7 +1,6 @@
 import { clipboard } from 'electron';
-import { defaultHistoryFavorite } from '../shared/env';
+import { defaultHistoryFavorite, CARD_TYPE } from '../shared/env';
 import store from '../renderer/store';
-import { CARD_TYPE } from './schame';
 
 class clipboardCardBuilder {
   constructor() {
