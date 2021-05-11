@@ -20,7 +20,7 @@
           '--labelFontColorSelect': labelFontColorSelect,
           '--labelBgColorSelect': labelBgColorSelect,
         }"
-        @click="onLabelClick"
+        @click="clickFavorite"
         @contextmenu.native="onContextmenu"
         ref="dragBtn"
       >
@@ -64,7 +64,7 @@
 
 <script>
 import Spot from '../../components/Spot';
-import { mapState } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 
 export default {
   name: 'FavoriteLabel',
@@ -112,6 +112,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(['updateFavorite']),
     onCardDrop() {
       window.log.info('drop');
       if (this.labelData._id !== this.dragData.table) {
@@ -138,9 +139,8 @@ export default {
       window.log.info('out');
       if (this.dragEl === e.target) this.isDroppable = false;
     },
-    onLabelClick() {
-      if (!this.isSelected)
-        this.$store.commit('updateTable', this.labelData._id);
+    clickFavorite() {
+      if (!this.isSelected) this.updateFavorite(this.labelData._id);
     },
     removeLabel() {
       // this.$parent.doRemoveLabel(this.labelData);

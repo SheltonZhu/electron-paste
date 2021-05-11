@@ -37,7 +37,7 @@
           v-if="appConfig.cardIconEnable"
         >
           <el-image
-            style="width: 110px; height: 80px"
+            style="width: 110px; height: 80px; pointer-events: none"
             :src="iconUrl"
             fit="cover"
           >
@@ -62,13 +62,17 @@
       <div style="height: 200px" v-if="isLink">
         <iframe
           :src="data.text"
-          class="viewPort"
-          frameborder="0"
-          scrolling="no"
-          style="pointer-events: none"
-        />
+          class="iframe-viewport"
+          style="border: none; pointer-events: none; overflow: hidden"
+        >
+        </iframe>
       </div>
-      <el-link type="primary" icon="el-icon-link" v-if="isLink">
+      <el-link
+        type="primary"
+        icon="el-icon-link"
+        v-if="isLink"
+        :underline="false"
+      >
         {{ data.text }}
       </el-link>
       <el-image style="width: 330px" v-if="isImage" :src="data.base64data">
@@ -413,7 +417,7 @@ export default {
 </script>
 
 <style scoped>
-.viewPort {
+.iframe-viewport {
   width: 1360px;
   height: 768px;
   -webkit-transform: scale(0.2425);

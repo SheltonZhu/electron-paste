@@ -56,6 +56,15 @@ export default new Vuex.Store({
     updateClipboardData(state, data) {
       state.clipboardData = data;
     },
+    updateQuery(state, query) {
+      state.query = query;
+    },
+    updateSearchType(state, searchType) {
+      state.searchType = searchType;
+    },
+    updateFavorite(state, favorite) {
+      state.favorite = favorite;
+    },
   },
   actions: {
     initConfig({ commit }, { config, meta }) {
@@ -71,6 +80,15 @@ export default new Vuex.Store({
 
     changePage({ commit }, targetView) {
       commit('updateView', targetView);
+    },
+    changeSearch({ commit }, params) {
+      console.log('execSearch', params.searchType);
+
+      return new Promise((resolve, reject) => {
+        commit('updateQuery', params.query);
+        commit('updateSearchType', params.searchType);
+        resolve();
+      });
     },
   },
   plugins: [

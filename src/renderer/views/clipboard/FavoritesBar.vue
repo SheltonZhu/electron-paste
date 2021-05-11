@@ -7,7 +7,7 @@
           prefix-icon="el-icon-search"
           v-if="isSearching"
           ref="searchBar"
-          placeholder="请输入内容"
+          placeholder="请输入检索内容（支持正则）"
           size="small"
           v-model="searchValue"
           class="input-with-select"
@@ -60,7 +60,7 @@
               '--labelFontColorSelect': labelFontColorSelect,
               '--labelBgColorSelect': labelBgColorSelect,
             }"
-            @click="mainLabelClick"
+            @click="clickDefaultFavorite"
           >
             <span class="el-icon-timer" style="font-weight: bolder" />
             <transition name="bounce" mode="out-in">
@@ -153,9 +153,12 @@
 <script>
 import Spot from '../../components/Spot';
 import FavoriteLabel from './FavoriteLabel';
-import { openSetting } from '../../ipc';
-import { mapState } from 'vuex';
-import { CARD_TYPE } from '../../../shared/env';
+import { openSetting, listClipboardData } from '../../ipc';
+import { mapActions, mapMutations, mapState } from 'vuex';
+import { debounce } from '../../../shared/utils';
+import { CARD_TYPE, defaultHistoryFavorite } from '../../../shared/env';
+import Mousetrap from 'mousetrap';
+
 export default {
   name: 'FavoritesBar',
   components: {
@@ -179,36 +182,32 @@ export default {
   data: () => {
     return {
       CARD_TYPE: CARD_TYPE,
-      activeIndex: '/',
       searchValue: '',
       selectType: '',
       isSearching: false,
       labels: [],
       newLabelValue: '未命名',
       newLabelVisible: false,
-      delay: null,
     };
   },
   mounted() {
     // this.initLabels();
-    // this.initShortCut();
-    // this.delay = this.Debounce();
+    this.initShortCut();
   },
   watch: {
-    // selectType() {
-    // this.changeSearchType();
-    // },
-    // table() {
-    //   this.resetSearch();
-    // },
+    selectType() {
+      this.changeSearchType();
+    },
   },
   computed: {
-    ...mapState(['clipboardData', 'query', 'table', 'searchType']),
+    ...mapState(['clipboardData', 'query', 'favorite', 'searchType']),
     isSelected() {
-      return this.table === 'historyData';
+      return this.favorite === defaultHistoryFavorite;
     },
   },
   methods: {
+    ...mapActions(['changeSearch']),
+    ...mapMutations(['updateFavorite']),
     initLabels() {
       // this.$electron.remote
       //   .getGlobal('labelDb')
@@ -219,18 +218,15 @@ export default {
       //   });
     },
     initShortCut() {
-      // this.$electron.remote.getCurrentWindow().on('show', () => {
-      //   this.$electron.remote.globalShortcut.register('Alt+S', () => {
-      //     if (!this.isSearching) {
-      //       this.$refs.searchBtn.$el.click();
-      //     } else {
-      //       this.$refs.searchBar.focus();
-      //       this.$refs.searchBar.select();
-      //     }
-      //   });
-      // });
+      Mousetrap.bind('alt+s', () => {
+        if (!this.isSearching) {
+          this.$refs.searchBtn.$el.click();
+        } else {
+          this.$refs.searchBar.focus();
+          this.$refs.searchBar.select();
+        }
+      });
     },
-
     clickLabelAdder() {
       this.newLabelVisible = true;
       this.$nextTick(() => {
@@ -299,20 +295,9 @@ export default {
         this.$refs.searchBar.focus();
       });
     },
-    Debounce() {
-      let timeout = null;
-      return (fnName, time) => {
-        if (timeout) {
-          clearTimeout(timeout);
-        }
-        timeout = setTimeout(() => {
-          this[fnName]();
-        }, time);
-      };
-    },
-    execSearchDebounce() {
-      // return this.delay('execSearch', 200);
-    },
+    execSearchDebounce: debounce(function () {
+      this.execSearch();
+    }, 200),
     doSearch() {
       this.execSearchDebounce();
     },
@@ -321,57 +306,26 @@ export default {
       this.resetSearch();
     },
     resetSearch() {
-      // this.searchValue = '';
-      // if (this.selectType) {
-      //   this.selectType = '';
-      // } else {
-      //   this.execSearchDebounce();
-      // }
+      this.searchValue = '';
+      if (this.selectType) {
+        this.selectType = '';
+      } else {
+        this.execSearchDebounce();
+      }
     },
     changeSearchType() {
       this.execSearch();
     },
     execSearch() {
-      // this.$store.commit('loading', true);
-      // this.$store.commit('updateQuery', this.searchValue.trim());
-      // this.$store.commit('updateSearchType', this.selectType);
-      // this.$electron.remote
-      //   .getGlobal('db')
-      //   .readAll(this.table, this.query, this.searchType)
-      //   .then((ret) => {
-      //     this.$store.commit('updateClipboardData', ret);
-      //     this.$store.commit('loading', false);
-      //   });
+      this.changeSearch({
+        query: this.searchValue,
+        searchType: this.selectType,
+      }).then(() => {
+        listClipboardData(this.favorite, this.query, this.searchType);
+      });
     },
-    clearClipboard() {
-      if (!this.clipboardData.length > 0) {
-        return;
-      }
-      // this.$electron.remote.getGlobal('shortcut').unregisterEsc();
-      this.$confirm('清空剪贴板历史?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(async () => {
-          // const numRemoved = await this.$electron.remote
-          //   .getGlobal('db')
-          //   .removeAll('historyData');
-          // this.$store.commit('updateClipboardData', []);
-          // this.$message({
-          //   message: `${numRemoved} 条已删除！`,
-          //   type: 'success',
-          //   duration: 1000,
-          // });
-          // window.log.info(`${numRemoved} clear.`);
-        })
-        .catch(() => {})
-        .finally(() => {
-          // this.$electron.remote.getGlobal('shortcut').registerEsc();
-        });
-    },
-    mainLabelClick() {
-      // if (!this.isSelected) this.$store.commit('updateTable', 'historyData');
+    clickDefaultFavorite() {
+      if (!this.isSelected) this.updateFavorite(defaultHistoryFavorite);
     },
     quitApp() {
       this.$electron.remote.app.quit();
@@ -383,8 +337,6 @@ export default {
     },
   },
 };
-
-export class FavoritesBar {}
 </script>
 
 <style scoped>
