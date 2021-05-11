@@ -40,7 +40,7 @@
           @click="clickSearchBtn"
           ref="searchBtn"
           class="el-icon-search search-btn"
-          :style="{ color: labelFontColor }"
+          :style="{ color: favoritesFontColor }"
         ></el-button>
       </transition>
 
@@ -50,15 +50,15 @@
         <el-tooltip :disabled="!isSearching" content="剪贴板历史">
           <el-button
             :style="{
-              color: labelFontColor,
+              color: favoritesFontColor,
               color: isSelected
-                ? labelFontColorSelect + '!important'
-                : labelFontColor,
+                ? favoritesFontColorSelected + '!important'
+                : favoritesFontColor,
               background: isSelected
-                ? labelBgColorSelect + '!important'
+                ? favoritesBgColorSelected + '!important'
                 : 'none',
-              '--labelFontColorSelect': labelFontColorSelect,
-              '--labelBgColorSelect': labelBgColorSelect,
+              '--favoritesFontColorSelected': favoritesFontColorSelected,
+              '--favoritesBgColorSelected': favoritesBgColorSelected,
             }"
             @click="clickDefaultFavorite"
           >
@@ -76,19 +76,19 @@
 
         <favorite-label
           :is-searching="isSearching"
-          :labelFontColor="labelFontColor"
-          :labelFontColorSelect="labelFontColorSelect"
-          :labelBgColorSelect="labelBgColorSelect"
-          v-for="labelData in labels"
-          :key="labelData._id"
-          :label-data="labelData"
+          :favoritesFontColor="favoritesFontColor"
+          :favoritesFontColorSelected="favoritesFontColorSelected"
+          :favoritesBgColorSelected="favoritesBgColorSelected"
+          v-for="favorite in favoritesData"
+          :key="favorite._id"
+          :favorite-data="favorite"
         />
         <!--    添加新标签输入框    -->
         <div v-if="newLabelVisible">
           <el-button
             :style="{
-              color: labelFontColorSelect + '!important',
-              background: labelBgColorSelect + '!important',
+              color: favoritesFontColorSelected + '!important',
+              background: favoritesBgColorSelected + '!important',
               'padding-top': '0 !important',
               'padding-bottom': '0 !important',
               border: 'none !important',
@@ -111,14 +111,14 @@
       <el-button
         v-if="!isSearching"
         class="el-icon-plus add-btn"
-        :style="{ color: labelFontColor }"
+        :style="{ color: favoritesFontColor }"
         @click="clickLabelAdder"
       ></el-button>
 
       <!--   more按钮   -->
       <el-dropdown style="float: right; cursor: pointer" trigger="click">
         <el-button
-          :style="{ color: labelFontColor }"
+          :style="{ color: favoritesFontColor }"
           class="el-dropdown-link el-icon-more-outline more-btn"
         >
         </el-button>
@@ -166,15 +166,15 @@ export default {
     FavoriteLabel,
   },
   props: {
-    labelFontColor: {
+    favoritesFontColor: {
       type: String,
       default: '#2c3e50',
     },
-    labelFontColorSelect: {
+    favoritesFontColorSelected: {
       type: String,
       default: '#fff',
     },
-    labelBgColorSelect: {
+    favoritesBgColorSelected: {
       type: String,
       default: '#b9b9b9d1',
     },
@@ -185,7 +185,6 @@ export default {
       searchValue: '',
       selectType: '',
       isSearching: false,
-      labels: [],
       newLabelValue: '未命名',
       newLabelVisible: false,
     };
@@ -200,7 +199,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(['clipboardData', 'query', 'favorite', 'searchType']),
+    ...mapState(['favoritesData', 'query', 'favorite', 'searchType']),
     isSelected() {
       return this.favorite === defaultHistoryFavorite;
     },
@@ -402,8 +401,8 @@ export default {
 }
 
 .clipboard-tag .el-button:hover {
-  color: var(--labelFontColorSelect) !important;
-  background: var(--labelBgColorSelect) !important;
+  color: var(--favoritesFontColorSelected) !important;
+  background: var(--favoritesBgColorSelected) !important;
 }
 
 .el-select-dropdown {

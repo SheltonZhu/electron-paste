@@ -39,7 +39,7 @@
           <el-col :span="6">
             <div class="type">使用背景图</div>
           </el-col>
-          <el-col :span="1">
+          <el-col :span="4">
             <div class="switch">
               <el-switch
                 v-model="enableBackgroundPic"
@@ -49,10 +49,26 @@
               </el-switch>
             </div>
           </el-col>
+          <el-col :span="4">
+            <el-upload
+              style="margin: 10px 0"
+              class="upload-demo"
+              action=""
+              :limit="1"
+              :before-upload="addLocalPic"
+            >
+              <el-button
+                size="small"
+                type="primary"
+                :disabled="!appConfig.enableBackgroundPic"
+                >浏览本地图片</el-button
+              >
+            </el-upload>
+          </el-col>
           <el-col :span="6">
             <div class="type">背景颜色</div>
           </el-col>
-          <el-col :span="11">
+          <el-col :span="4">
             <div class="switch">
               <el-color-picker
                 v-model="backgroundColor"
@@ -94,31 +110,21 @@
             </span>
           </div>
         </el-row>
-        <el-row class="vertically-center" v-if="appConfig.enableBackgroundPic">
-          <!--          <el-input-->
-          <!--            style="margin-right: 10px; width: 250px"-->
-          <!--            placeholder="图片URI地址"-->
-          <!--            v-model="newPicUrl"-->
-          <!--            @keyup.enter.native="addBackgroundPic"-->
-          <!--          >-->
-          <!--            <el-button-->
-          <!--              size="mini"-->
-          <!--              slot="append"-->
-          <!--              icon="el-icon-plus"-->
-          <!--              @click="addBackgroundPic"-->
-          <!--            ></el-button>-->
-          <!--          </el-input>-->
-
-          <el-upload
-            style="margin: 10px 0"
-            class="upload-demo"
-            action=""
-            :limit="1"
-            :before-upload="addLocalPic"
-          >
-            <el-button size="small" type="primary">浏览本地图片</el-button>
-          </el-upload>
-        </el-row>
+        <!--        <el-row class="vertically-center" v-if="appConfig.enableBackgroundPic">-->
+        <!--          <el-input-->
+        <!--            style="margin-right: 10px; width: 250px"-->
+        <!--            placeholder="图片URI地址"-->
+        <!--            v-model="newPicUrl"-->
+        <!--            @keyup.enter.native="addBackgroundPic"-->
+        <!--          >-->
+        <!--            <el-button-->
+        <!--              size="mini"-->
+        <!--              slot="append"-->
+        <!--              icon="el-icon-plus"-->
+        <!--              @click="addBackgroundPic"-->
+        <!--            ></el-button>-->
+        <!--          </el-input>-->
+        <!--        </el-row>-->
       </div>
       <!--   背景图 end   -->
     </div>
@@ -439,7 +445,7 @@ export default {
   overflow-y: hidden;
   max-height: 105px;
   white-space: nowrap;
-  margin: 5px 40px 5px;
+  margin: 20px 100px;
   text-align: center;
 }
 

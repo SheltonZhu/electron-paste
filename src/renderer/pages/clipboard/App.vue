@@ -23,9 +23,9 @@
     >
       <el-header>
         <favorites-bar
-          :labelFontColor="appConfig.favoritesFontColor"
-          :labelFontColorSelect="appConfig.favoritesFontColorSelected"
-          :labelBgColorSelect="appConfig.favoritesBgColorSelected"
+          :favoritesFontColor="appConfig.favoritesFontColor"
+          :favoritesFontColorSelected="appConfig.favoritesFontColorSelected"
+          :favoritesBgColorSelected="appConfig.favoritesBgColorSelected"
         />
       </el-header>
       <el-main>

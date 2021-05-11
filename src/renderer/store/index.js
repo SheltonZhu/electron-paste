@@ -24,7 +24,7 @@ export default new Vuex.Store({
     searchType: '',
     query: '',
     clipboardData: [],
-    favoritesData: [],
+    favoritesData: [{ _id: 1, name: 'link', color: '#84e162' }],
     dragData: {},
   },
   mutations: {
@@ -65,6 +65,9 @@ export default new Vuex.Store({
     updateFavorite(state, favorite) {
       state.favorite = favorite;
     },
+    updateDragData(state, data) {
+      state.dragData = data;
+    },
   },
   actions: {
     initConfig({ commit }, { config, meta }) {
@@ -82,13 +85,14 @@ export default new Vuex.Store({
       commit('updateView', targetView);
     },
     changeSearch({ commit }, params) {
-      console.log('execSearch', params.searchType);
-
       return new Promise((resolve, reject) => {
         commit('updateQuery', params.query);
         commit('updateSearchType', params.searchType);
         resolve();
       });
+    },
+    saveDragData({ commit }, data) {
+      commit('updateDragData', data);
     },
   },
   plugins: [

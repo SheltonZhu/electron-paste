@@ -57,6 +57,34 @@ const defaultConfig = {
       key: 'ESCAPE',
       enable: true,
     },
+    interSearch: {
+      key: 'Alt+S',
+      enable: false,
+    },
+    lastFavorite: {
+      key: 'Alt+[',
+      enable: false,
+    },
+    nextFavorite: {
+      key: 'Alt+]',
+      enable: false,
+    },
+    quickPaste: {
+      key: 'Alt+1..9',
+      enable: false,
+    },
+    lastCard: {
+      key: '←',
+      enable: false,
+    },
+    nextCart: {
+      key: '→',
+      enable: false,
+    },
+    copyOrPaste: {
+      key: 'ENTER',
+      enable: false,
+    },
   },
 
   // 正则

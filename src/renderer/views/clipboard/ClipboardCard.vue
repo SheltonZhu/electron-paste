@@ -95,7 +95,7 @@
   </el-card>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { CARD_TYPE } from '../../../shared/env';
 
 export default {
@@ -158,13 +158,14 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['saveDragData']),
     onDragStart() {
-      window.log.info('dragStart');
-      // this.$store.commit('updateDragData', this.data);
+      console.log('dragStart');
+      this.saveDragData(this.data);
     },
     onDragEnd() {
-      window.log.info('dragEnd');
-      // this.$store.commit('updateDragData', null);
+      console.log('dragEnd');
+      this.saveDragData(null);
     },
     hideMainWindow() {
       this.$electron.remote.getCurrentWindow().hide();

@@ -64,10 +64,7 @@ export const favoritesSchema = {
     color: {
       type: 'string',
     },
-    sort: {
-      type: 'number',
-    },
   },
-  required: ['name', 'color', 'sort'],
+  required: ['name', 'color'],
   additionalProperties: false,
 };

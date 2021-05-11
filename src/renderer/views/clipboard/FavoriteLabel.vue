@@ -8,29 +8,30 @@
     <el-tooltip
       v-if="!isRenaming"
       :disabled="!isSearching"
-      :content="labelData.name"
+      :content="favoriteData.name"
     >
       <el-button
         :style="{
-          color: labelFontColor,
+          color: favoritesFontColor,
           color: isSelected
-            ? labelFontColorSelect + '!important'
-            : labelFontColor,
-          background: isSelected ? labelBgColorSelect + '!important' : 'none',
-          '--labelFontColorSelect': labelFontColorSelect,
-          '--labelBgColorSelect': labelBgColorSelect,
+            ? favoritesFontColorSelected + '!important'
+            : favoritesFontColor,
+          background: isSelected
+            ? favoritesBgColorSelected + '!important'
+            : 'none',
+          '--favoritesFontColorSelected': favoritesFontColorSelected,
+          '--favoritesBgColorSelected': favoritesBgColorSelected,
         }"
         @click="clickFavorite"
-        @contextmenu.native="onContextmenu"
         ref="dragBtn"
       >
-        <spot :color="labelData.color" />
+        <spot :color="favoriteData.color" />
         <transition name="bounce" mode="out-in">
           <div
             v-if="!isSearching"
             style="margin-left: 10px; display: inline-block"
           >
-            {{ labelData.name }}
+            {{ favoriteData.name }}
           </div>
         </transition>
       </el-button>
@@ -40,14 +41,14 @@
       <el-button
         class="add-box"
         :style="{
-          color: labelFontColorSelect + '!important',
-          background: labelBgColorSelect + '!important',
+          color: favoritesFontColorSelected + '!important',
+          background: favoritesBgColorSelected + '!important',
           'padding-top': '0 !important',
           'padding-bottom': '0 !important',
           border: 'none !important',
         }"
       >
-        <spot :color="labelData.color" />
+        <spot :color="favoriteData.color" />
         <el-input
           class="rename-label"
           size="small"
@@ -64,27 +65,27 @@
 
 <script>
 import Spot from '../../components/Spot';
-import { mapMutations, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'FavoriteLabel',
   props: {
-    labelData: {
+    favoriteData: {
       type: Object,
     },
     isSearching: {
       type: Boolean,
       default: false,
     },
-    labelFontColor: {
+    favoritesFontColor: {
       type: String,
       default: '#2c3e50',
     },
-    labelFontColorSelect: {
+    favoritesFontColorSelected: {
       type: String,
       default: '#fff',
     },
-    labelBgColorSelect: {
+    favoritesBgColorSelected: {
       type: String,
       default: '#b9b9b9d1',
     },
@@ -102,48 +103,47 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.newName = this.labelData.name;
+      this.newName = this.favoriteData.name;
     });
   },
   computed: {
     ...mapState(['favorite', 'dragData']),
     isSelected() {
-      return this.favorite === this.labelData._id;
+      return this.favorite === this.favoriteData._id;
     },
   },
   methods: {
-    ...mapMutations(['updateFavorite']),
     onCardDrop() {
-      window.log.info('drop');
-      if (this.labelData._id !== this.dragData.table) {
+      console.log('drop');
+      if (this.favoriteData._id !== this.dragData.table) {
         const newData = Object.assign({}, this.dragData);
-        newData.table = this.labelData._id;
+        newData.table = this.favoriteData._id;
         delete newData._id;
-        this.$electron.remote
-          .getGlobal('db')
-          .create(newData)
-          .then((ret) => {
-            window.log.info('add favorite :', ret);
-          });
+        // this.$electron.remote
+        //   .getGlobal('db')
+        //   .create(newData)
+        //   .then((ret) => {
+        //     console.log('add favorite :', ret);
+        //   });
       }
       this.isDroppable = false;
     },
     onCardDragIn(e) {
-      window.log.info('in');
+      console.log('in');
       this.dragEl = e.target;
-      if (this.labelData._id !== this.dragData.table) {
+      if (this.favoriteData._id !== this.dragData.table) {
         this.isDroppable = true;
       }
     },
     onCardDragOut(e) {
-      window.log.info('out');
+      console.log('out');
       if (this.dragEl === e.target) this.isDroppable = false;
     },
     clickFavorite() {
-      if (!this.isSelected) this.updateFavorite(this.labelData._id);
+      if (!this.isSelected) this.updateFavorite(this.favoriteData._id);
     },
     removeLabel() {
-      // this.$parent.doRemoveLabel(this.labelData);
+      // this.$parent.doRemoveLabel(this.favoriteData);
     },
     onRenameLabel() {
       this.isRenaming = true;
@@ -153,28 +153,31 @@ export default {
       });
     },
     doRenameLabel() {
-      if (!this.newName.trim() || this.newName.trim() === this.labelData.name) {
-        this.newName = this.labelData.name;
+      if (
+        !this.newName.trim() ||
+        this.newName.trim() === this.favoriteData.name
+      ) {
+        this.newName = this.favoriteData.name;
         this.isRenaming = false;
       } else {
         // this.$electron.remote
         //   .getGlobal('labelDb')
-        //   .rename(this.labelData._id, this.newName)
+        //   .rename(this.favoriteData._id, this.newName)
         //   .then((newLabel) => {
         //     window.log.info('update: ', newLabel);
-        //     this.labelData.name = newLabel.name;
+        //     this.favoriteData.name = newLabel.name;
         //     this.isRenaming = false;
         //   });
       }
     },
     onSelectColor(color) {
-      if (color !== this.labelData.color) {
+      if (color !== this.favoriteData.color) {
         // this.$electron.remote
         //   .getGlobal('labelDb')
-        //   .recolor(this.labelData._id, color)
+        //   .recolor(this.favoriteData._id, color)
         //   .then((newLabel) => {
         //     window.log.info('update: ', newLabel);
-        //     this.labelData.color = newLabel.color;
+        //     this.favoriteData.color = newLabel.color;
         //     this.$forceUpdate();
         //   });
       }
@@ -226,7 +229,7 @@ export default {
     //   });
     //   const dom = new component().$mount().$el;
     //   const el = document.getElementsByClassName(
-    //     `context-menu__${this.labelData._id}`
+    //     `context-menu__${this.favoriteData._id}`
     //   )[0].children[0];
     //   el.appendChild(dom);
     // },
@@ -247,7 +250,7 @@ export default {
     //   this.$contextmenu({
     //     items: items,
     //     event,
-    //     customClass: `context-menu__${this.labelData._id} context-menu`,
+    //     customClass: `context-menu__${this.favoriteData._id} context-menu`,
     //     zIndex: 3,
     //   });
     //   this.$nextTick(this.initColorfulSpots);

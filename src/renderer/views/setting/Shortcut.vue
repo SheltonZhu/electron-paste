@@ -47,14 +47,6 @@
         </el-input>
       </el-col>
     </el-row>
-    <!--    显示下一个标签-->
-    <!--    Alt + ]-->
-    <!--    显示上一个标签-->
-    <!--    Alt + [-->
-    <!--    快速粘贴-->
-    <!--    Alt + 1..9-->
-    <!--    搜索-->
-    <!--    Alt + S-->
   </div>
 </template>
 
@@ -71,6 +63,13 @@ export default {
       },
       windowShortcutsMaps: {
         hideClipboard: '隐藏剪贴板',
+        interSearch: '检索记录',
+        lastFavorite: '上一个收藏',
+        nextFavorite: '下一个收藏',
+        quickPaste: '快速粘贴',
+        lastCard: '上一个卡片',
+        nextCart: '下一个卡片',
+        copyOrPaste: '复制/粘贴',
       },
       funcKeys: new Set(),
       actionKey: '',
