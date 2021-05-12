@@ -17,14 +17,17 @@ export default new Vuex.Store({
     meta: {
       version: '',
       electron: '',
-      defaultDownloadDir: '',
+      chrome: '',
+      nodejs: '',
+      v8: '',
+      os: '',
     },
     page: '1',
     favorite: defaultHistoryFavorite,
     searchType: '',
     query: '',
     clipboardData: [],
-    favoritesData: [{ _id: 1, name: 'link', color: '#84e162' }],
+    favoritesData: [],
     dragData: {},
   },
   mutations: {
@@ -65,6 +68,9 @@ export default new Vuex.Store({
     updateFavorite(state, favorite) {
       state.favorite = favorite;
     },
+    updateFavoritesData(state, data) {
+      state.favoritesData = data;
+    },
     updateDragData(state, data) {
       state.dragData = data;
     },
@@ -88,6 +94,12 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         commit('updateQuery', params.query);
         commit('updateSearchType', params.searchType);
+        resolve();
+      });
+    },
+    changeFavorite({ commit }, favorite) {
+      return new Promise((resolve, reject) => {
+        commit('updateFavorite', favorite);
         resolve();
       });
     },

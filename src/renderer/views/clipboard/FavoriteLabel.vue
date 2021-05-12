@@ -65,7 +65,8 @@
 
 <script>
 import Spot from '../../components/Spot';
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
+import { listClipboardData, move2Favorite } from '../../ipc';
 
 export default {
   name: 'FavoriteLabel',
@@ -113,25 +114,21 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['changeFavorite']),
     onCardDrop() {
       console.log('drop');
-      if (this.favoriteData._id !== this.dragData.table) {
+      if (this.favoriteData._id !== this.dragData.favorite) {
         const newData = Object.assign({}, this.dragData);
-        newData.table = this.favoriteData._id;
+        newData.favorite = this.favoriteData._id;
         delete newData._id;
-        // this.$electron.remote
-        //   .getGlobal('db')
-        //   .create(newData)
-        //   .then((ret) => {
-        //     console.log('add favorite :', ret);
-        //   });
+        move2Favorite(newData);
       }
       this.isDroppable = false;
     },
     onCardDragIn(e) {
       console.log('in');
       this.dragEl = e.target;
-      if (this.favoriteData._id !== this.dragData.table) {
+      if (this.favoriteData._id !== this.dragData.favorite) {
         this.isDroppable = true;
       }
     },
@@ -140,10 +137,45 @@ export default {
       if (this.dragEl === e.target) this.isDroppable = false;
     },
     clickFavorite() {
-      if (!this.isSelected) this.updateFavorite(this.favoriteData._id);
+      if (!this.isSelected) {
+        this.changeFavorite(this.favoriteData._id).then(() => {
+          listClipboardData(this.favorite, this.query, this.searchType);
+        });
+      }
     },
-    removeLabel() {
-      // this.$parent.doRemoveLabel(this.favoriteData);
+    removeFavorite() {
+      this.$confirm(
+        `确定删除【${this.favoriteData.name}】?删除的记录不可恢复！`,
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      )
+        .then(() => {
+          //       // this.$electron.remote
+          //       //   .getGlobal('labelDb')
+          //       //   .removeLabelAndData(labelData._id)
+          //       //   .then((numRemoved) => {
+          //       //     window.log.info(`${numRemoved} removed.`);
+          //       //     const position = this.labels.indexOf(labelData);
+          //       //     this.labels.splice(position, 1);
+          //       //     this.$store.commit('updateLabelsData', this.labels);
+          //       //     if (this.isSelected) {
+          //       //       this.$store.commit('updateTable', 'historyData');
+          //       //     }
+          //         });
+          this.$message({
+            type: 'success',
+            message: `【${this.favoriteData.name}】删除成功!`,
+            duration: 1000,
+          });
+        })
+        .catch(() => {})
+        .finally(() => {
+          // this.$electron.remote.getGlobal('shortcut').registerEsc();
+        });
     },
     onRenameLabel() {
       this.isRenaming = true;

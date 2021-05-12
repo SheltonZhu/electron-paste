@@ -88,7 +88,7 @@ export function openSetting(options) {
 }
 
 /**
- * 查询数据
+ * 查询剪贴板数据
  * */
 export function listClipboardData(favorite, query, cardType) {
   return ipcRenderer.send(events.EVENT_APP_CLIPBOARD_DATA_LIST, {
@@ -106,8 +106,29 @@ export function clearClipboardData() {
 }
 
 /**
- * 清除历史记录
+ * 检查历史记录容量
  * */
 export function checkHistoryCapacity() {
   return ipcRenderer.send(events.EVENT_APP_CHECK_HISTORY_CAPACITY);
+}
+
+/**
+ * 列出收藏标签
+ * */
+export function listFavoriteData() {
+  return ipcRenderer.send(events.EVENT_APP_FAVORITE_DATA_LIST);
+}
+
+/**
+ * 添加收藏标签
+ * */
+export function addFavorite(name, color) {
+  return ipcRenderer.send(events.EVENT_APP_FAVORITE_DATA_ADD, { name, color });
+}
+
+/**
+ * 移动到收藏
+ * */
+export function move2Favorite(data) {
+  return ipcRenderer.send(events.EVENT_APP_FAVORITE_DATA_MOVE, data);
 }

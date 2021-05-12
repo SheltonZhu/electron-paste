@@ -35,6 +35,12 @@ const dbFactory = (file, scheme) => {
       throw new Error(`data valid fail: ${JSON.stringify(data)}`);
     }
   };
+  db.list = () => {
+    return db.find({}, { createdAt: -1, updatedAt: -1 }).sort({ createdAt: 1 });
+  };
+  db.removeOne = (_id) => {
+    return db.remove({ _id }, {});
+  };
   db.md5 = (text) => {
     return md5(text);
   };

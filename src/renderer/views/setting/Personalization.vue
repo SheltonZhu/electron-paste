@@ -3,36 +3,7 @@
     <!--  背景设置  -->
     <div>
       <el-divider>背景</el-divider>
-      <el-row class="row vertically-center">
-        <el-col :span="6">
-          <div class="type">背景模糊</div>
-        </el-col>
-        <el-col :span="1">
-          <div>
-            <el-switch
-              v-model="enableBackgroundBlur"
-              :active-color="activeColor"
-              :inactive-color="inactiveColor"
-            >
-            </el-switch>
-          </div>
-        </el-col>
-        <el-col :span="6" class="bg-blur">
-          <div class="type">背景模糊程度</div>
-        </el-col>
-        <el-col :span="11" class="bg-blur">
-          <div class="switch" style="margin-left: 10px">
-            <el-slider
-              style="width: 350px"
-              show-input
-              :max="50"
-              :min="1"
-              v-model="backgroundBlurValue"
-              :disabled="!appConfig.enableBackgroundBlur"
-            ></el-slider>
-          </div>
-        </el-col>
-      </el-row>
+
       <!--   背景图 start   -->
       <div>
         <el-row class="row vertically-center">
@@ -127,6 +98,37 @@
         <!--        </el-row>-->
       </div>
       <!--   背景图 end   -->
+
+      <el-row class="row vertically-center">
+        <el-col :span="6">
+          <div class="type">背景模糊</div>
+        </el-col>
+        <el-col :span="1">
+          <div>
+            <el-switch
+              v-model="enableBackgroundBlur"
+              :active-color="activeColor"
+              :inactive-color="inactiveColor"
+            >
+            </el-switch>
+          </div>
+        </el-col>
+        <el-col :span="6" class="bg-blur">
+          <div class="type">背景模糊程度</div>
+        </el-col>
+        <el-col :span="11" class="bg-blur">
+          <div class="switch" style="margin-left: 10px">
+            <el-slider
+              style="width: 350px"
+              show-input
+              :max="50"
+              :min="1"
+              v-model="backgroundBlurValue"
+              :disabled="!appConfig.enableBackgroundBlur"
+            ></el-slider>
+          </div>
+        </el-col>
+      </el-row>
     </div>
 
     <!--  收藏栏设置  -->

@@ -1,7 +1,7 @@
 import { app, ipcMain, dialog, clipboard } from 'electron';
 import { readJsonSync } from 'fs-extra';
 import * as events from '../shared/events';
-import { appConfigPath, defaultDownloadDir } from './bootstrap';
+import { appConfigPath } from './bootstrap';
 import { updateAppConfig } from './data';
 import {
   hideWindow as hideClipboard,
@@ -14,7 +14,7 @@ import {
 import defaultConfig, { mergeConfig } from '../shared/config';
 import { showNotification } from './notification';
 import { toggleMenu } from './menu';
-import { CARD_TYPE, defaultHistoryFavorite } from '../shared/env';
+import { CARD_TYPE, defaultHistoryFavorite, osInfo } from '../shared/env';
 import { clone } from '../shared/utils';
 
 import logger from './logger';
@@ -45,7 +45,10 @@ ipcMain
       meta: {
         version: pkg.version,
         electron: app.getVersion(),
-        defaultDownloadDir,
+        chrome: process.versions.chrome,
+        nodejs: process.versions.node,
+        v8: process.versions.v8,
+        os: osInfo,
       },
     };
     // e.returnValue = res;
@@ -96,17 +99,30 @@ ipcMain
       store.commit('updateClipboardData', retData);
     }
   })
+  .on(events.EVENT_APP_FAVORITE_DATA_LIST, async (e, params) => {
+    const retData = await db.favorites.list();
+    store.commit('updateFavoritesData', retData);
+  })
+  .on(events.EVENT_APP_FAVORITE_DATA_ADD, async (e, params) => {
+    const favorite = await db.favorites.create(params);
+    const favoritesData = clone(store.state.favoritesData, true);
+    favoritesData.push(favorite);
+    store.commit('updateFavoritesData', favoritesData);
+  })
+  .on(events.EVENT_APP_FAVORITE_DATA_MOVE, async (e, data) => {
+    await addOneClipboardData(data);
+  })
   .on(events.EVENT_APP_CLIPBOARD_PASTE, async (e, params) => {
     hideClipboard();
-    const text = 'text';
-    const html = '<b>html</b>';
-    const rtf =
-      '{\\rtf1\\ansi{\\fonttbl\\f0\\fswiss Helvetica;}\\f0\\pard\nThis is some {\\b bold} text.\\par\n}';
-    clipboard.write({
-      text: text,
-      html: html,
-      rtf: rtf,
-    });
+    if (store.state.appConfig.textMode) {
+      clipboard.writeText(params.text);
+    } else {
+      clipboard.write({
+        text: params.text,
+        html: params.html,
+        rtf: params.rtf,
+      });
+    }
     if (params.directPaste && store.state.appConfig.directPaste) {
       setTimeout(async () => {
         // robot.keyTap('v', 'control');
@@ -130,31 +146,34 @@ export function changeBindKey(funcName, oldKey, newKey) {
     newKey,
   }).then();
 }
-
 export function addOneClipboardData(data) {
+  return db.clipboardCard.add(data);
+}
+export function updateClipboardData(data) {
   if (store.state.favorite === defaultHistoryFavorite) {
     if (store.state.query) {
       if (data.cardType === CARD_TYPE.IMAGE) {
-        if (store.state.searchType === CARD_TYPE.IMAGE)
-          updateClipboardData(data);
+        if (store.state.searchType === CARD_TYPE.IMAGE) {
+          _updateClipboardData(data);
+        }
       } else {
         if (
           (!store.state.searchType ||
             store.state.searchType === data.cardType) &&
           new RegExp(store.state.query, 'i').test(data.copyContent)
         ) {
-          updateClipboardData(data);
+          _updateClipboardData(data);
         }
       }
     } else {
       if (!store.state.searchType || store.state.searchType === data.cardType) {
-        updateClipboardData(data);
+        _updateClipboardData(data);
       }
     }
   }
 }
 
-function updateClipboardData(data) {
+function _updateClipboardData(data) {
   const list = clone(store.state.clipboardData, true);
   list.unshift(data);
 

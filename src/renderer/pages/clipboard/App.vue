@@ -22,7 +22,7 @@
       }"
     >
       <el-header>
-        <favorites-bar
+        <nav-bar
           :favoritesFontColor="appConfig.favoritesFontColor"
           :favoritesFontColorSelected="appConfig.favoritesFontColorSelected"
           :favoritesBgColorSelected="appConfig.favoritesBgColorSelected"
@@ -39,12 +39,12 @@ import { mapState } from 'vuex';
 import { hideAndPaste } from '../../ipc';
 import { init as initShortcut } from '../../shortcut';
 import { getInitConfig } from '../../ipc';
-import FavoritesBar from '../../views/clipboard/FavoritesBar';
+import NavBar from '../../views/clipboard/NavBar';
 import ClipboardPanel from '../../views/clipboard/ClipboardPanel';
 
 export default {
   components: {
-    FavoritesBar,
+    NavBar,
     ClipboardPanel,
   },
   mounted() {

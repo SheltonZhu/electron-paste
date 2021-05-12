@@ -84,7 +84,7 @@
           :favorite-data="favorite"
         />
         <!--    添加新标签输入框    -->
-        <div v-if="newLabelVisible">
+        <div v-if="newFavoriteVisible">
           <el-button
             :style="{
               color: favoritesFontColorSelected + '!important',
@@ -97,11 +97,11 @@
             <spot color="#fe9700" />
             <el-input
               size="small"
-              v-model="newLabelValue"
+              v-model="newFavoriteName"
               style="width: 100px"
-              @blur="doAddLabel"
+              @blur="addFavorite"
               @keyup.enter.native="$event.target.blur"
-              ref="newLabelInput"
+              ref="newFavoriteInput"
             ></el-input>
           </el-button>
         </div>
@@ -112,7 +112,7 @@
         v-if="!isSearching"
         class="el-icon-plus add-btn"
         :style="{ color: favoritesFontColor }"
-        @click="clickLabelAdder"
+        @click="clickFavoriteAdder"
       ></el-button>
 
       <!--   more按钮   -->
@@ -153,14 +153,19 @@
 <script>
 import Spot from '../../components/Spot';
 import FavoriteLabel from './FavoriteLabel';
-import { openSetting, listClipboardData } from '../../ipc';
-import { mapActions, mapMutations, mapState } from 'vuex';
+import {
+  openSetting,
+  listClipboardData,
+  listFavoriteData,
+  addFavorite,
+} from '../../ipc';
+import { mapActions, mapState } from 'vuex';
 import { debounce } from '../../../shared/utils';
 import { CARD_TYPE, defaultHistoryFavorite } from '../../../shared/env';
 import Mousetrap from 'mousetrap';
 
 export default {
-  name: 'FavoritesBar',
+  name: 'NavBar',
   components: {
     Spot,
     FavoriteLabel,
@@ -185,12 +190,12 @@ export default {
       searchValue: '',
       selectType: '',
       isSearching: false,
-      newLabelValue: '未命名',
-      newLabelVisible: false,
+      newFavoriteName: '未命名',
+      newFavoriteVisible: false,
     };
   },
   mounted() {
-    // this.initLabels();
+    this.initLabels();
     this.initShortCut();
   },
   watch: {
@@ -205,16 +210,9 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['changeSearch']),
-    ...mapMutations(['updateFavorite']),
+    ...mapActions(['changeSearch', 'changeFavorite']),
     initLabels() {
-      // this.$electron.remote
-      //   .getGlobal('labelDb')
-      //   .readAll()
-      //   .then((ret) => {
-      //     this.labels = ret;
-      //     this.$store.commit('updateLabelsData', this.labels);
-      //   });
+      listFavoriteData();
     },
     initShortCut() {
       Mousetrap.bind('alt+s', () => {
@@ -226,67 +224,22 @@ export default {
         }
       });
     },
-    clickLabelAdder() {
-      this.newLabelVisible = true;
+    clickFavoriteAdder() {
+      this.newFavoriteVisible = true;
       this.$nextTick(() => {
-        this.$refs.newLabelInput.focus();
-        this.$refs.newLabelInput.select();
+        this.$refs.newFavoriteInput.focus();
+        this.$refs.newFavoriteInput.select();
       });
     },
-    doAddLabel() {
-      if (!this.newLabelValue.trim() || this.newLabelValue === '未命名') {
-        this.newLabelValue = '未命名';
-        this.newLabelVisible = false;
-      } else {
-        // this.$electron.remote
-        //   .getGlobal('labelDb')
-        //   .create({
-        //     name: this.newLabelValue,
-        //     color: '#fe9700',
-        //   })
-        //   .then((ret) => {
-        //     this.labels.push(ret);
-        //     this.newLabelVisible = false;
-        //     window.log.info('addOneLabel: ', ret);
-        //     this.$store.commit('updateLabelsData', this.labels);
-        //     this.newLabelValue = '未命名';
-        //   });
+    addFavorite() {
+      if (this.newFavoriteName.trim() && this.newFavoriteName !== '未命名') {
+        addFavorite(this.newFavoriteName, '#fe9700');
       }
+      this.newFavoriteVisible = false;
+      this.newFavoriteName = '未命名';
     },
-    doRemoveLabel(labelData) {
-      // this.$electron.remote.getGlobal('shortcut').unregisterEsc();
-      this.$confirm(
-        `确定删除【${labelData.name}】?删除的记录不可恢复！`,
-        '提示',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        }
-      )
-        .then(() => {
-          // this.$electron.remote
-          //   .getGlobal('labelDb')
-          //   .removeLabelAndData(labelData._id)
-          //   .then((numRemoved) => {
-          //     window.log.info(`${numRemoved} removed.`);
-          //     const position = this.labels.indexOf(labelData);
-          //     this.labels.splice(position, 1);
-          //     this.$store.commit('updateLabelsData', this.labels);
-          //     if (this.isSelected) {
-          //       this.$store.commit('updateTable', 'historyData');
-          //     }
-          //   });
-          this.$message({
-            type: 'success',
-            message: `【${labelData.name}】删除成功!`,
-            duration: 1000,
-          });
-        })
-        .catch(() => {})
-        .finally(() => {
-          // this.$electron.remote.getGlobal('shortcut').registerEsc();
-        });
+    changeSearchType() {
+      this.execSearch();
     },
     clickSearchBtn() {
       this.isSearching = true;
@@ -294,9 +247,12 @@ export default {
         this.$refs.searchBar.focus();
       });
     },
-    execSearchDebounce: debounce(function () {
-      this.execSearch();
-    }, 200),
+    clickDefaultFavorite() {
+      if (!this.isSelected)
+        this.changeFavorite(defaultHistoryFavorite).then(() => {
+          listClipboardData(this.favorite, this.query, this.searchType);
+        });
+    },
     doSearch() {
       this.execSearchDebounce();
     },
@@ -312,9 +268,6 @@ export default {
         this.execSearchDebounce();
       }
     },
-    changeSearchType() {
-      this.execSearch();
-    },
     execSearch() {
       this.changeSearch({
         query: this.searchValue,
@@ -323,9 +276,9 @@ export default {
         listClipboardData(this.favorite, this.query, this.searchType);
       });
     },
-    clickDefaultFavorite() {
-      if (!this.isSelected) this.updateFavorite(defaultHistoryFavorite);
-    },
+    execSearchDebounce: debounce(function () {
+      this.execSearch();
+    }, 200),
     quitApp() {
       this.$electron.remote.app.quit();
     },
@@ -445,7 +398,7 @@ export default {
     transform: scale(0);
   }
   60% {
-    transform: scale(1.2, 1.2);
+    transform: scale(1.15, 1.15);
   }
   80% {
     transform: scale(1);

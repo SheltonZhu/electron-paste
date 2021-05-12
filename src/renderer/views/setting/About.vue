@@ -46,6 +46,18 @@
           <div class="content">{{ content }}</div>
         </el-col>
       </el-row>
+      <!--      <el-row class="row vertically-center" v-for="(value, key) of meta">-->
+      <!--        <el-col :span="12" >-->
+      <!--          <div class="field">-->
+      <!--            {{key}}-->
+      <!--          </div>-->
+      <!--        </el-col>-->
+      <!--        <el-col :span="12">-->
+      <!--          <div class="content">-->
+      <!--            v{{value}}-->
+      <!--          </div>-->
+      <!--        </el-col>-->
+      <!--      </el-row>-->
     </div>
   </div>
 </template>

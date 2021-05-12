@@ -40,3 +40,9 @@ export const EVENT_APP_CLIPBOARD_DATA_LIST = 'app.clipboard.data.list';
 export const EVENT_APP_CLIPBOARD_DATA_CLEAR = 'app.clipboard.data.clear';
 
 export const EVENT_APP_CHECK_HISTORY_CAPACITY = 'app.check.history.capacity';
+
+export const EVENT_APP_FAVORITE_DATA_LIST = 'app.favorite.data.list';
+
+export const EVENT_APP_FAVORITE_DATA_ADD = 'app.favorite.data.add';
+
+export const EVENT_APP_FAVORITE_DATA_MOVE = 'app.favorite.data.move';
