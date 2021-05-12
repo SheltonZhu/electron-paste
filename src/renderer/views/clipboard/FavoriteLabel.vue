@@ -116,7 +116,7 @@ export default {
   methods: {
     ...mapActions(['changeFavorite']),
     onCardDrop() {
-      console.log('drop');
+      console.log('[favorite]: drop');
       if (this.favoriteData._id !== this.dragData.favorite) {
         const newData = Object.assign({}, this.dragData);
         newData.favorite = this.favoriteData._id;
@@ -126,21 +126,19 @@ export default {
       this.isDroppable = false;
     },
     onCardDragIn(e) {
-      console.log('in');
+      console.log('[favorite]: in');
       this.dragEl = e.target;
       if (this.favoriteData._id !== this.dragData.favorite) {
         this.isDroppable = true;
       }
     },
     onCardDragOut(e) {
-      console.log('out');
+      console.log('[favorite]: out');
       if (this.dragEl === e.target) this.isDroppable = false;
     },
     clickFavorite() {
       if (!this.isSelected) {
-        this.changeFavorite(this.favoriteData._id).then(() => {
-          listClipboardData(this.favorite, this.query, this.searchType);
-        });
+        this.changeFavorite(this.favoriteData._id).then(listClipboardData);
       }
     },
     removeFavorite() {
@@ -299,18 +297,18 @@ export default {
 }
 </style>
 <style>
-.context-menu {
-  min-width: 170px !important;
-  padding: 0 !important;
-}
+/*.context-menu {*/
+/*  min-width: 170px !important;*/
+/*  padding: 0 !important;*/
+/*}*/
 
-.color-selector {
-  display: flex;
-  margin: 5px 10px 5px;
-}
+/*.color-selector {*/
+/*  display: flex;*/
+/*  margin: 5px 10px 5px;*/
+/*}*/
 
-.rename-label input {
-  background-color: #ffffffbf !important;
-  backdrop-filter: saturate(180%) blur(5px) !important;
-}
+/*.rename-label input {*/
+/*  background-color: #ffffffbf !important;*/
+/*  backdrop-filter: saturate(180%) blur(5px) !important;*/
+/*}*/
 </style>

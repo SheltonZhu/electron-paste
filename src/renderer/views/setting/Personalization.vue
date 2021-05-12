@@ -447,7 +447,7 @@ export default {
   overflow-y: hidden;
   max-height: 105px;
   white-space: nowrap;
-  margin: 20px 100px;
+  margin: 10px 100px 20px;
   text-align: center;
 }
 

@@ -11,7 +11,7 @@
     }"
   >
     <div
-      style="height: 472px"
+      style="height: 450px"
       :style="{
         'background-color': appConfig.backgroundColor,
         'backdrop-filter': appConfig.enableBackgroundBlur
@@ -106,7 +106,7 @@ body {
 }
 
 .bg {
-  height: 472px;
+  height: 450px;
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
@@ -115,7 +115,6 @@ body {
 
 .el-main {
   padding: 0 20px !important;
-  height: 410px;
 }
 
 .el-header {

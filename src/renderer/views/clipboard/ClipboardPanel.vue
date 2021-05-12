@@ -19,6 +19,7 @@
 import ClipboardCard from './ClipboardCard';
 import { mapState, mapMutations } from 'vuex';
 import { listClipboardData } from '../../ipc';
+import Mousetrap from 'mousetrap';
 export default {
   name: 'ClipboardPanel',
   components: {
@@ -43,7 +44,16 @@ export default {
   methods: {
     ...mapMutations(['updateClipboardData']),
     init() {
-      listClipboardData(this.favorite, this.query, this.searchType);
+      listClipboardData();
+      this.initShortcut();
+    },
+    initShortcut() {
+      for (const index in [...Array(9)]) {
+        const shortcut = parseInt(index) + 1;
+        Mousetrap.bind(`alt+${shortcut}`, () => {
+          this.$refs[`cc${index}`][0].copyPasteAndHide();
+        });
+      }
     },
     onMouseWheel(e) {
       e.preventDefault();
@@ -54,7 +64,6 @@ export default {
 </script>
 <style scoped>
 .clipboard-panel {
-  height: 410px;
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;

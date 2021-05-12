@@ -21,9 +21,9 @@ export function createWindow() {
   const display = screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
     width: display.width,
-    height: 472,
+    height: 450,
     x: 0,
-    y: isLinux ? display.height : display.height - 472,
+    y: isLinux ? display.height : display.height - 450,
     backgroundColor: '#00000000',
     transparent: true,
     frame: false,

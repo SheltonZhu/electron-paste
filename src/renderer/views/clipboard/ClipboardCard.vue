@@ -97,7 +97,7 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { CARD_TYPE } from '../../../shared/env';
-
+import { hideClipboard } from '../../ipc';
 export default {
   name: 'ClipboardCard',
   props: {
@@ -167,9 +167,6 @@ export default {
       console.log('dragEnd');
       this.saveDragData(null);
     },
-    hideMainWindow() {
-      this.$electron.remote.getCurrentWindow().hide();
-    },
     select(direction, e) {
       try {
         if (direction === 'right') {
@@ -188,11 +185,11 @@ export default {
       this.copyPasteAndHide();
     },
     copyAndHide() {
-      this.hideMainWindow();
+      hideClipboard();
       this.write2clipboard();
     },
     copyPasteAndHide() {
-      this.hideMainWindow();
+      hideClipboard();
       this.write2clipboardAndPaste();
     },
     write2clipboard() {
@@ -213,7 +210,7 @@ export default {
       //   }, 10);
     },
     openLink() {
-      this.hideMainWindow();
+      hideClipboard();
       this.execShellOpenLink(this.data.text);
     },
     share2twitter() {
@@ -289,7 +286,7 @@ export default {
       //   });
     },
     googleTranslate(url) {
-      this.hideMainWindow();
+      hideClipboard();
       this.execShellOpenLink(`${url}${this.data.text}`);
     },
     // 生成右键菜单

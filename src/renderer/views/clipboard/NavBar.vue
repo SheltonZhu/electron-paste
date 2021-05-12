@@ -12,6 +12,7 @@
           v-model="searchValue"
           class="input-with-select"
           @keyup.native="doSearch"
+          @keyup.esc.native="(e) => e.target.blur()"
           @clear="doSearch"
           clearable
         >
@@ -249,9 +250,7 @@ export default {
     },
     clickDefaultFavorite() {
       if (!this.isSelected)
-        this.changeFavorite(defaultHistoryFavorite).then(() => {
-          listClipboardData(this.favorite, this.query, this.searchType);
-        });
+        this.changeFavorite(defaultHistoryFavorite).then(listClipboardData);
     },
     doSearch() {
       this.execSearchDebounce();
@@ -272,9 +271,7 @@ export default {
       this.changeSearch({
         query: this.searchValue,
         searchType: this.selectType,
-      }).then(() => {
-        listClipboardData(this.favorite, this.query, this.searchType);
-      });
+      }).then(listClipboardData);
     },
     execSearchDebounce: debounce(function () {
       this.execSearch();

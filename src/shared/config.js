@@ -57,16 +57,16 @@ const defaultConfig = {
       key: 'ESCAPE',
       enable: true,
     },
-    interSearch: {
-      key: 'Alt+S',
-      enable: false,
-    },
-    lastFavorite: {
+    previousFavorite: {
       key: 'Alt+[',
-      enable: false,
+      enable: true,
     },
     nextFavorite: {
       key: 'Alt+]',
+      enable: true,
+    },
+    interSearch: {
+      key: 'Alt+S',
       enable: false,
     },
     quickPaste: {

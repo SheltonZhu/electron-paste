@@ -6,6 +6,8 @@ import {
 } from './notification';
 import * as events from '../shared/events';
 import { changeBind } from './shortcut';
+import { defaultHistoryFavorite } from '../shared/env';
+import { debounce } from '../shared/utils';
 
 /**
  * ipc-render事件
@@ -90,13 +92,15 @@ export function openSetting(options) {
 /**
  * 查询剪贴板数据
  * */
-export function listClipboardData(favorite, query, cardType) {
+export function listClipboardData() {
   return ipcRenderer.send(events.EVENT_APP_CLIPBOARD_DATA_LIST, {
-    favorite,
-    query,
-    cardType,
+    favorite: store.state.favorite,
+    query: store.state.query,
+    cardType: store.state.searchType,
   });
 }
+
+export const listClipboardDataDebounce = debounce(listClipboardData, 200);
 
 /**
  * 清除历史记录
@@ -131,4 +135,49 @@ export function addFavorite(name, color) {
  * */
 export function move2Favorite(data) {
   return ipcRenderer.send(events.EVENT_APP_FAVORITE_DATA_MOVE, data);
+}
+
+/**
+ * 快捷键函数
+ * */
+export function previousFavorite() {
+  const previousIndex = _findLabelIndex() - 1;
+  if (previousIndex === -1) {
+    store
+      .dispatch('changeFavorite', defaultHistoryFavorite)
+      .then(listClipboardDataDebounce);
+  } else if (previousIndex < -1) {
+    store
+      .dispatch(
+        'changeFavorite',
+        store.state.favoritesData[store.state.favoritesData.length - 1]._id
+      )
+      .then(listClipboardDataDebounce);
+  } else {
+    store
+      .dispatch('changeFavorite', store.state.favoritesData[previousIndex]._id)
+      .then(listClipboardDataDebounce);
+  }
+}
+
+/**
+ * 快捷键函数
+ * */
+export function nextFavorite() {
+  const nextIndex = _findLabelIndex() + 1;
+  if (nextIndex > store.state.favoritesData.length - 1) {
+    store
+      .dispatch('changeFavorite', defaultHistoryFavorite)
+      .then(listClipboardDataDebounce);
+  } else {
+    store
+      .dispatch('changeFavorite', store.state.favoritesData[nextIndex]._id)
+      .then(listClipboardDataDebounce);
+  }
+}
+
+function _findLabelIndex() {
+  return store.state.favoritesData.findIndex(
+    (element) => element._id === store.state.favorite
+  );
 }

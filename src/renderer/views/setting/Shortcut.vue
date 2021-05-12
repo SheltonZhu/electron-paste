@@ -7,10 +7,10 @@
       v-for="(funcText, funcName) in globalShortcutMaps"
       :key="funcName"
     >
-      <el-col class="type">
+      <el-col class="type" :span="11">
         {{ funcText }}
       </el-col>
-      <el-col>
+      <el-col :span="13">
         <el-input
           style="width: 200px"
           :value="appConfig.globalShortcuts[funcName].key"
@@ -31,10 +31,10 @@
       v-for="(funcText, funcName) in windowShortcutsMaps"
       :key="funcName"
     >
-      <el-col class="type">
+      <el-col class="type" :span="11">
         {{ funcText }}
       </el-col>
-      <el-col>
+      <el-col :span="13">
         <el-input
           style="width: 200px"
           :value="appConfig.windowShortcuts[funcName].key"
@@ -63,9 +63,9 @@ export default {
       },
       windowShortcutsMaps: {
         hideClipboard: '隐藏剪贴板',
-        interSearch: '检索记录',
-        lastFavorite: '上一个收藏',
+        previousFavorite: '上一个收藏',
         nextFavorite: '下一个收藏',
+        interSearch: '检索记录',
         quickPaste: '快速粘贴',
         lastCard: '上一个卡片',
         nextCart: '下一个卡片',
@@ -126,7 +126,7 @@ export default {
           config[parent][field].key = shortcutStr;
           this.changeConfigDebounce(config);
         } catch (e) {
-          // console.log(e)
+          console.log(e);
         } finally {
           this.clearCache();
         }
