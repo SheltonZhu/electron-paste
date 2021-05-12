@@ -97,7 +97,7 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { CARD_TYPE } from '../../../shared/env';
-import { hideClipboard } from '../../ipc';
+import { hideAndPaste, hideClipboard } from '../../ipc';
 export default {
   name: 'ClipboardCard',
   props: {
@@ -185,12 +185,19 @@ export default {
       this.copyPasteAndHide();
     },
     copyAndHide() {
-      hideClipboard();
-      this.write2clipboard();
+      // hideClipboard();
+      // this.write2clipboard();
+      hideAndPaste({
+        data: this.data,
+      });
     },
     copyPasteAndHide() {
-      hideClipboard();
-      this.write2clipboardAndPaste();
+      hideAndPaste({
+        data: this.data,
+        directPaste: this.appConfig.directPaste,
+      });
+      // hideClipboard();
+      // this.write2clipboardAndPaste();
     },
     write2clipboard() {
       // if (this.isImage) {

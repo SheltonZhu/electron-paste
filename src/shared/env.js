@@ -16,7 +16,8 @@ export const PAGE_ABOUT = { name: 'about', page: '5' };
 export const CARD_TYPE = {
   TEXT: 'Text',
   LINK: 'Link',
-  IMAGE: 'image',
+  IMAGE: 'Image',
+  FILE: 'File',
 };
 
 // mac版本号

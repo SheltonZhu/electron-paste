@@ -1,4 +1,4 @@
-import { app, ipcMain, dialog, clipboard } from 'electron';
+import { app, ipcMain, dialog, clipboard, nativeImage } from 'electron';
 import { readJsonSync } from 'fs-extra';
 import * as events from '../shared/events';
 import { appConfigPath } from './bootstrap';
@@ -113,15 +113,31 @@ ipcMain
     await addOneClipboardData(data);
   })
   .on(events.EVENT_APP_CLIPBOARD_PASTE, async (e, params) => {
+    // TODO os: win, linux
+    // TODO text mode, direct paste
     hideClipboard();
-    if (store.state.appConfig.textMode) {
-      clipboard.writeText(params.text);
-    } else {
-      clipboard.write({
-        text: params.text,
-        html: params.html,
-        rtf: params.rtf,
-      });
+    switch (params.data.cardType) {
+      case CARD_TYPE.IMAGE:
+        const image = nativeImage.createFromDataURL(params.data.base64data);
+        clipboard.writeImage(image);
+        break;
+      case CARD_TYPE.TEXT:
+      case CARD_TYPE.LINK:
+        if (store.state.appConfig.textMode) {
+          clipboard.writeText(params.data.text);
+        } else {
+          clipboard.write({
+            text: params.data.text,
+            html: params.data.html,
+            rtf: params.data.rtf,
+          });
+        }
+        break;
+      case CARD_TYPE.FILE:
+        // TODO
+        break;
+      default:
+        throw new Error(`unknown type ${params.data.cardType}`);
     }
     if (params.directPaste && store.state.appConfig.directPaste) {
       setTimeout(async () => {
@@ -146,9 +162,11 @@ export function changeBindKey(funcName, oldKey, newKey) {
     newKey,
   }).then();
 }
+
 export function addOneClipboardData(data) {
   return db.clipboardCard.add(data);
 }
+
 export function updateClipboardData(data) {
   if (store.state.favorite === defaultHistoryFavorite) {
     if (store.state.query) {
