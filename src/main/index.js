@@ -86,7 +86,7 @@ if (!isPrimaryInstance) {
     });
 
     // app启动后导入electron-clipboard-extends, 否则linux下粘贴会卡死。
-    const cpb = require('./clipboard');
+    require('./clipboard');
 
     app.on('window-all-closed', () => {
       logger.debug('window-all-closed');
@@ -102,7 +102,7 @@ if (!isPrimaryInstance) {
       destroyClipboard();
       destroySettings();
       clearShortcuts();
-      cpb.stopWatching();
+      require('electron-clipboard-extended').stopWatching();
       if (app.hasSingleInstanceLock()) app.releaseSingleInstanceLock();
     });
 
