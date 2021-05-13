@@ -4,7 +4,6 @@
       v-for="(card, index) in clipboardData"
       :key="card._id"
       :data="card"
-      :favorite="favorite"
       :cardIcons="cardIcons"
       :data-index="index"
       :index="index"
@@ -37,7 +36,6 @@ export default {
   },
   watch: {
     clipboardData() {
-      console.log(this.isSearching);
       if (!this.isSearching)
         this.$nextTick(() => {
           this.focusFirst();

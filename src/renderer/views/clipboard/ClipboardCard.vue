@@ -97,17 +97,13 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { CARD_TYPE } from '../../../shared/env';
-import { hideAndPaste, hideClipboard } from '../../ipc';
+import { hideAndPaste, hideClipboard, move2Favorite } from '../../ipc';
 export default {
   name: 'ClipboardCard',
   props: {
     data: {
       type: Object,
       default: null,
-    },
-    favorite: {
-      type: String,
-      default: '',
     },
     index: {
       type: Number,
@@ -122,7 +118,7 @@ export default {
     return { defaultIcon: '../static/icon.png' };
   },
   computed: {
-    ...mapState(['appConfig', 'favoritesData']),
+    ...mapState(['appConfig', 'favoritesData', 'favorite']),
     shortcut() {
       if (this.index < 9) return `Alt+${this.index + 1}`;
       return '';
@@ -160,11 +156,9 @@ export default {
   methods: {
     ...mapActions(['saveDragData']),
     onDragStart() {
-      console.log('dragStart');
       this.saveDragData(this.data);
     },
     onDragEnd() {
-      console.log('dragEnd');
       this.saveDragData(null);
     },
     select(direction, e) {
@@ -267,16 +261,10 @@ export default {
       };
     },
     add2favorite(_id) {
-      // const newData = Object.assign({}, this.data);
-      // newData.table = _id;
-      // delete newData._id;
-      //
-      // this.$electron.remote
-      //   .getGlobal('db')
-      //   .create(newData)
-      //   .then((ret) => {
-      //     window.log.info('add favorite :', ret);
-      //   });
+      const newData = Object.assign({}, this.data);
+      newData.favorite = _id;
+      delete newData._id;
+      move2Favorite(newData);
     },
     googleTranslate(url) {
       hideClipboard();
@@ -285,13 +273,13 @@ export default {
     // 生成右键菜单
     // /*onContextmenu(event) {*/
     /*  const children = [];*/
-    /*  for (const label of this.labelsData) {*/
-    /*    if (label._id !== this.table) {*/
+    /*  for (const favorite of this.favoritesData) {*/
+    /*    if (favorite._id !== this.favorite) {*/
     /*      children.push({*/
-    /*        label: label.name,*/
+    /*        label: favorite.name,*/
     /*        icon: 'el-icon-star-off',*/
     /*        onClick: () => {*/
-    /*          this.add2favorite(label._id);*/
+    /*          this.add2favorite(favorite._id);*/
     /*        },*/
     /*      });*/
     /*    }*/

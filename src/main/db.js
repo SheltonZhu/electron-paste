@@ -41,6 +41,9 @@ const dbFactory = (file, scheme) => {
   db.removeOne = (_id) => {
     return db.remove({ _id }, {});
   };
+  db.updateById = (_id, data) => {
+    return db.update({ _id }, { $set: data }, { returnUpdatedDocs: true });
+  };
   db.md5 = (text) => {
     return md5(text);
   };

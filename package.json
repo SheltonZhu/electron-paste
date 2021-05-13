@@ -1,6 +1,6 @@
 {
   "name": "electron-paste",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Shelton Zhu <498220739@qq.com> (https://github.com/SheltonZhu)",
   "description": "An Electron & Vue.js clipboard with elementUI support",
   "homepage": "https://github.com/SheltonZhu/electron-paste",
@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@sentry/electron": "0.14.0",
+    "@xunlei/vue-context-menu": "^1.0.2",
     "auto-launch": "^5.0.5",
     "dayjs": "^1.10.3",
     "download-git-repo": "^1.0.1",
@@ -43,6 +44,7 @@
     "md5": "^2.3.0",
     "mousetrap": "^1.6.1",
     "nedb-promises": "^4.1.0",
+    "robotjs": "^0.6.0",
     "rxjs": "^5.5.5",
     "sudo-prompt": "^8.1.0",
     "vue": "^2.6.11",

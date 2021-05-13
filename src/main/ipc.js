@@ -73,21 +73,6 @@ ipcMain
   .on(events.EVENT_APP_TOGGLE_MENU, () => {
     toggleMenu();
   })
-  .on(events.EVENT_APP_CLIPBOARD_DATA_LIST, async (e, params) => {
-    const retData = await db.clipboardCard.list(
-      params.favorite,
-      params.query,
-      params.cardType
-    );
-    store.commit('updateClipboardData', retData);
-  })
-  .on(events.EVENT_APP_CLIPBOARD_DATA_CLEAR, async (e) => {
-    const affectedNum = await db.clipboardCard.clear(defaultHistoryFavorite);
-    if (store.state.favorite === defaultHistoryFavorite) {
-      store.commit('updateClipboardData', []);
-    }
-    e.returnValue = affectedNum;
-  })
   .on(events.EVENT_APP_CHECK_HISTORY_CAPACITY, async (e) => {
     await db.clipboardCard.checkHistoryCapacity();
     if (store.state.favorite === defaultHistoryFavorite) {
@@ -111,6 +96,28 @@ ipcMain
   })
   .on(events.EVENT_APP_FAVORITE_DATA_MOVE, async (e, data) => {
     await addOneClipboardData(data);
+  })
+  .on(events.EVENT_APP_FAVORITE_DATA_UPDATE, async (e, params) => {
+    e.returnValue = await updateOneClipboardData(params._id, params.data);
+  })
+  .on(events.EVENT_APP_FAVORITE_DATA_REMOVE, async (e, _id) => {
+    await removeOneClipboardData(_id);
+    e.returnValue = await db.clipboardCard.clear(_id);
+  })
+  .on(events.EVENT_APP_CLIPBOARD_DATA_LIST, async (e, params) => {
+    const retData = await db.clipboardCard.list(
+      params.favorite,
+      params.query,
+      params.cardType
+    );
+    store.commit('updateClipboardData', retData);
+  })
+  .on(events.EVENT_APP_CLIPBOARD_DATA_CLEAR, async (e) => {
+    const affectedNum = await db.clipboardCard.clear(defaultHistoryFavorite);
+    if (store.state.favorite === defaultHistoryFavorite) {
+      store.commit('updateClipboardData', []);
+    }
+    e.returnValue = affectedNum;
   })
   .on(events.EVENT_APP_CLIPBOARD_PASTE, async (e, params) => {
     // TODO os: win, linux
@@ -171,6 +178,15 @@ export function changeBindKey(funcName, oldKey, newKey) {
 
 export function addOneClipboardData(data) {
   return db.clipboardCard.add(data);
+}
+
+export function updateOneClipboardData(_id, data) {
+  return db.favorites.updateById(_id, data);
+}
+
+export function removeOneClipboardData(_id) {
+  // TODO delete all data
+  return db.favorites.removeOne(_id);
 }
 
 export function updateClipboardData(data) {

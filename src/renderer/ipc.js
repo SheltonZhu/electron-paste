@@ -138,6 +138,23 @@ export function move2Favorite(data) {
 }
 
 /**
+ * 更新收藏标签
+ * */
+export function updateFavorite(_id, data) {
+  return ipcRenderer.sendSync(events.EVENT_APP_FAVORITE_DATA_UPDATE, {
+    _id,
+    data,
+  });
+}
+
+/**
+ * 删除收藏标签
+ * */
+export function removeFavorite(_id) {
+  return ipcRenderer.sendSync(events.EVENT_APP_FAVORITE_DATA_REMOVE, _id);
+}
+
+/**
  * 快捷键函数
  * */
 export function previousFavorite() {

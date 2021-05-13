@@ -161,6 +161,7 @@ import {
   listClipboardData,
   listFavoriteData,
   addFavorite,
+  listClipboardDataDebounce,
 } from '../../ipc';
 import { mapActions, mapState } from 'vuex';
 import { debounce } from '../../../shared/utils';
@@ -252,7 +253,9 @@ export default {
     },
     clickDefaultFavorite() {
       if (!this.isSelected) {
-        this.changeFavorite(defaultHistoryFavorite).then(listClipboardData);
+        this.changeFavorite(defaultHistoryFavorite).then(
+          listClipboardDataDebounce
+        );
       }
     },
     doSearch() {

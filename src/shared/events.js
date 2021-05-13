@@ -46,3 +46,7 @@ export const EVENT_APP_FAVORITE_DATA_LIST = 'app.favorite.data.list';
 export const EVENT_APP_FAVORITE_DATA_ADD = 'app.favorite.data.add';
 
 export const EVENT_APP_FAVORITE_DATA_MOVE = 'app.favorite.data.move';
+
+export const EVENT_APP_FAVORITE_DATA_UPDATE = 'app.favorite.data.update';
+
+export const EVENT_APP_FAVORITE_DATA_REMOVE = 'app.favorite.data.remove';
