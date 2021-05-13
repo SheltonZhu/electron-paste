@@ -2,7 +2,7 @@ import { app, BrowserWindow, screen } from 'electron';
 import { appConfig$, isQuiting } from './data';
 import logger from './logger';
 import { appIcon } from '../shared/icon';
-import { isProd, isLinux } from '../shared/env';
+import { isProd, isLinux, isWin } from '../shared/env';
 
 const winURL = !isProd
   ? `http://localhost:9080/clipboard`
@@ -10,6 +10,7 @@ const winURL = !isProd
 
 let mainWindow;
 let readyPromise;
+let activeWin;
 
 /**
  * 创建主视图
@@ -96,6 +97,11 @@ export function getWindow() {
  * 显示主视图
  */
 export function showWindow() {
+  if (isWin) {
+    const { windowManager } = require('node-window-manager');
+    activeWin = windowManager.getActiveWindow();
+  }
+
   if (mainWindow) {
     mainWindow.show();
   }
@@ -105,6 +111,10 @@ export function showWindow() {
  * 隐藏主视图
  */
 export function hideWindow() {
+  if (isWin && activeWin) {
+    activeWin.bringToTop();
+    activeWin = null;
+  }
   isQuiting(false);
   if (mainWindow) {
     mainWindow.hide();

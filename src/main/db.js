@@ -109,6 +109,19 @@ clipboardCard.list = async (favorite, query, cardType) => {
 clipboardCard.clear = async (favorite) => {
   return await clipboardCard.remove({ favorite }, { multi: true });
 };
+
+clipboardCardIcon.isExist = async (base64data) => {
+  const checksum = clipboardCardIcon.md5(base64data);
+  return [checksum, (await clipboardCardIcon.count({ checksum })) > 0];
+};
+clipboardCardIcon.getIconMap = async () => {
+  const iconMap = {};
+  for (const icon of await clipboardCardIcon.list()) {
+    iconMap[icon.checksum] = icon.base64data;
+  }
+  return iconMap;
+};
+
 const db = {
   clipboardCard: clipboardCard,
   clipboardCardIcon: clipboardCardIcon,

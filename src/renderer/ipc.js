@@ -155,6 +155,13 @@ export function removeFavorite(_id) {
 }
 
 /**
+ * 得到图标map
+ * */
+export function getIconMapData() {
+  return ipcRenderer.send(events.EVENT_APP_CLIPBOARD_ICON_LIST);
+}
+
+/**
  * 快捷键函数
  * */
 export function previousFavorite() {

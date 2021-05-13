@@ -30,6 +30,7 @@ export default new Vuex.Store({
     clipboardData: [],
     favoritesData: [],
     dragData: {},
+    iconMap: {},
   },
   mutations: {
     // 更新应用配置
@@ -78,6 +79,9 @@ export default new Vuex.Store({
     updateIsSearch(state, stat) {
       state.isSearching = stat;
     },
+    updateIconMap(state, map) {
+      state.iconMap = map;
+    },
   },
   actions: {
     initConfig({ commit }, { config, meta }) {
@@ -115,6 +119,9 @@ export default new Vuex.Store({
         commit('updateIsSearch', stat);
         resolve();
       });
+    },
+    changeIconMap({ commit }, map) {
+      commit('updateIconMap', map);
     },
   },
   plugins: [

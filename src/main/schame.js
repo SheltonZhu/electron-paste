@@ -8,7 +8,7 @@ export const clipboardCardIconSchema = {
       type: 'string',
     },
   },
-  required: ['content', 'checksum'],
+  required: ['base64data', 'checksum'],
   additionalProperties: false,
 };
 

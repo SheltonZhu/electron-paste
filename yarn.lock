@@ -4884,6 +4884,13 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+extract-file-icon@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.npm.taobao.org/extract-file-icon/download/extract-file-icon-0.3.2.tgz#9d95bf1aef4125c6a5844b1898492847868e569e"
+  integrity sha1-nZW/Gu9BJcalhEsYmEkoR4aOVp4=
+  dependencies:
+    node-addon-api "1.7.1"
+
 extract-zip@^1.0.3, extract-zip@^1.6.5:
   version "1.7.0"
   resolved "https://registry.nlark.com/extract-zip/download/extract-zip-1.7.0.tgz#556cc3ae9df7f452c493a0cfb51cc30277940927"
@@ -7791,10 +7798,25 @@ node-abi@^2.13.0, node-abi@^2.7.0:
   dependencies:
     semver "^5.4.1"
 
+node-addon-api@1.7.1:
+  version "1.7.1"
+  resolved "https://registry.npm.taobao.org/node-addon-api/download/node-addon-api-1.7.1.tgz?cache=0&sync_timestamp=1608165911719&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnode-addon-api%2Fdownload%2Fnode-addon-api-1.7.1.tgz#cf813cd69bb8d9100f6bdca6755fc268f54ac492"
+  integrity sha1-z4E81pu42RAPa9ymdV/CaPVKxJI=
+
+node-addon-api@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npm.taobao.org/node-addon-api/download/node-addon-api-2.0.0.tgz?cache=0&sync_timestamp=1608165911719&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnode-addon-api%2Fdownload%2Fnode-addon-api-2.0.0.tgz#f9afb8d777a91525244b01775ea0ddbe1125483b"
+  integrity sha1-+a+413epFSUkSwF3XqDdvhElSDs=
+
 node-forge@^0.10.0:
   version "0.10.0"
   resolved "https://registry.nlark.com/node-forge/download/node-forge-0.10.0.tgz#32dea2afb3e9926f02ee5ce8794902691a676bf3"
   integrity sha1-Mt6ir7Ppkm8C7lzoeUkCaRpna/M=
+
+node-gyp-build@^4.2.1:
+  version "4.2.3"
+  resolved "https://registry.npm.taobao.org/node-gyp-build/download/node-gyp-build-4.2.3.tgz#ce6277f853835f718829efb47db20f3e4d9c4739"
+  integrity sha1-zmJ3+FODX3GIKe+0fbIPPk2cRzk=
 
 node-libs-browser@^2.2.1:
   version "2.2.1"
@@ -7829,6 +7851,15 @@ node-loader@^0.6.0:
   version "0.6.0"
   resolved "https://registry.npm.taobao.org/node-loader/download/node-loader-0.6.0.tgz#c797ef51095ed5859902b157f6384f6361e05ae8"
   integrity sha1-x5fvUQle1YWZArFX9jhPY2HgWug=
+
+node-window-manager@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.npm.taobao.org/node-window-manager/download/node-window-manager-2.2.4.tgz#ed0e32cd08e20061e2f73c21433c0adbaf4e6e98"
+  integrity sha1-7Q4yzQjiAGHi9zwhQzwK269Obpg=
+  dependencies:
+    extract-file-icon "^0.3.2"
+    node-addon-api "2.0.0"
+    node-gyp-build "^4.2.1"
 
 noop-logger@^0.1.1:
   version "0.1.1"

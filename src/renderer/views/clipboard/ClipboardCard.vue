@@ -118,7 +118,7 @@ export default {
     return { defaultIcon: '../static/icon.png' };
   },
   computed: {
-    ...mapState(['appConfig', 'favoritesData', 'favorite']),
+    ...mapState(['appConfig', 'favoritesData', 'favorite', 'iconMap']),
     shortcut() {
       if (this.index < 9) return `Alt+${this.index + 1}`;
       return '';
@@ -144,13 +144,6 @@ export default {
     },
     iconUrl() {
       return this.iconMap[this.data.icon] || this.defaultIcon;
-    },
-    iconMap() {
-      const iconMap = {};
-      for (const icon of this.cardIcons) {
-        iconMap[icon.checksum] = icon.base64data;
-      }
-      return iconMap;
     },
   },
   methods: {

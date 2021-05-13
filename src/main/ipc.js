@@ -104,6 +104,9 @@ ipcMain
     await removeOneClipboardData(_id);
     e.returnValue = await db.clipboardCard.clear(_id);
   })
+  .on(events.EVENT_APP_CLIPBOARD_ICON_LIST, async (e) => {
+    await getIconMap();
+  })
   .on(events.EVENT_APP_CLIPBOARD_DATA_LIST, async (e, params) => {
     const retData = await db.clipboardCard.list(
       params.favorite,
@@ -159,6 +162,11 @@ ipcMain
     }
   });
 
+export async function getIconMap() {
+  const iconMap = await db.clipboardCardIcon.getIconMap();
+  await store.dispatch('changeIconMap', iconMap);
+}
+
 /**
  * 将main进程的错误在renderer进程显示出来
  * @param {String|Object} err 错误内容
@@ -177,6 +185,7 @@ export function changeBindKey(funcName, oldKey, newKey) {
 }
 
 export function addOneClipboardData(data) {
+  logger.debug('[main][ipc]: ', data);
   return db.clipboardCard.add(data);
 }
 

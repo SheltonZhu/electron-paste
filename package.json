@@ -44,6 +44,7 @@
     "md5": "^2.3.0",
     "mousetrap": "^1.6.1",
     "nedb-promises": "^4.1.0",
+    "node-window-manager": "^2.2.4",
     "robotjs": "^0.6.0",
     "rxjs": "^5.5.5",
     "sudo-prompt": "^8.1.0",

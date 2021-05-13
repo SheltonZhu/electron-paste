@@ -17,7 +17,7 @@
 <script>
 import ClipboardCard from './ClipboardCard';
 import { mapState, mapMutations } from 'vuex';
-import { listClipboardData } from '../../ipc';
+import { listClipboardData, getIconMapData } from '../../ipc';
 import Mousetrap from 'mousetrap';
 export default {
   name: 'ClipboardPanel',
@@ -58,6 +58,7 @@ export default {
     ...mapMutations(['updateClipboardData']),
     init() {
       listClipboardData();
+      getIconMapData();
       this.initShortcut();
     },
     initShortcut() {
