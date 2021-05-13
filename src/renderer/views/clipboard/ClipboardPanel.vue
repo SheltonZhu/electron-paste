@@ -35,8 +35,23 @@ export default {
       this.init();
     });
   },
+  watch: {
+    clipboardData() {
+      console.log(this.isSearching);
+      if (!this.isSearching)
+        this.$nextTick(() => {
+          this.focusFirst();
+        });
+    },
+  },
   computed: {
-    ...mapState(['favorite', 'searchType', 'query', 'clipboardData']),
+    ...mapState([
+      'favorite',
+      'searchType',
+      'query',
+      'clipboardData',
+      'isSearching',
+    ]),
     isEmpty() {
       return this.clipboardData.length === 0;
     },
@@ -51,13 +66,22 @@ export default {
       for (const index in [...Array(9)]) {
         const shortcut = parseInt(index) + 1;
         Mousetrap.bind(`alt+${shortcut}`, () => {
-          this.$refs[`cc${index}`][0].copyPasteAndHide();
+          this.$refs[`cc${index}`][0].pasteAndHide();
         });
       }
     },
     onMouseWheel(e) {
       e.preventDefault();
       this.$refs.clipboard.scrollLeft += parseInt(e.deltaY);
+    },
+    focusFirst() {
+      try {
+        this.$refs[`cc0`][0].$el.focus();
+      } catch (e) {
+        if (!(e instanceof TypeError)) {
+          console.error(e);
+        }
+      }
     },
   },
 };

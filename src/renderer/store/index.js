@@ -25,6 +25,7 @@ export default new Vuex.Store({
     page: '1',
     favorite: defaultHistoryFavorite,
     searchType: '',
+    isSearching: false,
     query: '',
     clipboardData: [],
     favoritesData: [],
@@ -74,6 +75,9 @@ export default new Vuex.Store({
     updateDragData(state, data) {
       state.dragData = data;
     },
+    updateIsSearch(state, stat) {
+      state.isSearching = stat;
+    },
   },
   actions: {
     initConfig({ commit }, { config, meta }) {
@@ -105,6 +109,12 @@ export default new Vuex.Store({
     },
     saveDragData({ commit }, data) {
       commit('updateDragData', data);
+    },
+    changeIsSearch({ commit }, stat) {
+      return new Promise((resolve, reject) => {
+        commit('updateIsSearch', stat);
+        resolve();
+      });
     },
   },
   plugins: [

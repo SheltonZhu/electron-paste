@@ -7,7 +7,7 @@
   >
     <el-tooltip
       v-if="!isRenaming"
-      :disabled="!isSearching"
+      :disabled="!isExpand"
       :content="favoriteData.name"
     >
       <el-button
@@ -28,7 +28,7 @@
         <spot :color="favoriteData.color" />
         <transition name="bounce" mode="out-in">
           <div
-            v-if="!isSearching"
+            v-if="!isExpand"
             style="margin-left: 10px; display: inline-block"
           >
             {{ favoriteData.name }}
@@ -74,7 +74,7 @@ export default {
     favoriteData: {
       type: Object,
     },
-    isSearching: {
+    isExpand: {
       type: Boolean,
       default: false,
     },

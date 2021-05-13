@@ -5,7 +5,7 @@
       <transition name="slide" mode="out-in">
         <el-input
           prefix-icon="el-icon-search"
-          v-if="isSearching"
+          v-if="expand"
           ref="searchBar"
           placeholder="请输入检索内容（支持正则）"
           size="small"
@@ -13,6 +13,8 @@
           class="input-with-select"
           @keyup.native="doSearch"
           @keyup.esc.native="(e) => e.target.blur()"
+          @focus="focusSearch"
+          @blur="blurSearch"
           @clear="doSearch"
           clearable
         >
@@ -37,7 +39,7 @@
       <transition name="fade" mode="out-in">
         <!--    搜索按钮    -->
         <el-button
-          v-if="!isSearching"
+          v-if="!expand"
           @click="clickSearchBtn"
           ref="searchBtn"
           class="el-icon-search search-btn"
@@ -48,7 +50,7 @@
       <!--   收藏栏按钮组   -->
       <div class="clipboard-tag">
         <!--   剪贴板历史标签   -->
-        <el-tooltip :disabled="!isSearching" content="剪贴板历史">
+        <el-tooltip :disabled="!expand" content="剪贴板历史">
           <el-button
             :style="{
               color: favoritesFontColor,
@@ -66,7 +68,7 @@
             <span class="el-icon-timer" style="font-weight: bolder" />
             <transition name="bounce" mode="out-in">
               <div
-                v-if="!isSearching"
+                v-if="!expand"
                 style="margin-left: 10px; display: inline-block"
               >
                 剪贴板历史
@@ -76,7 +78,7 @@
         </el-tooltip>
 
         <favorite-label
-          :is-searching="isSearching"
+          :is-expand="expand"
           :favoritesFontColor="favoritesFontColor"
           :favoritesFontColorSelected="favoritesFontColorSelected"
           :favoritesBgColorSelected="favoritesBgColorSelected"
@@ -110,7 +112,7 @@
 
       <!--   添加标签按钮   -->
       <el-button
-        v-if="!isSearching"
+        v-if="!expand"
         class="el-icon-plus add-btn"
         :style="{ color: favoritesFontColor }"
         @click="clickFavoriteAdder"
@@ -190,7 +192,7 @@ export default {
       CARD_TYPE: CARD_TYPE,
       searchValue: '',
       selectType: '',
-      isSearching: false,
+      expand: false,
       newFavoriteName: '未命名',
       newFavoriteVisible: false,
     };
@@ -211,13 +213,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['changeSearch', 'changeFavorite']),
+    ...mapActions(['changeSearch', 'changeFavorite', 'changeIsSearch']),
     initLabels() {
       listFavoriteData();
     },
     initShortCut() {
       Mousetrap.bind('alt+s', () => {
-        if (!this.isSearching) {
+        if (!this.expand) {
           this.$refs.searchBtn.$el.click();
         } else {
           this.$refs.searchBar.focus();
@@ -243,20 +245,21 @@ export default {
       this.execSearch();
     },
     clickSearchBtn() {
-      this.isSearching = true;
+      this.expand = true;
       this.$nextTick(() => {
         this.$refs.searchBar.focus();
       });
     },
     clickDefaultFavorite() {
-      if (!this.isSelected)
+      if (!this.isSelected) {
         this.changeFavorite(defaultHistoryFavorite).then(listClipboardData);
+      }
     },
     doSearch() {
       this.execSearchDebounce();
     },
     closeSearch() {
-      this.isSearching = false;
+      this.expand = false;
       this.resetSearch();
     },
     resetSearch() {
@@ -267,11 +270,19 @@ export default {
         this.execSearchDebounce();
       }
     },
+    focusSearch() {
+      this.changeIsSearch(true);
+    },
+    blurSearch() {
+      this.changeIsSearch(false);
+    },
     execSearch() {
       this.changeSearch({
         query: this.searchValue,
         searchType: this.selectType,
-      }).then(listClipboardData);
+      }).then(() => {
+        setTimeout(listClipboardData, 200);
+      });
     },
     execSearchDebounce: debounce(function () {
       this.execSearch();
