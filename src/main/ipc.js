@@ -18,7 +18,7 @@ import { CARD_TYPE, defaultHistoryFavorite, osInfo } from '../shared/env';
 import { clone } from '../shared/utils';
 
 import logger from './logger';
-// import robot from 'robotjs';
+import robot from 'robotjs';
 import store from '../renderer/store';
 import pkg from '../../package.json';
 import db from './db';
@@ -114,23 +114,34 @@ ipcMain
   })
   .on(events.EVENT_APP_CLIPBOARD_PASTE, async (e, params) => {
     // TODO os: win, linux
-    // TODO text mode, direct paste
     hideClipboard();
     switch (params.data.cardType) {
       case CARD_TYPE.IMAGE:
         const image = nativeImage.createFromDataURL(params.data.base64data);
         clipboard.writeImage(image);
+        if (params.directPaste && store.state.appConfig.directPaste) {
+          setTimeout(async () => {
+            robot.keyTap('v', 'control');
+          }, 10);
+        }
         break;
       case CARD_TYPE.TEXT:
       case CARD_TYPE.LINK:
-        if (store.state.appConfig.textMode) {
-          clipboard.writeText(params.data.text);
-        } else {
-          clipboard.write({
-            text: params.data.text,
-            html: params.data.html,
-            rtf: params.data.rtf,
-          });
+        clipboard.write({
+          text: params.data.text,
+          html: params.data.html,
+          rtf: params.data.rtf,
+        });
+        if (params.directPaste && store.state.appConfig.directPaste) {
+          if (store.state.appConfig.textMode || params.textMode) {
+            setTimeout(async () => {
+              robot.keyTap('v', ['control', 'shift']);
+            }, 10);
+          } else {
+            setTimeout(async () => {
+              robot.keyTap('v', 'control');
+            }, 10);
+          }
         }
         break;
       case CARD_TYPE.FILE:
@@ -138,11 +149,6 @@ ipcMain
         break;
       default:
         throw new Error(`unknown type ${params.data.cardType}`);
-    }
-    if (params.directPaste && store.state.appConfig.directPaste) {
-      setTimeout(async () => {
-        // robot.keyTap('v', 'control');
-      }, 10);
     }
   });
 

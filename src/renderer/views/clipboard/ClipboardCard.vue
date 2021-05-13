@@ -179,42 +179,28 @@ export default {
       }
     },
     cardOnEnter() {
-      this.copyPasteAndHide();
+      this.pasteAndHide();
     },
     cardOnDblClick() {
-      this.copyPasteAndHide();
+      this.pasteAndHide();
     },
     copyAndHide() {
-      // hideClipboard();
-      // this.write2clipboard();
       hideAndPaste({
         data: this.data,
       });
     },
-    copyPasteAndHide() {
+    pasteTextAndHide() {
+      hideAndPaste({
+        data: this.data,
+        textMode: true,
+        directPaste: this.appConfig.directPaste,
+      });
+    },
+    pasteAndHide() {
       hideAndPaste({
         data: this.data,
         directPaste: this.appConfig.directPaste,
       });
-      // hideClipboard();
-      // this.write2clipboardAndPaste();
-    },
-    write2clipboard() {
-      // if (this.isImage) {
-      //   const image = this.$electron.remote.nativeImage.createFromDataURL(
-      //     this.data.copyContent
-      //   );
-      //   this.$electron.remote.clipboard.writeImage(image);
-      // } else {
-      //   this.$electron.remote.clipboard.writeText(this.data.copyContent);
-      // }
-    },
-    write2clipboardAndPaste() {
-      // this.write2clipboard();
-      // if (this.$electron.remote.getGlobal('config').get('directPaste'))
-      //   setTimeout(async () => {
-      //     this.$electron.remote.getGlobal('robot').keyTap('v', 'control');
-      //   }, 10);
     },
     openLink() {
       hideClipboard();
@@ -319,7 +305,7 @@ export default {
     /*    {*/
     /*      label: '粘贴',*/
     /*      icon: 'el-icon-document-add',*/
-    /*      onClick: this.copyPasteAndHide,*/
+    /*      onClick: this.pasteAndHide,*/
     /*    },*/
     /*    { label: '重命名', icon: 'el-icon-edit', onClick: this.rename },*/
 
