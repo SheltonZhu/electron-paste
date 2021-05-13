@@ -5,6 +5,7 @@
     @dragenter="onCardDragIn"
     @dragleave="onCardDragOut"
   >
+    <!--  右键菜单  -->
     <context-menu
       class="right-menu"
       :target="contextMenuTarget"
@@ -241,6 +242,7 @@ export default {
       if (color !== this.favoriteData.color) {
         const newFavorite = updateFavorite(this.favoriteData._id, { color });
         this.favoriteData.color = newFavorite.color;
+        this.contextMenuVisible = false;
       }
     },
   },

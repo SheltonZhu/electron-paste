@@ -65,7 +65,10 @@
             }"
             @click="clickDefaultFavorite"
           >
-            <span class="el-icon-timer" style="font-weight: bolder" />
+            <span
+              class="el-icon-timer"
+              style="font-weight: bolder; color: #aaabab"
+            />
             <transition name="bounce" mode="out-in">
               <div
                 v-if="!expand"
