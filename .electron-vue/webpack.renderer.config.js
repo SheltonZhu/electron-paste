@@ -6,7 +6,7 @@ const path = require('path');
 const { dependencies } = require('../package.json');
 const webpack = require('webpack');
 
-const BabiliWebpackPlugin = require('babili-webpack-plugin');
+const MinifyPlugin = require('babel-minify-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -53,7 +53,7 @@ let rendererConfig = {
       },
       {
         test: /\.styl(us)?$/,
-        use: ['vue-style-loader', 'css-loader', 'stylus-loader'],
+        use: ['vue-style-loader', 'css-loader'],
       },
       {
         test: /\.html$/,
@@ -78,8 +78,6 @@ let rendererConfig = {
               sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
               scss: 'vue-style-loader!css-loader!sass-loader',
               less: 'vue-style-loader!css-loader!less-loader',
-              styl: 'vue-style-loader!css-loader!stylus-loader',
-              stylus: 'vue-style-loader!css-loader!stylus-loader',
             },
           },
         },
@@ -175,7 +173,7 @@ if (process.env.NODE_ENV === 'production') {
   rendererConfig.devtool = '';
 
   rendererConfig.plugins.push(
-    new BabiliWebpackPlugin(),
+    new MinifyPlugin(),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '../static'),
