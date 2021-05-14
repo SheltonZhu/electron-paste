@@ -1,9 +1,14 @@
 <template>
   <el-card
+    @contextmenu.native="mountContextMenu($event, $root, index)"
     @keyup.enter.native="cardOnEnter"
     @dblclick.native="cardOnDblClick"
     class="box-card"
-    :class="{ 'image-card': isImage, 'text-card': isText, 'link-card': isLink }"
+    :class="{
+      'image-card': isImage,
+      'text-card': isText,
+      'link-card': isLink,
+    }"
     :style="{ 'background-color': appConfig.cardBgColor }"
     tabindex="100"
     @keyup.right.native="
@@ -75,7 +80,11 @@
       >
         {{ data.text }}
       </el-link>
-      <el-image style="width: 330px" v-if="isImage" :src="data.base64data">
+      <el-image
+        style="width: 330px; pointer-events: none"
+        v-if="isImage"
+        :src="data.base64data"
+      >
         <div slot="error" class="image-slot">
           <i class="el-icon-picture-outline"></i>
         </div>
@@ -92,12 +101,29 @@
         {{ shortcut }}
       </div>
     </div>
+
+    <context-menu
+      :list="contextMenu"
+      :tag="index"
+      :arrow="true"
+      :itemWidth="200"
+    ></context-menu>
   </el-card>
 </template>
 <script>
 import { mapActions, mapState } from 'vuex';
 import { CARD_TYPE } from '../../../shared/env';
-import { hideAndPaste, hideClipboard, move2Favorite } from '../../ipc';
+import {
+  hideAndPaste,
+  hideClipboard,
+  renameClipboardData,
+  removeClipboardData,
+  move2Favorite,
+  listClipboardData,
+} from '../../ipc';
+import { dataURLtoBlob } from '../../../shared/utils';
+import ContextMenu from '../../components/ContextMenu';
+
 export default {
   name: 'ClipboardCard',
   props: {
@@ -113,9 +139,12 @@ export default {
       default: [],
     },
   },
-  mounted() {},
+  components: { ContextMenu },
   data: () => {
-    return { defaultIcon: '../static/icon.png' };
+    return {
+      defaultIcon: '../static/icon.png',
+      cmList: [],
+    };
   },
   computed: {
     ...mapState(['appConfig', 'favoritesData', 'favorite', 'iconMap']),
@@ -145,9 +174,149 @@ export default {
     iconUrl() {
       return this.iconMap[this.data.icon] || this.defaultIcon;
     },
+    contextMenu() {
+      return [
+        {
+          text: '复制',
+          icon: 'el-icon-document-copy',
+          onClick: this.copyAndHide,
+        },
+        {
+          text: '粘贴',
+          icon: 'el-icon-document-add',
+          hidden: !this.appConfig.directPaste,
+          onClick: this.pasteAndHide,
+        },
+        {
+          text: '粘贴纯文本',
+          icon: 'el-icon-document',
+          hidden:
+            !this.isText ||
+            this.appConfig.textMode ||
+            !this.appConfig.directPaste,
+          onClick: this.pasteTextAndHide,
+        },
+        {
+          text: '重命名',
+          icon: 'el-icon-edit',
+          onClick: this.rename,
+        },
+
+        {
+          text: '删除',
+          icon: 'el-icon-delete',
+          divided: true,
+          onClick: this.deleteOneData,
+        },
+        {
+          text: '打开链接',
+          icon: 'el-icon-link',
+          onClick: this.openLink,
+          hidden: !this.isLink,
+        },
+        {
+          text: '保存图片',
+          icon: 'el-icon-picture-outline',
+          onClick: this.contextMenuSaveImage,
+          hidden: !this.isImage,
+        },
+        {
+          text: '快速查看（TODO）',
+          icon: 'el-icon-view',
+          hidden: true,
+        },
+        {
+          text: '添加到收藏',
+          icon: 'el-icon-collection-tag',
+          children: this.favoriteChildren,
+        },
+        {
+          text: '使用谷歌翻译',
+          icon: 'el-icon-camera',
+          hidden: !this.isText,
+          children: [
+            {
+              text: '中文【简】',
+              icon: 'el-icon-caret-right',
+              onClick: () => {
+                this.googleTranslate(
+                  'https://translate.google.cn/?sl=auto&tl=zh-CN&text='
+                );
+              },
+            },
+            {
+              text: '英语',
+              icon: 'el-icon-caret-right',
+              onClick: () => {
+                this.googleTranslate(
+                  'https://translate.google.cn/?sl=auto&tl=zh-CN&text='
+                );
+              },
+            },
+            {
+              text: '日语',
+              icon: 'el-icon-caret-right',
+              onClick: () => {
+                this.googleTranslate(
+                  'https://translate.google.cn/?sl=auto&tl=ja&text='
+                );
+              },
+            },
+            {
+              text: '中文【繁】',
+              icon: 'el-icon-caret-right',
+              onClick: () => {
+                this.googleTranslate(
+                  'https://translate.google.cn/?sl=auto&tl=zh-TW&text='
+                );
+              },
+            },
+          ],
+        },
+        {
+          text: '分享',
+          icon: 'el-icon-share',
+          children: [
+            {
+              text: '邮件',
+              icon: 'el-icon-message',
+              onClick: this.share2email,
+            },
+            {
+              text: 'Twitter',
+              onClick: this.share2twitter,
+            },
+          ],
+        },
+      ];
+    },
+    favoriteChildren() {
+      const children = [];
+      for (const favorite of this.favoritesData) {
+        if (favorite._id !== this.favorite) {
+          children.push({
+            text: favorite.name,
+            icon: 'el-icon-star-off',
+            onClick: () => {
+              this.add2favorite(favorite._id);
+            },
+          });
+        }
+      }
+      return children;
+    },
   },
   methods: {
     ...mapActions(['saveDragData']),
+    mountContextMenu(e, root, tag) {
+      e.stopPropagation();
+      e.preventDefault();
+      root.$emit('easyAxis', {
+        tag: tag,
+        x: e.clientX,
+        y: e.clientY,
+      });
+    },
     onDragStart() {
       this.saveDragData(this.data);
     },
@@ -195,51 +364,33 @@ export default {
     },
     share2twitter() {
       this.execShellOpenLink('https://twitter.com/compose/tweet');
-      this.copyAndHide();
+      this.pasteAndHide();
     },
     share2email() {
       this.execShellOpenLink('mailto: somebody@somewhere.io');
-      this.copyAndHide();
+      this.pasteAndHide();
     },
     execShellOpenLink(link) {
       this.$electron.shell.openExternal(link);
     },
-    deleteOneData() {},
+    deleteOneData() {
+      removeClipboardData(this.data._id);
+      listClipboardData();
+    },
     rename() {
-      // this.$electron.remote.getGlobal('shortcut').unregisterEsc();
+      // TODO ENTER BUG
       this.$prompt('', '重命名', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       })
-        .then(({ value }) => {
-          // this.$electron.remote
-          //   .getGlobal('db')
-          //   .rename(this.data._id, value)
-          //   .then((ret) => {
-          //     this.data.name = ret.name;
-          //     this.$forceUpdate();
-          //     window.log.info('renameCard: ', ret);
-          //   });
+        .then(async ({ value }) => {
+          renameClipboardData(this.data._id, value);
+          listClipboardData();
         })
-        .catch(() => {})
-        .finally(() => {
-          // this.$electron.remote.getGlobal('shortcut').registerEsc();
-        });
-    },
-    // dataURL to blob
-    dataURLtoBlob(dataUrl) {
-      const arr = dataUrl.split(',');
-      const mime = arr[0].match(/:(.*?);/)[1];
-      const bstr = atob(arr[1]);
-      let n = bstr.length;
-      const u8arr = new Uint8Array(n);
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-      }
-      return new Blob([u8arr], { type: mime });
+        .catch(() => {});
     },
     contextMenuSaveImage() {
-      const blob = this.dataURLtoBlob(this.data.base64data);
+      const blob = dataURLtoBlob(this.data.base64data);
       const type = blob.type.split('/')[1];
       const reader = new FileReader();
       reader.readAsDataURL(blob);
@@ -263,127 +414,6 @@ export default {
       hideClipboard();
       this.execShellOpenLink(`${url}${this.data.text}`);
     },
-    // 生成右键菜单
-    // /*onContextmenu(event) {*/
-    /*  const children = [];*/
-    /*  for (const favorite of this.favoritesData) {*/
-    /*    if (favorite._id !== this.favorite) {*/
-    /*      children.push({*/
-    /*        label: favorite.name,*/
-    /*        icon: 'el-icon-star-off',*/
-    /*        onClick: () => {*/
-    /*          this.add2favorite(favorite._id);*/
-    /*        },*/
-    /*      });*/
-    /*    }*/
-    /*  }*/
-    /*  const items = [*/
-    /*    {*/
-    /*      label: '复制',*/
-    /*      icon: 'el-icon-document-copy',*/
-    /*      onClick: this.copyAndHide,*/
-    /*    },*/
-    /*    {*/
-    /*      label: '粘贴',*/
-    /*      icon: 'el-icon-document-add',*/
-    /*      onClick: this.pasteAndHide,*/
-    /*    },*/
-    /*    { label: '重命名', icon: 'el-icon-edit', onClick: this.rename },*/
-
-    /*    {*/
-    /*      label: '删除',*/
-    /*      icon: 'el-icon-delete',*/
-    /*      divided: true,*/
-    /*      onClick: this.deleteOneData,*/
-    /*    },*/
-    /*    {*/
-    /*      label: '打开链接',*/
-    /*      icon: 'el-icon-link',*/
-    /*      onClick: this.openLink,*/
-    /*      hidden: !this.isLink,*/
-    /*    },*/
-    /*    {*/
-    /*      label: '保存图片',*/
-    /*      icon: 'el-icon-picture-outline',*/
-    /*      onClick: this.contextMenuSaveImage,*/
-    /*      hidden: !this.isImage,*/
-    /*    },*/
-    /*    {*/
-    /*      label: '快速查看（TODO）',*/
-    /*      icon: 'el-icon-view',*/
-    /*      hidden: true,*/
-    /*    },*/
-    /*    {*/
-    /*      label: '添加到收藏',*/
-    /*      icon: 'el-icon-collection-tag',*/
-    /*      children: children,*/
-    /*    },*/
-    /*    {*/
-    /*      label: '使用谷歌翻译',*/
-    /*      icon: 'el-icon-camera',*/
-    /*      hidden: !this.isText,*/
-    /*      children: [*/
-    /*        {*/
-    /*          label: '中文(简)',*/
-    /*          icon: 'el-icon-caret-right',*/
-    /*          onClick: () => {*/
-    /*            this.googleTranslate(*/
-    /*              'https://translate.google.cn/?sl=auto&tl=zh-CN&text='*/
-    /*            );*/
-    /*          },*/
-    /*        },*/
-    /*        {*/
-    /*          label: '英语',*/
-    /*          icon: 'el-icon-caret-right',*/
-    /*          onClick: () => {*/
-    /*            this.googleTranslate(*/
-    /*              'https://translate.google.cn/?sl=auto&tl=zh-CN&text='*/
-    /*            );*/
-    /*          },*/
-    /*        },*/
-    /*        {*/
-    /*          label: '日语',*/
-    /*          icon: 'el-icon-caret-right',*/
-    /*          onClick: () => {*/
-    /*            this.googleTranslate(*/
-    /*              'https://translate.google.cn/?sl=auto&tl=ja&text='*/
-    /*            );*/
-    /*          },*/
-    /*        },*/
-    /*        {*/
-    /*          label: '中文(繁)',*/
-    /*          icon: 'el-icon-caret-right',*/
-    /*          onClick: () => {*/
-    /*            this.googleTranslate(*/
-    /*              'https://translate.google.cn/?sl=auto&tl=zh-TW&text='*/
-    /*            );*/
-    /*          },*/
-    /*        },*/
-    /*      ],*/
-    /*    },*/
-    /*    {*/
-    /*      label: '分享',*/
-    /*      icon: 'el-icon-share',*/
-    /*      minWidth: 0,*/
-    /*      children: [*/
-    /*        {*/
-    /*          label: '邮件',*/
-    /*          icon: 'el-icon-message',*/
-    /*          onClick: this.share2email,*/
-    /*        },*/
-    /*        { label: 'Twitter', onClick: this.share2twitter },*/
-    /*      ],*/
-    //     },
-    //   ];
-    //
-    //   this.$contextmenu({
-    //     items: items,
-    //     event,
-    //     customClass: 'context-menu',
-    //     zIndex: 3,
-    //   });
-    //   return false;
-    // },
   },
 };
 </script>
@@ -529,7 +559,7 @@ export default {
 }
 
 .el-message-box input {
-  background-color: #ffffff00 !important;
+  background-color: #ffffffbf !important;
   backdrop-filter: saturate(180%) blur(5px) !important;
 }
 </style>

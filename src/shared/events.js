@@ -39,6 +39,10 @@ export const EVENT_APP_CLIPBOARD_DATA_LIST = 'app.clipboard.data.list';
 
 export const EVENT_APP_CLIPBOARD_DATA_CLEAR = 'app.clipboard.data.clear';
 
+export const EVENT_APP_CLIPBOARD_DATA_REMOVE = 'app.clipboard.data.remove';
+
+export const EVENT_APP_CLIPBOARD_DATA_RENAME = 'app.clipboard.data.rename';
+
 export const EVENT_APP_CLIPBOARD_ICON_LIST = 'app.clipboard.icon.list';
 
 export const EVENT_APP_CHECK_HISTORY_CAPACITY = 'app.check.history.capacity';

@@ -240,8 +240,8 @@ export default {
     },
     recolor(color) {
       if (color !== this.favoriteData.color) {
-        const newFavorite = updateFavorite(this.favoriteData._id, { color });
-        this.favoriteData.color = newFavorite.color;
+        updateFavorite(this.favoriteData._id, { color });
+        listFavoriteData();
         this.contextMenuVisible = false;
       }
     },
@@ -275,6 +275,7 @@ export default {
   min-width: 200px;
   margin: 0 0 !important;
   padding: 10px 15px !important;
+  color: #2e2e2e;
 }
 
 .right-menu button:hover,
@@ -282,11 +283,6 @@ export default {
   color: #fff !important;
   background: #aaababbf !important;
   backdrop-filter: saturate(180%) blur(5px) !important;
-}
-
-.color-selector {
-  display: flex;
-  margin: 5px 10px 5px;
 }
 
 .right-menu .circle {

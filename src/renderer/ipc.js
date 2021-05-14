@@ -48,10 +48,7 @@ export function syncConfig(appConfig) {
  * 主动获取初始化数据
  */
 export function getInitConfig() {
-  // console.log('[renderer][ipc]: get init config data');
   ipcRenderer.send(events.EVENT_APP_WEB_INIT);
-  // const res = ipcRenderer.sendSync(events.EVENT_APP_WEB_INIT);
-  // store.dispatch('changeConfig', res).then();
 }
 
 /**
@@ -107,6 +104,23 @@ export const listClipboardDataDebounce = debounce(listClipboardData, 200);
  * */
 export function clearClipboardData() {
   return ipcRenderer.sendSync(events.EVENT_APP_CLIPBOARD_DATA_CLEAR);
+}
+
+/**
+ * 清除一条记录
+ * */
+export function removeClipboardData(_id) {
+  return ipcRenderer.sendSync(events.EVENT_APP_CLIPBOARD_DATA_REMOVE, _id);
+}
+
+/**
+ * 修改一条记录名字
+ * */
+export function renameClipboardData(_id, name) {
+  return ipcRenderer.sendSync(events.EVENT_APP_CLIPBOARD_DATA_RENAME, {
+    _id,
+    name,
+  });
 }
 
 /**

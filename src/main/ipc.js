@@ -101,7 +101,7 @@ ipcMain
     e.returnValue = await updateOneClipboardData(params._id, params.data);
   })
   .on(events.EVENT_APP_FAVORITE_DATA_REMOVE, async (e, _id) => {
-    await removeOneClipboardData(_id);
+    await removeFavorite(_id);
     e.returnValue = await db.clipboardCard.clear(_id);
   })
   .on(events.EVENT_APP_CLIPBOARD_ICON_LIST, async (e) => {
@@ -122,8 +122,15 @@ ipcMain
     }
     e.returnValue = affectedNum;
   })
+  .on(events.EVENT_APP_CLIPBOARD_DATA_REMOVE, async (e, _id) => {
+    e.returnValue = await removeOneClipboardData(_id);
+  })
+  .on(events.EVENT_APP_CLIPBOARD_DATA_RENAME, async (e, params) => {
+    e.returnValue = await db.clipboardCard.updateById(params._id, {
+      name: params.name,
+    });
+  })
   .on(events.EVENT_APP_CLIPBOARD_PASTE, async (e, params) => {
-    // TODO os: win, linux
     hideClipboard();
     switch (params.data.cardType) {
       case CARD_TYPE.IMAGE:
@@ -155,7 +162,7 @@ ipcMain
         }
         break;
       case CARD_TYPE.FILE:
-        // TODO
+        // TODO file
         break;
       default:
         throw new Error(`unknown type ${params.data.cardType}`);
@@ -193,9 +200,13 @@ export function updateOneClipboardData(_id, data) {
   return db.favorites.updateById(_id, data);
 }
 
-export function removeOneClipboardData(_id) {
-  // TODO delete all data
+export function removeFavorite(_id) {
+  db.clipboardCard.clear(_id).then();
   return db.favorites.removeOne(_id);
+}
+
+export function removeOneClipboardData(_id) {
+  return db.clipboardCard.removeOne(_id);
 }
 
 export function updateClipboardData(data) {
