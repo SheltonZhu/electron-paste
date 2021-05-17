@@ -231,7 +231,7 @@ export default {
           children: this.favoriteChildren,
         },
         {
-          text: '使用谷歌翻译',
+          text: '谷歌翻译',
           icon: 'el-icon-camera',
           hidden: !this.isText,
           children: [

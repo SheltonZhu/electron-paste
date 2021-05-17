@@ -127,7 +127,7 @@
         :span="12"
         v-if="historyCapacity === 4"
       >
-        ⚠设置为无限会使用更多的存储，进而导致卡顿⚠
+        ⚠设置为无限会使用更多的磁盘空间，进而导致卡顿⚠
       </el-col>
     </el-row>
     <div style="text-align: center">
