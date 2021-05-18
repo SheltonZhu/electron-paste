@@ -261,7 +261,7 @@ export default {
   fill: currentColor;
   overflow: hidden;
   position: absolute;
-  right: 0%;
+  right: 0;
   top: 50%;
   transform: translateY(-50%);
 }

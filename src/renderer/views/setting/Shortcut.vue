@@ -70,6 +70,7 @@ export default {
         lastCard: '上一个卡片',
         nextCart: '下一个卡片',
         copyOrPaste: '复制/粘贴',
+        renameCard: '更改名称',
       },
       funcKeys: new Set(),
       actionKey: '',
@@ -142,7 +143,7 @@ export default {
 
 <style scoped>
 .row {
-  padding: 10px 5px;
+  padding: 8px 5px;
 }
 
 .type {

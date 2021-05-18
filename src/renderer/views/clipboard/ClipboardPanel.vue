@@ -65,7 +65,7 @@ export default {
       for (const index in [...Array(9)]) {
         const shortcut = parseInt(index) + 1;
         Mousetrap.bind(`alt+${shortcut}`, () => {
-          this.$refs[`cc${index}`][0].pasteAndHide();
+          this.$refs[`cc${index}`][0].pasteAndHide(200);
         });
       }
     },

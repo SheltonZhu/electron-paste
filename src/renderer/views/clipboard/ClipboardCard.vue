@@ -1,7 +1,7 @@
 <template>
   <el-card
     @contextmenu.native="mountContextMenu($event, $root, index)"
-    @keyup.enter.native="cardOnEnter"
+    @keyup.113.native="rename"
     @dblclick.native="cardOnDblClick"
     class="box-card"
     :class="{
@@ -123,6 +123,7 @@ import {
 } from '../../ipc';
 import { dataURLtoBlob } from '../../../shared/utils';
 import ContextMenu from '../../components/ContextMenu';
+import Mousetrap from 'mousetrap';
 
 export default {
   name: 'ClipboardCard',
@@ -306,8 +307,16 @@ export default {
       return children;
     },
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.initShortcut();
+    });
+  },
   methods: {
     ...mapActions(['saveDragData']),
+    initShortcut() {
+      Mousetrap.bind('enter', this.cardOnEnter);
+    },
     mountContextMenu(e, root, tag) {
       e.stopPropagation();
       e.preventDefault();
@@ -352,10 +361,11 @@ export default {
         directPaste: this.appConfig.directPaste,
       });
     },
-    pasteAndHide() {
+    pasteAndHide(timeout) {
       hideAndPaste({
         data: this.data,
         directPaste: this.appConfig.directPaste,
+        timeout,
       });
     },
     openLink() {
@@ -378,10 +388,10 @@ export default {
       listClipboardData();
     },
     rename() {
-      // TODO ENTER BUG
-      this.$prompt('', '重命名', {
+      this.$prompt(this.data.name, '重命名', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
+        inputPlaceholder: '输入新名称',
       })
         .then(async ({ value }) => {
           renameClipboardData(this.data._id, value);

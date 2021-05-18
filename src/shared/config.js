@@ -85,6 +85,10 @@ const defaultConfig = {
       key: 'ENTER',
       enable: false,
     },
+    renameCard: {
+      key: 'F2',
+      enable: false,
+    },
   },
 
   // 正则

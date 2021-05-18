@@ -157,7 +157,7 @@ ipcMain
           } else {
             setTimeout(async () => {
               robot.keyTap('v', 'control');
-            }, 10);
+            }, params.timeout || 10);
           }
         }
         break;
