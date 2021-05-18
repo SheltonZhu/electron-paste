@@ -1,4 +1,4 @@
-import { app, ipcMain, dialog, clipboard, nativeImage } from 'electron';
+import { app, ipcMain, clipboard, nativeImage } from 'electron';
 import { readJsonSync } from 'fs-extra';
 import * as events from '../shared/events';
 import { appConfigPath } from './bootstrap';
@@ -51,7 +51,6 @@ ipcMain
         os: osInfo,
       },
     };
-    // e.returnValue = res;
     store.dispatch('initConfig', res).then();
   })
   .on(events.EVENT_RX_SYNC_RENDERER, (_, data) => {
@@ -62,10 +61,6 @@ ipcMain
   .on(events.EVENT_APP_NOTIFY_RENDERER, (_, body, title) => {
     // 显示来自renderer进程的通知
     showNotification(body, title);
-  })
-  .on(events.EVENT_APP_OPEN_DIALOG, async (e, params) => {
-    const ret = await dialog.showOpenDialog(params);
-    e.returnValue = ret.filePaths;
   })
   .on(events.EVENT_APP_OPEN_WINDOW_SETTING, async (e) => {
     showSetting();

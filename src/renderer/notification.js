@@ -7,7 +7,6 @@ import { EVENT_APP_NOTIFY_RENDERER } from '../shared/events';
  * @param {String} title 标题
  */
 export function showHtmlNotification(body, title = '通知') {
-  // console.log('using html5 notification');
   new Notification(title, {
     body: body,
   });

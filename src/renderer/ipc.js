@@ -1,9 +1,6 @@
 import { ipcRenderer } from 'electron';
 import store from './store';
-import {
-  // showNotification,
-  showHtmlNotification,
-} from './notification';
+import { showHtmlNotification } from './notification';
 import * as events from '../shared/events';
 import { changeBind } from './shortcut';
 import { defaultHistoryFavorite } from '../shared/env';
@@ -19,7 +16,6 @@ ipcRenderer
   })
   .on(events.EVENT_APP_SHOW_PAGE, (e, targetView) => {
     // 显示具体某页面
-    // console.log('[renderer][ipc]: received view update: ', targetView.page);
     store.dispatch('changePage', { ...targetView, fromMain: true }).then();
   })
   .on(events.EVENT_APP_ERROR_MAIN, (e, err) => {
@@ -28,7 +24,6 @@ ipcRenderer
   })
   .on(events.EVENT_RX_SYNC_MAIN, (e, appConfig) => {
     // 同步数据
-    // console.log('received sync data: %o', appConfig);
     store.dispatch('changeConfig', [appConfig]).then();
   })
   .on(events.EVENT_APP_CHANGE_BIND, (e, shortcut) => {
@@ -40,7 +35,6 @@ ipcRenderer
  * @param {Object} appConfig 用于更新的应用配置
  */
 export function syncConfig(appConfig) {
-  // console.log('start sync data: %o', appConfig);
   ipcRenderer.send(events.EVENT_RX_SYNC_RENDERER, appConfig);
 }
 
@@ -63,13 +57,6 @@ export function toggleMenu() {
  */
 export function hideClipboard() {
   ipcRenderer.send(events.EVENT_APP_HIDE_WINDOW_CLIPBOARD);
-}
-
-/**
- * 打开本地文件/目录
- */
-export function openDialog(options) {
-  return ipcRenderer.sendSync(events.EVENT_APP_OPEN_DIALOG, options);
 }
 
 /**

@@ -4,7 +4,7 @@ export const EVENT_APP_NOTIFY_MAIN = 'app.notify.main';
 // 由`ipc-renderer`发出 显示通知
 export const EVENT_APP_NOTIFY_RENDERER = 'app.notify.renderer';
 
-// 由`ipc-renderer`发出 隐藏窗口
+// 由`ipc-renderer`发出 隐藏剪贴板窗口
 export const EVENT_APP_HIDE_WINDOW_CLIPBOARD = 'app.hide.window.clipboard';
 
 // 由`ipc-main`发出 打开并跳转到指定的页面
@@ -12,9 +12,6 @@ export const EVENT_APP_SHOW_PAGE = 'app.show.page';
 
 // 由`ipc-renderer`发出 用于获取系统初始化数据
 export const EVENT_APP_WEB_INIT = 'app.init.web';
-
-// 由`ipc-renderer`发出 用于选择本地文件/目录
-export const EVENT_APP_OPEN_DIALOG = 'app.open.dialog';
 
 // 由`ipc-main`发出 同步`rx`数据
 export const EVENT_RX_SYNC_MAIN = 'rx.sync.main';
@@ -31,28 +28,41 @@ export const EVENT_APP_TOGGLE_MENU = 'app.toggle.menu';
 // 由`ipc-renderer`发出 自动粘贴
 export const EVENT_APP_CLIPBOARD_PASTE = 'app.clipboard.paste';
 
+// 由`ipc-main`发出 修改快捷键绑定
 export const EVENT_APP_CHANGE_BIND = 'app.change.bind';
 
+// 由`ipc-main`发出 打开设置窗口
 export const EVENT_APP_OPEN_WINDOW_SETTING = 'app.open.window.setting';
 
+// 由`ipc-renderer`发出 获取剪贴板数据
 export const EVENT_APP_CLIPBOARD_DATA_LIST = 'app.clipboard.data.list';
 
+// 由`ipc-renderer`发出 清除剪贴板数据
 export const EVENT_APP_CLIPBOARD_DATA_CLEAR = 'app.clipboard.data.clear';
 
+// 由`ipc-renderer`发出 删除一条剪贴板数据
 export const EVENT_APP_CLIPBOARD_DATA_REMOVE = 'app.clipboard.data.remove';
 
+// 由`ipc-renderer`发出 清除剪贴板数据
 export const EVENT_APP_CLIPBOARD_DATA_RENAME = 'app.clipboard.data.rename';
 
+// 由`ipc-renderer`发出 获取icon数据
 export const EVENT_APP_CLIPBOARD_ICON_LIST = 'app.clipboard.icon.list';
 
+// 由`ipc-renderer`发出 调整剪贴板存储历史
 export const EVENT_APP_CHECK_HISTORY_CAPACITY = 'app.check.history.capacity';
 
+// 由`ipc-renderer`发出 获取收藏栏数据
 export const EVENT_APP_FAVORITE_DATA_LIST = 'app.favorite.data.list';
 
+// 由`ipc-renderer`发出 增加一个收藏栏
 export const EVENT_APP_FAVORITE_DATA_ADD = 'app.favorite.data.add';
 
+// 由`ipc-renderer`发出 收藏到收藏栏
 export const EVENT_APP_FAVORITE_DATA_MOVE = 'app.favorite.data.move';
 
+// 由`ipc-renderer`发出 修改收藏栏
 export const EVENT_APP_FAVORITE_DATA_UPDATE = 'app.favorite.data.update';
 
+// 由`ipc-renderer`发出 删除收藏栏
 export const EVENT_APP_FAVORITE_DATA_REMOVE = 'app.favorite.data.remove';

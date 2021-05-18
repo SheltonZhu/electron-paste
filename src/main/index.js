@@ -36,7 +36,8 @@ if (!isPrimaryInstance) {
   app.on('second-instance', (event, argv) => {
     showClipboard();
     // 如果是通过链接打开的应用，则添加记录
-    if (argv[1]) {
+    if (argv) {
+      logger.info('paste://, arg: ', argv)
       showNotification(argv[1], '浏览器打开');
     }
   });

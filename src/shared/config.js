@@ -24,6 +24,12 @@ const defaultConfig = {
   cardFontColor: '#000',
   cardBgColor: '#fff',
   cardMetaColor: '#bbb9b9',
+  // 卡片头颜色
+  cardHeaderBgColorText: '#ffd74a',
+  cardHeaderBgColorLink: '#15bbf9',
+  cardHeaderBgColorImage: '#d58fe6',
+  // 卡片头字体颜色
+  cardHeaderFontColor: '#fff',
 
   // 开机自启
   autoLaunch: false,

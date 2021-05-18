@@ -2,10 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import defaultConfig from '../../shared/config';
 import { getUpdatedKeys, merge } from '../../shared/utils';
-import {
-  // createPersistedState,
-  createSharedMutations,
-} from 'electron-vuex';
+import { createSharedMutations } from 'electron-vuex';
 import { defaultHistoryFavorite } from '../../shared/env';
 
 Vue.use(Vuex);
@@ -42,7 +39,6 @@ export default new Vuex.Store({
           extractConfig[key] = targetConfig[key];
         });
         merge(state.appConfig, extractConfig);
-        // console.log('[store][updateConfig]: config updated: ', extractConfig);
         if (sync && process.type === 'renderer') {
           const { syncConfig } = require('../ipc');
           syncConfig(extractConfig);
@@ -52,33 +48,40 @@ export default new Vuex.Store({
     // 更新应用元数据
     updateMeta(state, targetMeta) {
       merge(state.meta, targetMeta);
-      // console.log('[store][updateMeta]: meta updated: ', targetMeta);
     },
     // 更新设置页面
     updateView(state, targetView) {
       state.page = targetView.page;
     },
+    // 更新剪贴板页面
     updateClipboardData(state, data) {
       state.clipboardData = data;
     },
+    // 更新查询字段
     updateQuery(state, query) {
       state.query = query;
     },
+    // 更新查询类型
     updateSearchType(state, searchType) {
       state.searchType = searchType;
     },
+    // 更新当前收藏栏
     updateFavorite(state, favorite) {
       state.favorite = favorite;
     },
+    // 更新收藏栏数据
     updateFavoritesData(state, data) {
       state.favoritesData = data;
     },
+    // 更新拖拽数据
     updateDragData(state, data) {
       state.dragData = data;
     },
+    // 更新搜索状态
     updateIsSearch(state, stat) {
       state.isSearching = stat;
     },
+    // 更新icon映射
     updateIconMap(state, map) {
       state.iconMap = map;
     },
@@ -124,11 +127,5 @@ export default new Vuex.Store({
       commit('updateIconMap', map);
     },
   },
-  plugins: [
-    // createPersistedState({
-    //   storageName: 'electron-paste',
-    //   delay: 500,
-    // }),
-    createSharedMutations(),
-  ],
+  plugins: [createSharedMutations()],
 });

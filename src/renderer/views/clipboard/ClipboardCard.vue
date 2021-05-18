@@ -25,9 +25,16 @@
     @dragend.native="onDragEnd"
     draggable
   >
-    <div slot="header" class="clearfix">
+    <div
+      slot="header"
+      class="clearfix"
+      :style="{ background: cardHeaderColor, padding: '0 20px' }"
+    >
       <div style="display: inline-flex">
-        <div style="width: 200px; height: 80px">
+        <div
+          style="width: 200px; height: 80px"
+          :style="{ color: appConfig.cardHeaderFontColor }"
+        >
           <div class="type">
             <p class="type">{{ data['name'] || data.cardType }}</p>
           </div>
@@ -162,6 +169,18 @@ export default {
     },
     isLink() {
       return this.data.cardType === CARD_TYPE.LINK;
+    },
+    cardHeaderColor() {
+      switch (true) {
+        case this.isText:
+          return this.appConfig.cardHeaderBgColorText;
+        case this.isLink:
+          return this.appConfig.cardHeaderBgColorLink;
+        case this.isImage:
+          return this.appConfig.cardHeaderBgColorImage;
+        default:
+          return '#aaabab';
+      }
     },
     metaInfo() {
       switch (true) {
@@ -448,7 +467,6 @@ export default {
 }
 
 .box-card p.time {
-  color: #fff;
   margin: 0;
   font-size: smaller;
 }
@@ -456,7 +474,6 @@ export default {
 .box-card p.type {
   margin: 16px 0 5px 0;
   font-size: large;
-  color: #fff;
 }
 
 .box-card .card-text {
@@ -523,7 +540,7 @@ export default {
 </style>
 <style>
 .box-card .el-card__header {
-  padding: 0 20px !important;
+  padding: 0 !important;
   height: 80px !important;
   text-align: left;
   border-top-left-radius: 5px;
@@ -537,24 +554,12 @@ export default {
 }
 
 /*灰: #aaabab 红: #ff625c 绿: #84e162 紫: #d58fe6 黄: #ffd74a 蓝#15bbf9*/
-.text-card .el-card__header {
-  background: #ffd74a;
-}
-
 .text-card p.type:before {
   content: '文本 | ';
 }
 
-.image-card .el-card__header {
-  background: #d58fe6;
-}
-
 .image-card p.type:before {
   content: '图片 | ';
-}
-
-.link-card .el-card__header {
-  background: #15bbf9;
 }
 
 .link-card p.type:before {
