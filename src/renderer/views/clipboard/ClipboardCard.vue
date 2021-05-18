@@ -124,6 +124,7 @@ import {
 import { dataURLtoBlob } from '../../../shared/utils';
 import ContextMenu from '../../components/ContextMenu';
 import Mousetrap from 'mousetrap';
+import { isLinux } from '../../../shared/env';
 
 export default {
   name: 'ClipboardCard',
@@ -219,7 +220,7 @@ export default {
           text: '保存图片',
           icon: 'el-icon-picture-outline',
           onClick: this.contextMenuSaveImage,
-          hidden: !this.isImage,
+          hidden: !this.isImage || isLinux,
         },
         {
           text: '快速查看（TODO）',
@@ -374,7 +375,7 @@ export default {
     },
     share2twitter() {
       this.execShellOpenLink('https://twitter.com/compose/tweet');
-      this.pasteAndHide();
+      this.pasteAndHide(2500);
     },
     share2email() {
       this.execShellOpenLink('mailto: somebody@somewhere.io');

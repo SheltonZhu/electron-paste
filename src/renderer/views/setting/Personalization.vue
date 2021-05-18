@@ -227,8 +227,8 @@
 import { mapState, mapActions } from 'vuex';
 import { debounce } from '../../../shared/utils';
 import { clone } from '../../../shared/utils';
+import { isWin } from '../../../shared/env';
 import path from 'path';
-import os from 'os';
 
 export default {
   name: 'Personalization',
@@ -410,7 +410,7 @@ export default {
       }
     },
     addLocalPic(file) {
-      if (os.platform() === 'win32') {
+      if (isWin) {
         this.newPicUrl = `file:///${file.path.replace(/\\/g, '/')}`;
       } else {
         this.newPicUrl = `file://${file.path.replace(/\\/g, '/')}`;
