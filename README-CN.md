@@ -2,20 +2,20 @@
 
 [English](README.md)
 
-![](https://img.shields.io/github/languages/top/SheltonZhu/clipboard-paste.svg?style=flat)
-![](https://img.shields.io/github/stars/SheltonZhu/clipboard-paste.svg?style=social)
+![](https://img.shields.io/github/languages/top/SheltonZhu/electron-paste.svg?style=flat)
+![](https://img.shields.io/github/stars/SheltonZhu/electron-paste.svg?style=social)
 
 这是一个使用[Electron](https://www.electronjs.org/) 和 [Vue.js](https://vuejs.org/)
-(UI 组件: [ElementUI](https://element.eleme.cn/)). 当前仅支持window环境.
-(现在部分功能支持ubuntu20.04.)
+(UI 组件: [ElementUI](https://element.eleme.cn/)). 当前仅支持 window 环境.
+(现在部分功能支持 ubuntu20.04.)
 
-设计风格借鉴了Mac平台的 [Paste](https://pasteapp.io/).
+设计风格借鉴了 Mac 平台的 [Paste](https://pasteapp.io/).
 
 ## Linux 用户注意
+
 在`Fedora`等平台可能未默认安装 `libsodium`, 可手动安装: `dnf install libsodium`
 
-在`Ubuntu 18.04`系统等系统之外的`Gnome`桌面, 默认未安装 `AppIndicator`，可安装[此插件](https://extensions.gnome.org/extension/615/appindicator-support/)解决(可在商店 Add-ons-Shell Extensions查找安装)
-
+在`Ubuntu 18.04`系统等系统之外的`Gnome`桌面, 默认未安装 `AppIndicator`，可安装[此插件](https://extensions.gnome.org/extension/615/appindicator-support/)解决(可在商店 Add-ons-Shell Extensions 查找安装)
 
 ## 下载
 
@@ -35,15 +35,13 @@
 - Mac `~/Library/Application Support/electron-ssr/gui-config.json`
 - Linux `~/.config/gui-config.json` -->
 
-
 ## 应用截图
 
 <!-- ![](docs/assets/main.jpg) -->
 
-
 ## 开发和构建
 
-``` bash
+```bash
 # or npm install
 yarn
 
@@ -58,11 +56,10 @@ npm run lint
 
 ```
 
-## Changelog更新日志
+## Changelog 更新日志
 
-请直接查看[release发布说明](https://github.com/erguotou520/electron-ssr/releases)
-
+请直接查看[release 发布说明](https://github.com/erguotou520/electron-ssr/releases)
 
 ---
 
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue)@[1c165f7](https://github.com/SimulatedGREG/electron-vue/tree/1c165f7c5e56edaf48be0fbb70838a1af26bb015) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).

@@ -1,6 +1,6 @@
-const hotClient = require('webpack-hot-middleware/client?noInfo=true&reload=true')
+const hotClient = require('webpack-hot-middleware/client?noInfo=true&reload=true');
 
-hotClient.subscribe(event => {
+hotClient.subscribe((event) => {
   /**
    * Reload browser when HTMLWebpackPlugin emits a new index.html
    *
@@ -35,6 +35,6 @@ hotClient.subscribe(event => {
       <div id="dev-client">
         Compiling Main Process...
       </div>
-    `
+    `;
   }
-})
+});

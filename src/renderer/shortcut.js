@@ -1,19 +1,35 @@
-import Mousetrap from 'mousetrap'
-import { toggleMenu } from './ipc'
+import Mousetrap from 'mousetrap';
+import {
+  toggleMenu,
+  hideClipboard,
+  nextFavorite,
+  previousFavorite,
+} from './ipc';
 
 const func = {
-  toggleMenu
-}
+  toggleMenu,
+  hideClipboard,
+  nextFavorite,
+  previousFavorite,
+};
 
-export function init (appConfig) {
-  Object.keys(appConfig.windowShortcuts).forEach(funcName => {
+export function init(appConfig) {
+  Object.keys(appConfig.windowShortcuts).forEach((funcName) => {
     if (appConfig.windowShortcuts[funcName].enable) {
-      Mousetrap.bind(appConfig.windowShortcuts[funcName].key.toLowerCase(), func[funcName])
+      bind(funcName, appConfig.windowShortcuts[funcName].key.toLowerCase());
     }
-  })
+  });
 }
 
-export function changeBind (funcName, oldKey, newKey) {
-  Mousetrap.unbind(oldKey)
-  Mousetrap.bind(newKey, func[funcName])
+export function unBind(oldKey) {
+  Mousetrap.unbind(oldKey.toLowerCase());
+}
+
+export function bind(funcName, newKey) {
+  Mousetrap.bind(newKey.toLowerCase(), func[funcName]);
+}
+
+export function changeBind(funcName, oldKey, newKey) {
+  unBind(oldKey);
+  bind(funcName, newKey);
 }
