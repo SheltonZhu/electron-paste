@@ -73,6 +73,7 @@
       </div>
       <div style="height: 200px" v-if="isLink">
         <iframe
+          sandbox="allow-scripts allow-same-origin"
           :src="data.text"
           class="iframe-viewport"
           style="border: none; pointer-events: none; overflow: hidden"
