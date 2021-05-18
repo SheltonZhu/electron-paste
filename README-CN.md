@@ -50,20 +50,44 @@
 ![](docs/assets/rules.png)
 
 ## 开发和构建
+### 构建需求
+安装:
+* Windows
+  * windows-build-tools npm package (`npm install --global --production windows-build-tools`)
+* Mac
+  * Xcode Command Line Tools.
+* Linux
+  * Python (v2.7 recommended, v3.x.x is not supported).
+  * make.
+  * A C/C++ compiler like GCC.
+  * libxtst-dev and libpng++-dev (`sudo apt-get install libxtst-dev libpng++-dev`).
 
+安装node-gyp:
+```bash
+# npm install -g node-gyp`
+yarn global add node-gyp
+```
+
+### 开发
 ```bash
 # or npm install
 yarn
 
 # 开发时
-npm run dev
+# or npm run dev
+yarn dev
 
 # 打包构建
-npm run build
+# or npm run build
+yarn build
 
 # 代码风格检查
-npm run lint
+# or npm run lint
+yarn lint
 
+# 编译本地包
+# or npm run rebuild
+yarn rebuild
 ```
 
 ## Changelog 更新日志

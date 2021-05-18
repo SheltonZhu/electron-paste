@@ -50,20 +50,44 @@ Visit the releases page [Github release](../../releases/latest):
 ![](docs/assets/rules.png)
 
 ## Build
+### Building require
+installation:
+* Windows
+  * windows-build-tools npm package (`npm install --global --production windows-build-tools` from an elevated PowerShell or CMD.exe)
+* Mac
+  * Xcode Command Line Tools.
+* Linux
+  * Python (v2.7 recommended, v3.x.x is not supported).
+  * make.
+  * A C/C++ compiler like GCC.
+  * libxtst-dev and libpng++-dev (`sudo apt-get install libxtst-dev libpng++-dev`).
 
+Install node-gyp using npm:
+```bash
+# npm install -g node-gyp`
+yarn global add node-gyp
+```
+
+### Development
 ```bash
 # or npm install
 yarn
 
 # run in development mode
-npm run dev
+# or npm run dev
+yarn dev
 
 # run in development mode
-npm run build
+# or npm run build
+yarn build
 
 # run the code style check
-npm run lint
+# or npm run lint
+yarn lint
 
+# rebuild native package
+# or npm run rebuild
+yarn rebuild
 ```
 
 ## Changelog

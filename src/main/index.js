@@ -37,7 +37,7 @@ if (!isPrimaryInstance) {
     showClipboard();
     // 如果是通过链接打开的应用，则添加记录
     if (argv) {
-      logger.info('paste://, arg: ', argv)
+      logger.info('paste://, arg: ', argv);
       showNotification(argv[1], '浏览器打开');
     }
   });
