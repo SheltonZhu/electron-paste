@@ -1,37 +1,99 @@
-## Welcome to GitHub Pages
+# Electron-Paste
 
-You can use the [editor on GitHub](https://github.com/SheltonZhu/electron-paste/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+[中文](README-CN.md)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+![](https://img.shields.io/github/languages/top/SheltonZhu/electron-paste.svg?style=flat)
+![](https://img.shields.io/github/stars/SheltonZhu/electron-paste.svg?style=social)
 
-### Markdown
+This app is a clipboard tool programed by [Electron](https://www.electronjs.org/) and [Vue.js](https://vuejs.org/)
+(UI Component: [ElementUI](https://element.eleme.cn/)). It supports Windows only.
+(Now supports ubuntu20.04 for some features.)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+The design style of this app imitates [Paste](https://pasteapp.io/) on Mac.
 
-```markdown
-Syntax highlighted code block
+## Note for Linux user
 
-# Header 1
-## Header 2
-### Header 3
+By default the `libsodium` maybe not get installed on some platform, for example, the `Fedora`, you can install it manually by command `dnf install libsodium`.
 
-- Bulleted
-- List
+On some systems that use `Gnome` desktop, except `Ubuntu 18.04`, may not have the `AppIndicator` installed, you can manually install this [plugin](https://extensions.gnome.org/extension/615/appindicator-support/) to fix it. (or find it in the store's Add-ons-Shell Extensions)
 
-1. Numbered
-2. List
+## Download
 
-**Bold** and _Italic_ and `Code` text
+Visit the releases page [Github release](../../releases/latest):
 
-[Link](url) and ![Image](src)
+- Windows `Electron.Paste-setup-x.x.x.exe`
+
+[comment]: <> (- Mac `Electron.Paste-x.x.x.dmg`)
+- Linux (recommended) `Electron.Paste-x.x.x.AppImage`, double click to run. If you cannot use it or want to download your own system-specific package please use the following options
+
+[comment]: <> (- Arch or Arch-based distributions `Electron.Paste-x.x.x.pacman`)
+
+[comment]: <> (- RedHat derivatives `Electron.Paste-x.x.x.rpm`)
+- Debian derivatives `Electron.Paste-x.x.x.deb`
+- Other Linux distributions `Electron.Paste-x.x.x.tar.gz`
+
+## Configuration file location
+
+- Windows `C:\Users\{your username}\AppData\Roaming\electron-paste\config.json`
+
+[comment]: <> (- Mac `~/Library/Application Support/electron-paste/config.json`)
+- Linux `~/.config/'Electron Paste''/config.json`
+
+## Application screenshots
+
+![](docs/assets/clipboard.png)
+![](docs/assets/context_menu.png)
+![](docs/assets/context_menu2.png)
+![](docs/assets/personalise.png)
+![](docs/assets/general.png)
+![](docs/assets/shortcut.png)
+![](docs/assets/rules.png)
+
+## Build
+### Building require
+installation:
+* Windows
+  * windows-build-tools npm package (`npm install --global --production windows-build-tools` from an elevated PowerShell or CMD.exe)
+* Mac
+  * Xcode Command Line Tools.
+* Linux
+  * Python (v2.7 recommended, v3.x.x is not supported).
+  * make.
+  * A C/C++ compiler like GCC.
+  * libxtst-dev and libpng++-dev (`sudo apt-get install libxtst-dev libpng++-dev`).
+
+Install node-gyp using npm:
+```bash
+# npm install -g node-gyp`
+yarn global add node-gyp
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Development
+```bash
+# or npm install
+yarn
 
-### Jekyll Themes
+# run in development mode
+# or npm run dev
+yarn dev
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/SheltonZhu/electron-paste/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+# run in development mode
+# or npm run build
+yarn build
 
-### Support or Contact
+# run the code style check
+# or npm run lint
+yarn lint
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+# rebuild native package
+# or npm run rebuild
+yarn rebuild
+```
+
+## Changelog
+
+Please check the [release notes](../../releases/latest).
+
+---
+
+This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
