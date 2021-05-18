@@ -19,25 +19,35 @@
 
 ## 下载
 
-<!-- 下载地址见[Github release](https://github.com/erguotou520/electron-ssr/releases)，对应的操作系统下载的文件为
+下载地址见[Github release](https://github.com/SheltonZhu/electron-paste/releases)，对应的操作系统下载的文件为
 
-- Windows `electron-ssr-setup-x.x.x.exe`
-- Mac `electron-ssr-x.x.x.dmg`
-- Linux 优先建议下载`electron-ssr-x.x.x.AppImage`，直接双击运行。如果无法使用或者想直接下载自己系统专用包请看下一条
-- Arch或者基于Arch的系统，下载`electron-ssr-x.x.x.pacman`
-- RedHat系列的系统，下载`electron-ssr-x.x.x.rpm`
-- Debian系列的系统，下载`electron-ssr-x.x.x.deb`
-- 系统Linux系统或者通用Linux系统可下载`electron-ssr-x.x.x.tar.gz`（不会使用.tar.gz的请自行百度） -->
+- Windows `Electron.Paste-setup-x.x.x.exe`
+
+[comment]: <> (- Mac `Electron.Paste-x.x.x.dmg`)
+- Linux 优先建议下载`Electron.Paste-x.x.x.AppImage`，直接双击运行。如果无法使用或者想直接下载自己系统专用包请看下一条
+
+[comment]: <> (- Arch或者基于Arch的系统，下载Electron.Paste-x.x.x.pacman`)
+
+[comment]: <> (- RedHat系列的系统，下载`Electron.Paste-x.x.x.rpm`)
+- Debian系列的系统，下载`Electron.Paste-x.x.x.deb`
+- 系统Linux系统或者通用Linux系统可下载`Electron.Paste-x.x.x.tar.gz`（不会使用.tar.gz的请自行百度） -->
 
 ## 配置文件位置
 
-<!-- - Windows `C:\Users\{your username}\AppData\Roaming\electron-ssr\gui-config.json`
-- Mac `~/Library/Application Support/electron-ssr/gui-config.json`
-- Linux `~/.config/gui-config.json` -->
+- Windows `C:\Users\{your username}\AppData\Roaming\electron-paste\config.json`
+
+[comment]: <> (- Mac `~/Library/Application Support/electron-paste/config.json`)
+- Linux `~/.config/'Electron Paste'/config.json`
 
 ## 应用截图
 
-<!-- ![](docs/assets/main.jpg) -->
+![](docs/assets/clipboard.png)
+![](docs/assets/context_menu.png)
+![](docs/assets/context_menu2.png)
+![](docs/assets/personalise.png)
+![](docs/assets/general.png)
+![](docs/assets/shortcut.png)
+![](docs/assets/rules.png)
 
 ## 开发和构建
 
@@ -58,7 +68,7 @@ npm run lint
 
 ## Changelog 更新日志
 
-请直接查看[release 发布说明](https://github.com/erguotou520/electron-ssr/releases)
+请直接查看[release 发布说明](https://github.com/SheltonZhu/electron-paste/releases)
 
 ---
 
