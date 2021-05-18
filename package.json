@@ -1,6 +1,6 @@
 {
   "name": "electron-paste",
-  "version": "0.1.0",
+  "version": "1.0.0-beta",
   "author": "Shelton Zhu <498220739@qq.com> (https://github.com/SheltonZhu)",
   "description": "An Electron & Vue.js clipboard with elementUI support",
   "homepage": "https://github.com/SheltonZhu/electron-paste",
@@ -18,7 +18,7 @@
     "build:dir": "cross-env DIR=true node .electron-vue/build.js",
     "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
     "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
-    "build:generate-icons": "electron-icon-builder --input=./public/icon.png --output=build --flatten",
+    "build:generate-icons": "electron-icon-builder --input=./build/icons/icon.png --output=build --flatten",
     "dev": "node .electron-vue/dev-runner.js",
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src",
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src",
