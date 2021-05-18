@@ -1,7 +1,5 @@
 # Electron-Paste
 
-[中文](README-CN.md)
-
 ![](https://img.shields.io/github/languages/top/SheltonZhu/electron-paste.svg?style=flat)
 ![](https://img.shields.io/github/stars/SheltonZhu/electron-paste.svg?style=social)
 
@@ -41,13 +39,13 @@ Visit the releases page [Github release](../../releases/latest):
 
 ## Application screenshots
 
-![](docs/assets/clipboard.png)
-![](docs/assets/context_menu.png)
-![](docs/assets/context_menu2.png)
-![](docs/assets/personalise.png)
-![](docs/assets/general.png)
-![](docs/assets/shortcut.png)
-![](docs/assets/rules.png)
+![](https://raw.githubusercontent.com/SheltonZhu/electron-paste/main/docs/assets/clipboard.png)
+![](https://raw.githubusercontent.com/SheltonZhu/electron-paste/main/docs/assets/context_menu.png)
+![](https://raw.githubusercontent.com/SheltonZhu/electron-paste/main/docs/assets/context_menu2.png)
+![](https://raw.githubusercontent.com/SheltonZhu/electron-paste/main/docs/assets/personalise.png)
+![](https://raw.githubusercontent.com/SheltonZhu/electron-paste/main/docs/assets/general.png)
+![](https://raw.githubusercontent.com/SheltonZhu/electron-paste/main/docs/assets/shortcut.png)
+![](https://raw.githubusercontent.com/SheltonZhu/electron-paste/main/docs/assets/rules.png)
 
 ## Build
 ### Building require
