@@ -1,9 +1,16 @@
 import Mousetrap from 'mousetrap';
-import { toggleMenu, hideClipboard } from './ipc';
+import {
+  toggleMenu,
+  hideClipboard,
+  nextFavorite,
+  previousFavorite,
+} from './ipc';
 
 const func = {
   toggleMenu,
   hideClipboard,
+  nextFavorite,
+  previousFavorite,
 };
 
 export function init(appConfig) {
@@ -16,16 +23,13 @@ export function init(appConfig) {
 
 export function unBind(oldKey) {
   Mousetrap.unbind(oldKey.toLowerCase());
-  // console.log(`[shortcut]: Unregister shortcut: ${oldKey}`);
 }
 
 export function bind(funcName, newKey) {
   Mousetrap.bind(newKey.toLowerCase(), func[funcName]);
-  // console.log(`[shortcut]: Register shortcut: ${newKey}`);
 }
 
 export function changeBind(funcName, oldKey, newKey) {
   unBind(oldKey);
   bind(funcName, newKey);
-  // console.log(funcName, oldKey, newKey);
 }

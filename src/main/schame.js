@@ -1,43 +1,58 @@
 export const clipboardCardIconSchema = {
   type: 'object',
   properties: {
-    content: {
+    base64data: {
       type: 'string',
     },
     checksum: {
       type: 'string',
     },
   },
-  required: ['content', 'checksum'],
+  required: ['base64data', 'checksum'],
   additionalProperties: false,
 };
 
 export const clipboardCardSchema = {
   type: 'object',
   properties: {
-    table: {
+    favorite: {
       type: 'string',
     },
-    copyType: {
+    cardType: {
+      // Link, Text, Image, File
       type: 'string',
     },
-    copyTime: {
+    copyDate: {
       type: 'object',
     },
-    copyContent: {
+    text: {
       type: 'string',
     },
-    otherInfo: {
+    rtf: {
+      type: 'string',
+    },
+    html: {
+      type: 'string',
+    },
+    base64data: {
+      // Image
+      type: 'string',
+    },
+    path: {
+      // File
+      type: 'string',
+    },
+    meta: {
       type: 'object',
     },
     name: {
       type: 'string',
     },
-    checksum: {
+    icon: {
       type: 'string',
     },
   },
-  required: ['copyType', 'copyTime', 'copyContent'],
+  required: ['cardType', 'copyDate'],
   additionalProperties: false,
 };
 export const favoritesSchema = {

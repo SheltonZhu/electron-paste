@@ -34,11 +34,26 @@
       </el-col>
     </el-row>
 
+    <el-row class="row">
+      <el-col :span="12">
+        <div class="type">纯文本模式</div>
+      </el-col>
+      <el-col :span="12">
+        <div class="switch">
+          <el-switch
+            v-model="textMode"
+            :active-color="activeColor"
+            :inactive-color="inactiveColor"
+          >
+          </el-switch>
+        </div>
+      </el-col>
+    </el-row>
     <el-divider>图标</el-divider>
 
     <el-row class="row">
       <el-col :span="12">
-        <div class="type">在通知区域显示图标</div>
+        <div class="type">在通知区域显示托盘图标</div>
       </el-col>
       <el-col :span="12">
         <div class="switch">
@@ -53,7 +68,7 @@
     </el-row>
     <el-row class="row">
       <el-col :span="12">
-        <div class="type">卡片图标</div>
+        <div class="type">显示卡片图标</div>
       </el-col>
       <el-col :span="12">
         <div class="switch">
@@ -100,7 +115,6 @@
             :max="4"
             :step="1"
             :marks="{ 0: '10', 1: '50', 2: '100', 3: '500', 4: '∞' }"
-            @change="checkHistoryCapacity"
           >
           </el-slider>
         </div>
@@ -113,24 +127,21 @@
         :span="12"
         v-if="historyCapacity === 4"
       >
-        ⚠设置为无限会使用更多的存储，进而导致卡顿⚠
+        ⚠设置为无限会使用更多的磁盘空间，进而导致卡顿⚠
       </el-col>
     </el-row>
-    <el-row class="row">
-      <el-col :offset="12" :span="12">
-        <div>
-          <el-button class="clear-history" @click="clearHistory">
-            清除剪贴板历史
-          </el-button>
-        </div>
-      </el-col>
-    </el-row>
+    <div style="text-align: center">
+      <el-button class="clear-history" @click="clearHistory">
+        清除剪贴板历史
+      </el-button>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import { debounce } from '../../../shared/utils';
+import { clearClipboardData, checkHistoryCapacity } from '../../ipc';
 
 export default {
   name: 'General',
@@ -157,6 +168,14 @@ export default {
       },
       set(value) {
         this.changeConfig({ directPaste: value });
+      },
+    },
+    textMode: {
+      get() {
+        return this.appConfig.textMode;
+      },
+      set(value) {
+        this.changeConfig({ textMode: value });
       },
     },
     enableHideWhenBlur: {
@@ -208,20 +227,25 @@ export default {
     ...mapActions(['changeConfig']),
     changeConfigDebounce: debounce(function (config) {
       this.changeConfig(config);
+      if (config.historyCapacityNum) {
+        checkHistoryCapacity();
+      }
     }, 100),
     clearHistory() {
-      // TODO 清空历史
       this.$confirm('清空剪贴板历史?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       })
-        .then(() => {})
-        .catch(() => {})
-        .finally(() => {});
-    },
-    checkHistoryCapacity() {
-      // TODO 检查历史容量
+        .then(async () => {
+          const affectedNum = clearClipboardData();
+          this.$message({
+            message: `${affectedNum} 条记录已删除！`,
+            type: 'success',
+            duration: 1000,
+          });
+        })
+        .catch();
     },
   },
 };
@@ -229,7 +253,7 @@ export default {
 
 <style scoped>
 .row {
-  padding: 10px 5px;
+  padding: 8px 5px;
 }
 
 .type {
@@ -258,10 +282,10 @@ export default {
 
 .warn-info {
   color: #ffc259;
+  font-size: small;
 }
 
 .clear-history {
-  margin-top: 10px;
   padding: 2px 20px;
 }
 

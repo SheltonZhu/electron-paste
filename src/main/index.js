@@ -17,11 +17,11 @@ import {
   getWindow as getSettings,
   destroyWindow as destroySettings,
 } from './window-settings';
-import logger from './logger';
 import { clearShortcuts } from './shortcut';
 import { isProd, isWin, isMac } from '../shared/env';
 import { isQuiting, appConfig$ } from './data';
 import { showNotification } from './notification';
+import logger from './logger';
 
 const isPrimaryInstance = app.requestSingleInstanceLock();
 
@@ -36,7 +36,8 @@ if (!isPrimaryInstance) {
   app.on('second-instance', (event, argv) => {
     showClipboard();
     // 如果是通过链接打开的应用，则添加记录
-    if (argv[1]) {
+    if (argv) {
+      logger.info('paste://, arg: ', argv);
       showNotification(argv[1], '浏览器打开');
     }
   });
@@ -86,7 +87,7 @@ if (!isPrimaryInstance) {
     });
 
     // app启动后导入electron-clipboard-extends, 否则linux下粘贴会卡死。
-    const cpb = require('./clipboard');
+    require('./clipboard');
 
     app.on('window-all-closed', () => {
       logger.debug('window-all-closed');
@@ -102,7 +103,7 @@ if (!isPrimaryInstance) {
       destroyClipboard();
       destroySettings();
       clearShortcuts();
-      cpb.stopWatching();
+      require('electron-clipboard-extended').stopWatching();
       if (app.hasSingleInstanceLock()) app.releaseSingleInstanceLock();
     });
 

@@ -38,4 +38,3 @@ build_script:
   - yarn build
 
 test: off
-

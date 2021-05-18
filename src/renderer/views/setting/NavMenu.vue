@@ -10,35 +10,54 @@
       :router="true"
       active-text-color="#000"
     >
-      <el-menu-item index="1" :route="{ name: 'personalization' }"
-        ><i class="el-icon-magic-stick" />个性化</el-menu-item
-      >
-      <el-menu-item index="2" :route="{ name: 'general' }"
-        ><i class="el-icon-set-up" />通用</el-menu-item
-      >
-      <el-menu-item index="3" :route="{ name: 'shortcut' }"
-        ><i class="el-icon-position" />快捷键</el-menu-item
-      >
-      <el-menu-item index="4" :route="{ name: 'rules' }"
-        ><i class="el-icon-s-marketing" />规则</el-menu-item
-      >
+      <el-menu-item
+        :index="PAGE_PERSONALIZATION.page"
+        :route="{ name: PAGE_PERSONALIZATION.name }"
+        ><i class="el-icon-magic-stick" />个性化
+      </el-menu-item>
+      <el-menu-item
+        :index="PAGE_GENERAL.page"
+        :route="{ name: PAGE_GENERAL.name }"
+        ><i class="el-icon-set-up" />通用
+      </el-menu-item>
+      <el-menu-item
+        :index="PAGE_SHORTCUT.page"
+        :route="{ name: PAGE_SHORTCUT.name }"
+        ><i class="el-icon-position" />快捷键
+      </el-menu-item>
+      <el-menu-item :index="PAGE_RULES.page" :route="{ name: PAGE_RULES.name }"
+        ><i class="el-icon-s-marketing" />规则
+      </el-menu-item>
       <!--      <el-menu-item index="5" :route="{ name: 'about' }"
         ><i class="el-icon-upload" />同步</el-menu-item
       >-->
-      <el-menu-item index="5" :route="{ name: 'about' }"
-        ><i class="el-icon-info" />关于</el-menu-item
-      >
+      <el-menu-item :index="PAGE_ABOUT.page" :route="{ name: PAGE_ABOUT.name }"
+        ><i class="el-icon-info" />关于
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import {
+  PAGE_PERSONALIZATION,
+  PAGE_SHORTCUT,
+  PAGE_ABOUT,
+  PAGE_GENERAL,
+  PAGE_RULES,
+} from '../../../shared/env';
 
 export default {
   name: 'NavMenu',
   data() {
-    return {};
+    return {
+      PAGE_PERSONALIZATION,
+      PAGE_SHORTCUT,
+      PAGE_ABOUT,
+      PAGE_GENERAL,
+      PAGE_RULES,
+    };
   },
   computed: {
     ...mapState(['page']),
@@ -46,7 +65,7 @@ export default {
   methods: {
     ...mapActions(['changePage']),
     handleSelect(key, keyPath) {
-      this.changePage(key);
+      this.changePage({ page: key });
     },
   },
 };

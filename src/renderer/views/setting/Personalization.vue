@@ -1,64 +1,16 @@
 <template>
   <div class="personalization">
+    <!--  背景设置  -->
     <div>
       <el-divider>背景</el-divider>
-      <el-row class="row vertically-center">
-        <el-col :span="12">
-          <div class="type">背景颜色</div>
-        </el-col>
-        <el-col :span="12">
-          <div class="switch">
-            <el-color-picker
-              v-model="backgroundColor"
-              show-alpha
-              :predefine="predefineBackgroundColors"
-            ></el-color-picker>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row class="row">
-        <el-col :span="12">
-          <div class="type">背景虚化</div>
-        </el-col>
-        <el-col :span="12">
-          <div>
-            <el-switch
-              v-model="enableBackgroundBlur"
-              :active-color="activeColor"
-              :inactive-color="inactiveColor"
-            >
-            </el-switch>
-          </div>
-        </el-col>
-      </el-row>
-
-      <el-row
-        class="row vertically-center bg-blur"
-        v-if="appConfig.enableBackgroundBlur"
-      >
-        <el-col :span="12">
-          <div class="type">背景虚化程度</div>
-        </el-col>
-        <el-col :span="12">
-          <div class="switch" style="margin-left: 10px">
-            <el-slider
-              style="width: 350px"
-              show-input
-              :max="50"
-              :min="1"
-              v-model="backgroundBlurValue"
-            ></el-slider>
-          </div>
-        </el-col>
-      </el-row>
 
       <!--   背景图 start   -->
       <div>
-        <el-row class="row">
-          <el-col :span="12">
+        <el-row class="row vertically-center">
+          <el-col :span="6">
             <div class="type">使用背景图</div>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="4">
             <div class="switch">
               <el-switch
                 v-model="enableBackgroundPic"
@@ -66,6 +18,34 @@
                 :inactive-color="inactiveColor"
               >
               </el-switch>
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <el-upload
+              style="margin: 10px 0"
+              class="upload-demo"
+              action=""
+              :limit="1"
+              :before-upload="addLocalPic"
+            >
+              <el-button
+                size="small"
+                type="primary"
+                :disabled="!appConfig.enableBackgroundPic"
+                >浏览本地图片</el-button
+              >
+            </el-upload>
+          </el-col>
+          <el-col :span="6">
+            <div class="type">背景颜色</div>
+          </el-col>
+          <el-col :span="4">
+            <div class="switch">
+              <el-color-picker
+                v-model="backgroundColor"
+                show-alpha
+                :predefine="predefineBackgroundColors"
+              ></el-color-picker>
             </div>
           </el-col>
         </el-row>
@@ -101,63 +81,142 @@
             </span>
           </div>
         </el-row>
-        <el-row class="vertically-center" v-if="appConfig.enableBackgroundPic">
-          <!--          <el-input-->
-          <!--            style="margin-right: 10px; width: 250px"-->
-          <!--            placeholder="图片URI地址"-->
-          <!--            v-model="newPicUrl"-->
-          <!--            @keyup.enter.native="addBackgroundPic"-->
-          <!--          >-->
-          <!--            <el-button-->
-          <!--              size="mini"-->
-          <!--              slot="append"-->
-          <!--              icon="el-icon-plus"-->
-          <!--              @click="addBackgroundPic"-->
-          <!--            ></el-button>-->
-          <!--          </el-input>-->
-
-          <el-upload
-            style="margin-top: 10px"
-            class="upload-demo"
-            action=""
-            :limit="1"
-            :before-upload="addLocalPic"
-          >
-            <el-button size="small" type="primary">浏览本地图片</el-button>
-          </el-upload>
-        </el-row>
+        <!--        <el-row class="vertically-center" v-if="appConfig.enableBackgroundPic">-->
+        <!--          <el-input-->
+        <!--            style="margin-right: 10px; width: 250px"-->
+        <!--            placeholder="图片URI地址"-->
+        <!--            v-model="newPicUrl"-->
+        <!--            @keyup.enter.native="addBackgroundPic"-->
+        <!--          >-->
+        <!--            <el-button-->
+        <!--              size="mini"-->
+        <!--              slot="append"-->
+        <!--              icon="el-icon-plus"-->
+        <!--              @click="addBackgroundPic"-->
+        <!--            ></el-button>-->
+        <!--          </el-input>-->
+        <!--        </el-row>-->
       </div>
       <!--   背景图 end   -->
+
+      <el-row class="row vertically-center">
+        <el-col :span="6">
+          <div class="type">背景模糊</div>
+        </el-col>
+        <el-col :span="1">
+          <div>
+            <el-switch
+              v-model="enableBackgroundBlur"
+              :active-color="activeColor"
+              :inactive-color="inactiveColor"
+            >
+            </el-switch>
+          </div>
+        </el-col>
+        <el-col :span="6" class="bg-blur">
+          <div class="type">背景模糊程度</div>
+        </el-col>
+        <el-col :span="11" class="bg-blur">
+          <div class="switch" style="margin-left: 10px">
+            <el-slider
+              style="width: 350px"
+              show-input
+              :max="50"
+              :min="1"
+              v-model="backgroundBlurValue"
+              :disabled="!appConfig.enableBackgroundBlur"
+            ></el-slider>
+          </div>
+        </el-col>
+      </el-row>
     </div>
 
+    <!--  收藏栏设置  -->
     <div>
       <el-divider>收藏栏</el-divider>
-      <el-row class="row">
-        <el-col :span="8" class="vertically-center">
-          <span class="type"> 收藏栏字体颜色 </span>
-          <el-color-picker
-            v-model="favoritesFontColor"
-            show-alpha
-            :predefine="predefineFavoritesFontColors"
-          >
-          </el-color-picker>
+      <el-row class="row vertically-center">
+        <el-col :span="6">
+          <div class="type">字体颜色</div>
         </el-col>
-        <el-col :span="8" class="vertically-center">
-          <span class="type"> 收藏栏选中字体颜色 </span>
-          <el-color-picker
-            v-model="favoritesFontColorSelected"
-            show-alpha
-            :predefine="predefineFavoritesFontColorsSelected"
-          ></el-color-picker>
+        <el-col :span="3">
+          <div class="switch">
+            <el-color-picker
+              v-model="favoritesFontColor"
+              show-alpha
+              :predefine="predefineFavoritesFontColors"
+            >
+            </el-color-picker>
+          </div>
         </el-col>
-        <el-col :span="8" class="vertically-center">
-          <span class="type"> 收藏栏选中背景颜色 </span>
-          <el-color-picker
-            v-model="favoritesBgColorSelected"
-            show-alpha
-            :predefine="predefineFavoritesBgColorSelected"
-          >
-          </el-color-picker>
+        <el-col :span="4">
+          <div class="type">选中字体颜色</div>
+        </el-col>
+        <el-col :span="3">
+          <div class="switch">
+            <el-color-picker
+              v-model="favoritesFontColorSelected"
+              show-alpha
+              :predefine="predefineFavoritesFontColorsSelected"
+            ></el-color-picker>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="type">选中背景颜色</div>
+        </el-col>
+        <el-col :span="4">
+          <div class="switch">
+            <el-color-picker
+              v-model="favoritesBgColorSelected"
+              show-alpha
+              :predefine="predefineFavoritesBgColorSelected"
+            >
+            </el-color-picker>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+
+    <!--  卡片设置  -->
+    <div>
+      <el-divider>卡片</el-divider>
+      <el-row class="row vertically-center">
+        <el-col :span="6">
+          <div class="type">字体颜色</div>
+        </el-col>
+        <el-col :span="4">
+          <div class="switch">
+            <el-color-picker
+              v-model="cardFontColor"
+              show-alpha
+              :predefine="predefineFavoritesFontColors"
+            >
+            </el-color-picker>
+          </div>
+        </el-col>
+        <el-col :span="3">
+          <div class="type">背景颜色</div>
+        </el-col>
+        <el-col :span="3">
+          <div class="switch">
+            <el-color-picker
+              v-model="cardBgColor"
+              show-alpha
+              :predefine="predefineFavoritesFontColorsSelected"
+            ></el-color-picker>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="type">元信息字体颜色</div>
+        </el-col>
+        <el-col :span="4">
+          <div class="switch">
+            <el-color-picker
+              v-model="cardMetaColor"
+              show-alpha
+              :predefine="predefineFavoritesBgColorSelected"
+            >
+            </el-color-picker>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -168,6 +227,7 @@
 import { mapState, mapActions } from 'vuex';
 import { debounce } from '../../../shared/utils';
 import { clone } from '../../../shared/utils';
+import { isWin } from '../../../shared/env';
 import path from 'path';
 
 export default {
@@ -281,6 +341,30 @@ export default {
         this.changeConfig({ favoritesBgColorSelected: value });
       },
     },
+    cardFontColor: {
+      get() {
+        return this.appConfig.cardFontColor;
+      },
+      set(value) {
+        this.changeConfig({ cardFontColor: value });
+      },
+    },
+    cardBgColor: {
+      get() {
+        return this.appConfig.cardBgColor;
+      },
+      set(value) {
+        this.changeConfig({ cardBgColor: value });
+      },
+    },
+    cardMetaColor: {
+      get() {
+        return this.appConfig.cardMetaColor;
+      },
+      set(value) {
+        this.changeConfig({ cardMetaColor: value });
+      },
+    },
   },
   methods: {
     ...mapActions(['changeConfig']),
@@ -326,7 +410,11 @@ export default {
       }
     },
     addLocalPic(file) {
-      this.newPicUrl = `file:///${file.path.replace(/\\/g, '/')}`;
+      if (isWin) {
+        this.newPicUrl = `file:///${file.path.replace(/\\/g, '/')}`;
+      } else {
+        this.newPicUrl = `file://${file.path.replace(/\\/g, '/')}`;
+      }
       this.addBackgroundPic();
       return false;
     },
@@ -336,7 +424,7 @@ export default {
 
 <style scoped>
 .row {
-  padding: 10px 5px;
+  padding: 5px 5px;
 }
 
 .type {
@@ -359,7 +447,7 @@ export default {
   overflow-y: hidden;
   max-height: 105px;
   white-space: nowrap;
-  margin: 10px 40px 5px;
+  margin: 10px 100px 20px;
   text-align: center;
 }
 

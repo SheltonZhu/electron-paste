@@ -19,45 +19,75 @@ On some systems that use `Gnome` desktop, except `Ubuntu 18.04`, may not have th
 
 ## Download
 
-<!-- Visit the releases page [Github release](../../releases/latest):
+Visit the releases page [Github release](../../releases/latest):
 
-- Windows `electron-ssr-setup-x.x.x.exe`
-- Mac `electron-ssr-x.x.x.dmg`
-- Linux (recommended) `electron-ssr-x.x.x.AppImage`, double click to run. If you cannot use it or want to download your own system-specific package please use the following options
-- Arch or Arch-based distributions `electron-ssr-x.x.x.pacman`
-- RedHat derivatives `electron-ssr-x.x.x.rpm`
-- Debian derivatives `electron-ssr-x.x.x.deb`
-- Other Linux distributions `electron-ssr-x.x.x.tar.gz` -->
+- Windows `Electron.Paste-setup-x.x.x.exe`
 
-<!-- ## Configuration file location
+[comment]: <> (- Mac `Electron.Paste-x.x.x.dmg`)
+- Linux (recommended) `Electron.Paste-x.x.x.AppImage`, double click to run. If you cannot use it or want to download your own system-specific package please use the following options
 
-- Windows `C:\Users\{your username}\AppData\Roaming\electron-ssr\gui-config.json`
-- Mac `~/Library/Application Support/electron-ssr/gui-config.json`
-- Linux `~/.config/gui-config.json` -->
+[comment]: <> (- Arch or Arch-based distributions `Electron.Paste-x.x.x.pacman`)
+
+[comment]: <> (- RedHat derivatives `Electron.Paste-x.x.x.rpm`)
+- Debian derivatives `Electron.Paste-x.x.x.deb`
+- Other Linux distributions `Electron.Paste-x.x.x.tar.gz`
+
+## Configuration file location
+
+- Windows `C:\Users\{your username}\AppData\Roaming\electron-paste\config.json`
+
+[comment]: <> (- Mac `~/Library/Application Support/electron-paste/config.json`)
+- Linux `~/.config/'Electron Paste''/config.json`
 
 ## Application screenshots
 
-<!-- ![](docs/assets/main.jpg) -->
-
-<!-- ## FAQ
-
-[FAQ](./docs/FAQ.md) -->
+![](docs/assets/clipboard.png)
+![](docs/assets/context_menu.png)
+![](docs/assets/context_menu2.png)
+![](docs/assets/personalise.png)
+![](docs/assets/general.png)
+![](docs/assets/shortcut.png)
+![](docs/assets/rules.png)
 
 ## Build
+### Building require
+installation:
+* Windows
+  * windows-build-tools npm package (`npm install --global --production windows-build-tools` from an elevated PowerShell or CMD.exe)
+* Mac
+  * Xcode Command Line Tools.
+* Linux
+  * Python (v2.7 recommended, v3.x.x is not supported).
+  * make.
+  * A C/C++ compiler like GCC.
+  * libxtst-dev and libpng++-dev (`sudo apt-get install libxtst-dev libpng++-dev`).
 
+Install node-gyp using npm:
+```bash
+# npm install -g node-gyp`
+yarn global add node-gyp
+```
+
+### Development
 ```bash
 # or npm install
 yarn
 
 # run in development mode
-npm run dev
+# or npm run dev
+yarn dev
 
 # run in development mode
-npm run build
+# or npm run build
+yarn build
 
 # run the code style check
-npm run lint
+# or npm run lint
+yarn lint
 
+# rebuild native package
+# or npm run rebuild
+yarn rebuild
 ```
 
 ## Changelog
