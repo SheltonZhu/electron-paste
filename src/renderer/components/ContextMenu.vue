@@ -19,7 +19,6 @@
         v-if="!item.hidden"
       >
         <div
-          @click.stop="callback([index])"
           @click="
             () => {
               item.onClick ? item.onClick() : callback(index);
@@ -50,7 +49,6 @@
             v-if="!second.hidden"
           >
             <div
-              @click.stop="callback([index, si])"
               @click="
                 () => {
                   second.onClick ? second.onClick() : callback(index);
@@ -81,7 +79,6 @@
                 v-if="!third.hidden"
               >
                 <div
-                  @click.stop="callback([index, si, ti])"
                   @click="
                     () => {
                       third.onClick ? third.onClick() : callback(index);
@@ -158,6 +155,8 @@ export default {
       if (axis.tag === this.tag) {
         this.show = true;
         this.axis = axis;
+      } else {
+        this.show = false;
       }
     });
     document.addEventListener(
@@ -244,10 +243,6 @@ export default {
               'px'
             : 0,
       };
-    },
-    callback(indexList) {
-      this.$emit('ecmcb', indexList);
-      // TODO multi context menu bugs
     },
   },
 };
