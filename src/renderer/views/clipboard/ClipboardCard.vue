@@ -144,10 +144,6 @@ export default {
     index: {
       type: Number,
     },
-    cardIcons: {
-      type: Array,
-      default: [],
-    },
   },
   components: { ContextMenu },
   data: () => {

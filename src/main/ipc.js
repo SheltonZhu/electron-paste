@@ -16,7 +16,7 @@ import { showNotification } from './notification';
 import { toggleMenu } from './menu';
 import { CARD_TYPE, defaultHistoryFavorite, osInfo } from '../shared/env';
 import { clone } from '../shared/utils';
-
+import { openConfigFile, openLog } from './tray-handler';
 import logger from './logger';
 import robot from 'robotjs';
 import store from '../renderer/store';
@@ -65,6 +65,13 @@ ipcMain
   .on(events.EVENT_APP_OPEN_WINDOW_SETTING, async (e) => {
     showSetting();
   })
+  .on(events.EVENT_APP_OPEN_CONFIG, async (e) => {
+    await openConfigFile();
+  })
+  .on(events.EVENT_APP_OPEN_LOG, async (e) => {
+    await openLog();
+  })
+
   .on(events.EVENT_APP_TOGGLE_MENU, () => {
     toggleMenu();
   })

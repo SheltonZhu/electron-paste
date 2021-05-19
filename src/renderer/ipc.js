@@ -74,6 +74,20 @@ export function openSetting(options) {
 }
 
 /**
+ * 打开配置
+ * */
+export function openConfig(options) {
+  return ipcRenderer.send(events.EVENT_APP_OPEN_CONFIG, options);
+}
+
+/**
+ * 打开日志
+ * */
+export function openLog(options) {
+  return ipcRenderer.send(events.EVENT_APP_OPEN_LOG, options);
+}
+
+/**
  * 查询剪贴板数据
  * */
 export function listClipboardData() {

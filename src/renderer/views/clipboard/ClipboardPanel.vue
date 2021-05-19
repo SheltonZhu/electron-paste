@@ -4,8 +4,6 @@
       v-for="(card, index) in clipboardData"
       :key="card._id"
       :data="card"
-      :cardIcons="cardIcons"
-      :data-index="index"
       :index="index"
       :ref="'cc' + index"
     />
@@ -25,9 +23,7 @@ export default {
     ClipboardCard,
   },
   data() {
-    return {
-      cardIcons: [],
-    };
+    return {};
   },
   mounted() {
     this.$nextTick(() => {

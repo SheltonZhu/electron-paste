@@ -136,13 +136,13 @@
             >设置
           </el-dropdown-item>
           <el-dropdown-item
-            icon="el-icon-info"
+            icon="el-icon-s-operation"
             divided
-            @click.native="openAbout"
-            >关于
+            @click.native="openConfig"
+            >打开配置文件
           </el-dropdown-item>
-          <el-dropdown-item icon="el-icon-question" @click.native="openHelp"
-            >帮助
+          <el-dropdown-item icon="el-icon-notebook-2" @click.native="openLog"
+            >打开日志文件
           </el-dropdown-item>
           <el-dropdown-item
             icon="el-icon-s-promotion"
@@ -165,6 +165,8 @@ import {
   listFavoriteData,
   addFavorite,
   listClipboardDataDebounce,
+  openConfig,
+  openLog,
 } from '../../ipc';
 import { mapActions, mapState } from 'vuex';
 import { debounce } from '../../../shared/utils';
@@ -293,13 +295,17 @@ export default {
     execSearchDebounce: debounce(function () {
       this.execSearch();
     }, 200),
-    quitApp() {
-      this.$electron.remote.app.quit();
+    openConfig() {
+      openConfig();
     },
-    openAbout() {},
-    openHelp() {},
     openSetting() {
       openSetting();
+    },
+    openLog() {
+      openLog();
+    },
+    quitApp() {
+      this.$electron.remote.app.quit();
     },
   },
 };
