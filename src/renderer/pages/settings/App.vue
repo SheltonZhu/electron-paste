@@ -31,6 +31,16 @@ export default {
 };
 </script>
 <style>
+/* 引入图标 */
+[class^='icon-iconfont'],
+[class*=' icon-iconfont'] {
+  font-family: 'iconfont' !important;
+  font-size: 18px !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
   margin: 0 auto;
   background: #eae9ea;

@@ -1,0 +1,135 @@
+{
+  "id": "2561535",
+  "name": "electron-paste",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-iconfont-",
+  "description": "剪贴板",
+  "glyphs": [
+    {
+      "icon_id": "5972591",
+      "name": "about",
+      "font_class": "about",
+      "unicode": "e6b2",
+      "unicode_decimal": 59058
+    },
+    {
+      "icon_id": "14134971",
+      "name": "Exit without change",
+      "font_class": "exit",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "20343589",
+      "name": "add",
+      "font_class": "add-dark",
+      "unicode": "e6e0",
+      "unicode_decimal": 59104
+    },
+    {
+      "icon_id": "20452812",
+      "name": "add",
+      "font_class": "add",
+      "unicode": "e935",
+      "unicode_decimal": 59701
+    },
+    {
+      "icon_id": "4535774",
+      "name": "log-file-format",
+      "font_class": "log-file",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "13165611",
+      "name": "setting",
+      "font_class": "setting",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "20998841",
+      "name": "配置",
+      "font_class": "config",
+      "unicode": "e6e6",
+      "unicode_decimal": 59110
+    },
+    {
+      "icon_id": "2041147",
+      "name": "通用",
+      "font_class": "tongyong",
+      "unicode": "e891",
+      "unicode_decimal": 59537
+    },
+    {
+      "icon_id": "4183766",
+      "name": "个性化",
+      "font_class": "gexinghua",
+      "unicode": "e705",
+      "unicode_decimal": 59141
+    },
+    {
+      "icon_id": "7254692",
+      "name": "繁体",
+      "font_class": "fanti",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "11714119",
+      "name": "正则",
+      "font_class": "regex",
+      "unicode": "e72e",
+      "unicode_decimal": 59182
+    },
+    {
+      "icon_id": "14637030",
+      "name": "快捷键",
+      "font_class": "shortcut",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "17232176",
+      "name": "简体",
+      "font_class": "jianti",
+      "unicode": "e6cf",
+      "unicode_decimal": 59087
+    },
+    {
+      "icon_id": "1005879",
+      "name": "Twitter",
+      "font_class": "twitter",
+      "unicode": "e726",
+      "unicode_decimal": 59174
+    },
+    {
+      "icon_id": "1444689",
+      "name": "google-translate",
+      "font_class": "google-translate",
+      "unicode": "e78d",
+      "unicode_decimal": 59277
+    },
+    {
+      "icon_id": "5034960",
+      "name": "中文",
+      "font_class": "cn",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "6003718",
+      "name": "日文",
+      "font_class": "jp",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "9013064",
+      "name": "英文",
+      "font_class": "en",
+      "unicode": "e6bb",
+      "unicode_decimal": 59067
+    }
+  ]
+}

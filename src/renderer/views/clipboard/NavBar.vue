@@ -116,7 +116,7 @@
       <!--   添加标签按钮   -->
       <el-button
         v-if="!expand"
-        class="el-icon-plus add-btn"
+        class="icon-iconfont-add add-btn"
         :style="{ color: favoritesFontColor }"
         @click="clickFavoriteAdder"
       ></el-button>
@@ -132,20 +132,24 @@
           <!--          <el-dropdown-item icon="el-icon-delete" @click.native="clearClipboard"-->
           <!--            >清空剪贴板历史-->
           <!--          </el-dropdown-item>-->
-          <el-dropdown-item icon="el-icon-setting" @click.native="openSetting"
+          <el-dropdown-item
+            icon="icon-iconfont-setting"
+            @click.native="openSetting"
             >设置
           </el-dropdown-item>
           <el-dropdown-item
-            icon="el-icon-s-operation"
+            icon="icon-iconfont-config"
             divided
             @click.native="openConfig"
             >打开配置文件
           </el-dropdown-item>
-          <el-dropdown-item icon="el-icon-notebook-2" @click.native="openLog"
+          <el-dropdown-item
+            icon="icon-iconfont-log-file"
+            @click.native="openLog"
             >打开日志文件
           </el-dropdown-item>
           <el-dropdown-item
-            icon="el-icon-s-promotion"
+            icon="icon-iconfont-exit"
             divided
             @click.native="quitApp"
             >退出

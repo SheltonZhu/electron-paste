@@ -1,0 +1,86 @@
+@font-face {
+  font-family: 'iconfont'; /* Project id 2561535 */
+  src: url('iconfont.woff2?t=1621519327369') format('woff2'),
+    url('iconfont.woff?t=1621519327369') format('woff'),
+    url('iconfont.ttf?t=1621519327369') format('truetype');
+}
+
+.iconfont {
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-iconfont-about:before {
+  content: '\e6b2';
+}
+
+.icon-iconfont-exit:before {
+  content: '\e600';
+}
+
+.icon-iconfont-add-dark:before {
+  content: '\e6e0';
+}
+
+.icon-iconfont-add:before {
+  content: '\e935';
+}
+
+.icon-iconfont-log-file:before {
+  content: '\e610';
+}
+
+.icon-iconfont-setting:before {
+  content: '\e602';
+}
+
+.icon-iconfont-config:before {
+  content: '\e6e6';
+}
+
+.icon-iconfont-tongyong:before {
+  content: '\e891';
+}
+
+.icon-iconfont-gexinghua:before {
+  content: '\e705';
+}
+
+.icon-iconfont-fanti:before {
+  content: '\e640';
+}
+
+.icon-iconfont-regex:before {
+  content: '\e72e';
+}
+
+.icon-iconfont-shortcut:before {
+  content: '\e618';
+}
+
+.icon-iconfont-jianti:before {
+  content: '\e6cf';
+}
+
+.icon-iconfont-twitter:before {
+  content: '\e726';
+}
+
+.icon-iconfont-google-translate:before {
+  content: '\e78d';
+}
+
+.icon-iconfont-cn:before {
+  content: '\e601';
+}
+
+.icon-iconfont-jp:before {
+  content: '\e609';
+}
+
+.icon-iconfont-en:before {
+  content: '\e6bb';
+}

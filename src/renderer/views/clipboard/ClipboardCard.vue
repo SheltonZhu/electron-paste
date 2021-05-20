@@ -250,26 +250,17 @@ export default {
         },
         {
           text: '添加到收藏',
-          icon: 'el-icon-collection-tag',
+          icon: 'el-icon-star-off',
           children: this.favoriteChildren,
         },
         {
           text: '谷歌翻译',
-          icon: 'el-icon-camera',
+          icon: 'icon-iconfont-google-translate',
           hidden: !this.isText,
           children: [
             {
-              text: '中文【简】',
-              icon: 'el-icon-caret-right',
-              onClick: () => {
-                this.googleTranslate(
-                  'https://translate.google.cn/?sl=auto&tl=zh-CN&text='
-                );
-              },
-            },
-            {
               text: '英语',
-              icon: 'el-icon-caret-right',
+              icon: 'icon-iconfont-en',
               onClick: () => {
                 this.googleTranslate(
                   'https://translate.google.cn/?sl=auto&tl=zh-CN&text='
@@ -278,7 +269,7 @@ export default {
             },
             {
               text: '日语',
-              icon: 'el-icon-caret-right',
+              icon: 'icon-iconfont-jp',
               onClick: () => {
                 this.googleTranslate(
                   'https://translate.google.cn/?sl=auto&tl=ja&text='
@@ -286,8 +277,17 @@ export default {
               },
             },
             {
-              text: '中文【繁】',
-              icon: 'el-icon-caret-right',
+              text: '汉语',
+              icon: 'icon-iconfont-jianti',
+              onClick: () => {
+                this.googleTranslate(
+                  'https://translate.google.cn/?sl=auto&tl=zh-CN&text='
+                );
+              },
+            },
+            {
+              text: '汉语',
+              icon: 'icon-iconfont-fanti',
               onClick: () => {
                 this.googleTranslate(
                   'https://translate.google.cn/?sl=auto&tl=zh-TW&text='
@@ -307,7 +307,7 @@ export default {
             },
             {
               text: 'Twitter',
-              icon: 'el-icon-twitter',
+              icon: 'icon-iconfont-twitter',
               onClick: this.share2twitter,
             },
           ],
@@ -320,7 +320,7 @@ export default {
         if (favorite._id !== this.favorite) {
           children.push({
             text: favorite.name,
-            icon: 'el-icon-star-off',
+            icon: 'el-icon-collection-tag',
             onClick: () => {
               this.add2favorite(favorite._id);
             },
