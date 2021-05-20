@@ -90,7 +90,8 @@
         {{ data.text }}
       </el-link>
       <el-image
-        style="width: 330px; pointer-events: none"
+        class="card-image"
+        style="width: 330px"
         v-if="isImage"
         :src="data.base64data"
       >
@@ -596,5 +597,13 @@ export default {
 .el-message-box input {
   background-color: #ffffffbf !important;
   backdrop-filter: saturate(180%) blur(5px) !important;
+}
+.card-image {
+  /*pointer-events: none;*/
+}
+.card-image img:hover {
+  transform: scale(1.1, 1.1);
+  filter: contrast(130%);
+  pointer-events: auto;
 }
 </style>

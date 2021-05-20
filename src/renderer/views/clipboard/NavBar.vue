@@ -141,12 +141,12 @@
             icon="icon-iconfont-config"
             divided
             @click.native="openConfig"
-            >打开配置文件
+            >配置文件
           </el-dropdown-item>
           <el-dropdown-item
             icon="icon-iconfont-log-file"
             @click.native="openLog"
-            >打开日志文件
+            >日志文件
           </el-dropdown-item>
           <el-dropdown-item
             icon="icon-iconfont-exit"

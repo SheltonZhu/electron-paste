@@ -476,3 +476,9 @@ export default {
   background-color: #eae9ea !important;
 }
 </style>
+<style>
+.bg-pic img:hover {
+  transform: scale(1.1, 1.1);
+  filter: contrast(130%);
+}
+</style>

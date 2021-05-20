@@ -5,7 +5,7 @@
     <div style="text-align: center">
       <el-row
         class="row"
-        style="display: flex; align-items: center; margin: 15px 110px"
+        style="display: flex; align-items: center; margin: 15px 100px"
       >
         <external-link :href="homepage">
           <el-image
@@ -24,10 +24,12 @@
           </el-image>
         </external-link>
 
-        <div style="font-size: 30px; font-weight: bold">
-          {{ formattedAppName }}
+        <div style="font-size: 32px; font-weight: bold">
+          <mallki :text="formattedAppName"></mallki>
         </div>
-        <div style="margin: 10px 0 0 10px">v{{ meta.version }}</div>
+        <div style="margin: 10px 0 0 10px">
+          <mallki :text="'v' + meta.version"></mallki>
+        </div>
         <el-badge
           v-if="hasUpdate"
           @click.native="downloadNewVersion"
@@ -69,9 +71,10 @@ import { mapState } from 'vuex';
 import pkg from '../../../../package.json';
 import ExternalLink from '../../components/ExternalLink';
 import GithubCorner from '../../components/GIthubCorner';
+import Mallki from '../../components/Mallki';
 export default {
   name: 'About',
-  components: { ExternalLink, GithubCorner },
+  components: { Mallki, ExternalLink, GithubCorner },
   data() {
     return {
       hasUpdate: false,
