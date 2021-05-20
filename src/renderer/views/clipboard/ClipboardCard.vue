@@ -2,6 +2,7 @@
   <el-card
     @contextmenu.native="mountContextMenu($event, $root, index)"
     @keyup.113.native="rename"
+    @keyup.enter.native="cardOnEnter"
     @dblclick.native="cardOnDblClick"
     class="box-card"
     :class="{
@@ -131,7 +132,6 @@ import {
 } from '../../ipc';
 import { dataURLtoBlob } from '../../../shared/utils';
 import ContextMenu from '../../components/ContextMenu';
-import Mousetrap from 'mousetrap';
 import { isLinux } from '../../../shared/env';
 
 export default {
@@ -149,11 +149,16 @@ export default {
   data: () => {
     return {
       defaultIcon: '../static/icon.png',
-      cmList: [],
     };
   },
   computed: {
-    ...mapState(['appConfig', 'favoritesData', 'favorite', 'iconMap']),
+    ...mapState([
+      'appConfig',
+      'favoritesData',
+      'favorite',
+      'iconMap',
+      'isRenaming',
+    ]),
     shortcut() {
       if (this.index < 9) return `Alt+${this.index + 1}`;
       return '';
@@ -302,6 +307,7 @@ export default {
             },
             {
               text: 'Twitter',
+              icon: 'el-icon-twitter',
               onClick: this.share2twitter,
             },
           ],
@@ -324,16 +330,9 @@ export default {
       return children;
     },
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.initShortcut();
-    });
-  },
+  mounted() {},
   methods: {
     ...mapActions(['saveDragData']),
-    initShortcut() {
-      Mousetrap.bind('enter', this.cardOnEnter);
-    },
     mountContextMenu(e, root, tag) {
       e.stopPropagation();
       e.preventDefault();
@@ -361,7 +360,7 @@ export default {
       }
     },
     cardOnEnter() {
-      this.pasteAndHide();
+      if (!this.isRenaming) this.pasteAndHide();
     },
     cardOnDblClick() {
       this.pasteAndHide();
@@ -405,16 +404,39 @@ export default {
       listClipboardData();
     },
     rename() {
-      this.$prompt(this.data.name, '重命名', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        inputPlaceholder: '输入新名称',
-      })
-        .then(async ({ value }) => {
-          renameClipboardData(this.data._id, value);
+      this.$store.dispatch('changeRenaming', true).then(async () => {
+        try {
+          const ret = await this.$prompt(this.data.name, '重命名', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            inputPlaceholder: '输入新名称',
+          });
+          renameClipboardData(this.data._id, ret.value);
           listClipboardData();
-        })
-        .catch(() => {});
+        } catch (e) {
+        } finally {
+          setTimeout(() => {
+            this.$store.dispatch('changeRenaming', false);
+          }, 200);
+        }
+      });
+
+      // this.$prompt(this.data.name, '重命名', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   inputPlaceholder: '输入新名称'
+      // })
+      //   .then(async ({ value }) => {
+      //     renameClipboardData(this.data._id, value)
+      //     listClipboardData()
+      //   })
+      //   .catch(() => {
+      //   })
+      //   .finally(() => {
+      //     setTimeout(() => {
+      //       this.$store.dispatch('updateRename', false)
+      //     }, 5000)
+      //   })
     },
     contextMenuSaveImage() {
       const blob = dataURLtoBlob(this.data.base64data);

@@ -262,6 +262,7 @@ export default {
         'rgba(249, 252, 44, 1)',
         'rgba(239, 38, 85, 1)',
         'rgba(202, 38, 239, 1)',
+        'rgb(24, 48, 85)',
       ],
       predefineFavoritesFontColorsSelected: [
         'rgba(255, 255, 255, 1)', // 原版
