@@ -228,7 +228,7 @@ export default {
       listFavoriteData();
     },
     initShortCut() {
-      Mousetrap.bind('alt+s', () => {
+      Mousetrap.bind('ctrl+f', () => {
         if (!this.expand) {
           this.$refs.searchBtn.$el.click();
         } else {
