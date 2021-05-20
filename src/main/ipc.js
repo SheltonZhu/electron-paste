@@ -8,6 +8,7 @@ import {
   sendData as sendToClipboard,
 } from './window-clipboard';
 import {
+  hideWindow as hideSetting,
   sendData as sendToSetting,
   showWindow as showSetting,
 } from './window-settings';
@@ -30,6 +31,10 @@ ipcMain
   .on(events.EVENT_APP_HIDE_WINDOW_CLIPBOARD, () => {
     // 隐藏窗口
     hideClipboard();
+  })
+  .on(events.EVENT_APP_HIDE_WINDOW_SETTING, () => {
+    // 隐藏窗口
+    hideSetting();
   })
   .on(events.EVENT_APP_WEB_INIT, (e) => {
     // 页面初始化

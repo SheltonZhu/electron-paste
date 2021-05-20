@@ -7,6 +7,9 @@ export const EVENT_APP_NOTIFY_RENDERER = 'app.notify.renderer';
 // 由`ipc-renderer`发出 隐藏剪贴板窗口
 export const EVENT_APP_HIDE_WINDOW_CLIPBOARD = 'app.hide.window.clipboard';
 
+// 由`ipc-renderer`发出 隐藏设置窗口
+export const EVENT_APP_HIDE_WINDOW_SETTING = 'app.hide.window.setting';
+
 // 由`ipc-main`发出 打开并跳转到指定的页面
 export const EVENT_APP_SHOW_PAGE = 'app.show.page';
 

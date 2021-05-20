@@ -15,19 +15,26 @@
 import TitleBar from '../../components/TitleBar';
 import NavMenu from '../../views/setting/NavMenu';
 import Personalization from '../../views/setting/Personalization';
-import { getInitConfig } from '../../ipc';
-
+import { getInitConfig, hideSetting } from '../../ipc';
+import Mousetrap from 'mousetrap';
 export default {
   components: { TitleBar, NavMenu, Personalization },
   mounted() {
     // 启动应用时获取初始化数据
     getInitConfig();
+    this.initShortcut();
   },
   data() {
     return {};
   },
   computed: {},
-  methods: {},
+  methods: {
+    initShortcut() {
+      Mousetrap.bind('esc', () => {
+        hideSetting();
+      });
+    },
+  },
 };
 </script>
 <style>

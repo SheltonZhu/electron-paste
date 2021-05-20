@@ -2,16 +2,22 @@
   "name": "electron-paste",
   "version": "1.0.0-beta-2",
   "author": "Shelton Zhu <498220739@qq.com> (https://github.com/SheltonZhu)",
-  "description": "An Electron & Vue.js clipboard with elementUI support",
+  "description": "An Electron & Vue.js clipboard with elementUI support.",
   "homepage": "https://github.com/SheltonZhu/electron-paste",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SheltonZhu/electron-paste.git"
+    "url": "git+https://github.com/SheltonZhu/electron-paste.git"
   },
   "bugs": {
     "url": "https://github.com/SheltonZhu/electron-paste/issues"
   },
+  "keywords": [
+    "vue",
+    "electron",
+    "element-ui",
+    "clipboard"
+  ],
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder install-app-deps",

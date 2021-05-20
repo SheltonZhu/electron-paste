@@ -53,10 +53,17 @@ export function toggleMenu() {
 }
 
 /**
- * 隐藏窗口
+ * 隐藏主窗口
  */
 export function hideClipboard() {
   ipcRenderer.send(events.EVENT_APP_HIDE_WINDOW_CLIPBOARD);
+}
+
+/**
+ * 隐藏设置窗口
+ */
+export function hideSetting() {
+  ipcRenderer.send(events.EVENT_APP_HIDE_WINDOW_SETTING);
 }
 
 /**

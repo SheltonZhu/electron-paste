@@ -3,6 +3,8 @@
 [中文](README-CN.md)
 
 ![](https://img.shields.io/github/languages/top/SheltonZhu/electron-paste.svg?style=flat)
+![](https://img.shields.io/github/license/SheltonZhu/electron-paste)
+![](https://img.shields.io/github/v/release/SheltonZhu/electron-paste)
 ![](https://img.shields.io/github/stars/SheltonZhu/electron-paste.svg?style=social)
 
 This app is a clipboard tool programed by [Electron](https://www.electronjs.org/) and [Vue.js](https://vuejs.org/)

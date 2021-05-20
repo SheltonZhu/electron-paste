@@ -1,5 +1,7 @@
 <template>
   <div class="about">
+    <github-corner :href="homepage" class="github-corner" />
+
     <div style="text-align: center">
       <el-row
         class="row"
@@ -66,10 +68,10 @@
 import { mapState } from 'vuex';
 import pkg from '../../../../package.json';
 import ExternalLink from '../../components/ExternalLink';
-
+import GithubCorner from '../../components/GIthubCorner';
 export default {
   name: 'About',
-  components: { ExternalLink },
+  components: { ExternalLink, GithubCorner },
   data() {
     return {
       hasUpdate: false,
@@ -106,6 +108,14 @@ export default {
 </script>
 
 <style scoped>
+.github-corner {
+  position: absolute;
+  bottom: 0;
+  border: 0;
+  right: 0;
+  transform: rotate(90deg);
+}
+
 .row {
   padding: 10px 5px;
 }
