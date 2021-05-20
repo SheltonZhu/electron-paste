@@ -8,22 +8,13 @@
         style="display: flex; align-items: center; margin: 15px 100px"
       >
         <external-link :href="homepage">
-          <el-image
-            src="../static/icon.png"
-            fit="center"
-            style="
-              width: 100px;
-              height: 100px;
-              margin: 0 20px 10px 100px;
-              cursor: pointer;
-            "
-          >
-            <div slot="error" class="image-slot">
-              <i class="el-icon-picture-outline"></i>
-            </div>
-          </el-image>
+          <pan-thumb
+            image="../static/icon.png"
+            width="100px"
+            height="100px"
+            style="margin: 0 20px 10px 100px; box-shadow: none"
+          />
         </external-link>
-
         <div style="font-size: 32px; font-weight: bold">
           <mallki :text="formattedAppName"></mallki>
         </div>
@@ -72,9 +63,10 @@ import pkg from '../../../../package.json';
 import ExternalLink from '../../components/ExternalLink';
 import GithubCorner from '../../components/GIthubCorner';
 import Mallki from '../../components/Mallki';
+import PanThumb from '../../components/PanThumb';
 export default {
   name: 'About',
-  components: { Mallki, ExternalLink, GithubCorner },
+  components: { Mallki, ExternalLink, GithubCorner, PanThumb },
   data() {
     return {
       hasUpdate: false,

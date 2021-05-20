@@ -235,7 +235,7 @@ export default {
   data() {
     return {
       newPicUrl: '',
-      activeColor: '#15bbf9',
+      activeColor: '#4c96d7',
       inactiveColor: '#aaabab',
       predefineBackgroundColors: [
         'rgba(255, 255, 255, 0.72)', // 原版
