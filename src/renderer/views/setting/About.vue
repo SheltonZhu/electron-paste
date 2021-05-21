@@ -13,7 +13,9 @@
             width="100px"
             height="100px"
             style="margin: 0 20px 10px 100px; box-shadow: none"
-          />
+          >
+            <p><a>Great!</a></p>
+          </pan-thumb>
         </external-link>
         <div style="font-size: 32px; font-weight: bold">
           <mallki :text="formattedAppName"></mallki>

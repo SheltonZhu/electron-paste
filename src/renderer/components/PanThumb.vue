@@ -63,7 +63,7 @@ export default {
   overflow: hidden;
   position: absolute;
   /*transform-origin: 95% 40%;*/
-  transform-origin: 50% 50%;
+  transform-origin: -25% 40%;
   transition: all 0.3s ease-in-out;
 }
 
@@ -91,7 +91,7 @@ export default {
 }
 
 .pan-info h3 {
-  color: #fff;
+  color: #000;
   text-transform: uppercase;
   position: relative;
   letter-spacing: 2px;
@@ -104,12 +104,12 @@ export default {
 }
 
 .pan-info p {
-  color: #fff;
+  color: #000;
   padding: 10px 5px;
   font-style: italic;
   margin: 0 30px;
   font-size: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  /*border-top: 1px solid rgba(255, 255, 255, 0.5);*/
 }
 
 .pan-info p a {
@@ -117,16 +117,16 @@ export default {
   /*color: #333;*/
   width: 80px;
   height: 80px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0);
   border-radius: 50%;
-  color: #fff;
+  color: #000;
   font-style: normal;
   font-weight: 700;
   text-transform: uppercase;
   font-size: 9px;
   letter-spacing: 1px;
-  padding-top: 24px;
-  margin: 7px auto 0;
+  padding-top: 25px;
+  /*margin: 7px auto 0;*/
   font-family: 'Open Sans', Arial, sans-serif;
   opacity: 0;
   transition: transform 0.3s ease-in-out 0.2s, opacity 0.3s ease-in-out 0.2s,
@@ -135,16 +135,16 @@ export default {
 }
 
 .pan-info p a:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0);
 }
 
 .pan-item:hover .pan-thumb {
   /*transform: rotate(-110deg);*/
-  transform: rotate(45deg);
+  transform: rotate(60deg);
 }
 
 .pan-item:hover .pan-info p a {
   opacity: 1;
-  transform: translateX(0px) rotate(0deg);
+  transform: translateX(-35px) rotate(0deg);
 }
 </style>
