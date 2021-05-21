@@ -1,5 +1,6 @@
 import os from 'os';
 import { execSync } from 'child_process';
+import pkg from '../../package.json';
 
 export const platform = os.platform();
 export const isWin = platform === 'win32';
@@ -18,6 +19,14 @@ export const CARD_TYPE = {
   LINK: 'Link',
   IMAGE: 'Image',
   FILE: 'File',
+};
+export const meta = {
+  version: pkg.version,
+  electron: process.versions.electron,
+  chrome: process.versions.chrome,
+  nodejs: process.versions.node,
+  v8: process.versions.v8,
+  os: osInfo,
 };
 
 // mac版本号

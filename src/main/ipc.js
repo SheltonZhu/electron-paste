@@ -1,4 +1,4 @@
-import { app, ipcMain, clipboard, nativeImage } from 'electron';
+import { ipcMain, clipboard, nativeImage } from 'electron';
 import { readJsonSync } from 'fs-extra';
 import * as events from '../shared/events';
 import { appConfigPath } from './bootstrap';
@@ -15,13 +15,12 @@ import {
 import defaultConfig, { mergeConfig } from '../shared/config';
 import { showNotification } from './notification';
 import { toggleMenu } from './menu';
-import { CARD_TYPE, defaultHistoryFavorite, osInfo } from '../shared/env';
+import { CARD_TYPE, defaultHistoryFavorite, meta } from '../shared/env';
 import { clone } from '../shared/utils';
 import { openConfigFile, openLog } from './tray-handler';
 import logger from './logger';
 import robot from 'robotjs';
 import store from '../renderer/store';
-import pkg from '../../package.json';
 import db from './db';
 
 /**
@@ -47,14 +46,7 @@ ipcMain
     }
     const res = {
       config: stored,
-      meta: {
-        version: pkg.version,
-        electron: app.getVersion(),
-        chrome: process.versions.chrome,
-        nodejs: process.versions.node,
-        v8: process.versions.v8,
-        os: osInfo,
-      },
+      meta: meta,
     };
     store.dispatch('initConfig', res).then();
   })

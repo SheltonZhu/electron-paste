@@ -39,6 +39,7 @@ function generateMenus() {
         { label: '打开开发者工具', click: handler.openDevtool },
       ],
     },
+    { label: '版本信息', click: handler.showVersionInfo },
     { label: '退出', click: handler.exitApp },
   ];
 }

@@ -61,7 +61,7 @@
 import { mapState } from 'vuex';
 import pkg from '../../../../package.json';
 import ExternalLink from '../../components/ExternalLink';
-import GithubCorner from '../../components/GIthubCorner';
+import GithubCorner from '../../components/GithubCorner';
 import Mallki from '../../components/Mallki';
 import PanThumb from '../../components/PanThumb';
 export default {
