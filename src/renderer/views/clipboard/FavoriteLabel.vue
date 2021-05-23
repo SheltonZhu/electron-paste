@@ -191,7 +191,7 @@ export default {
     },
     clickRemoveFavorite() {
       this.$confirm(
-        `确定删除【${this.favoriteData.name}】?删除的记录不可恢复！`,
+        `确定删除【${this.favoriteData.name}】? 删除的记录不可恢复！`,
         '提示',
         {
           confirmButtonText: '确定',
@@ -199,9 +199,8 @@ export default {
           type: 'warning',
         }
       )
-        .then(() => {
-          const numRemoved = removeFavorite(this.favoriteData._id);
-          listFavoriteData();
+        .then(async () => {
+          const affectedNum = removeFavorite(this.favoriteData._id);
           if (this.isSelected) {
             this.changeFavorite(defaultHistoryFavorite).then(
               listClipboardDataDebounce
@@ -209,9 +208,10 @@ export default {
           }
           this.$message({
             type: 'success',
-            message: `【${this.favoriteData.name}】删除成功! 共删除 【${numRemoved}】条记录！`,
+            message: `【${this.favoriteData.name}】删除成功! 共删除 【${affectedNum}】条记录！`,
             duration: 1000,
           });
+          listFavoriteData();
         })
         .catch(() => {});
     },

@@ -108,8 +108,9 @@ ipcMain
     e.returnValue = await updateOneClipboardData(params._id, params.data);
   })
   .on(events.EVENT_APP_FAVORITE_DATA_REMOVE, async (e, _id) => {
+    const affectedNum = await db.clipboardCard.clear(_id);
     await removeFavorite(_id);
-    e.returnValue = await db.clipboardCard.clear(_id);
+    e.returnValue = affectedNum;
   })
   .on(events.EVENT_APP_CLIPBOARD_ICON_LIST, async (e) => {
     await getIconMap();
