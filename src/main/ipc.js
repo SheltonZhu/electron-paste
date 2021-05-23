@@ -92,25 +92,29 @@ ipcMain
     }
   })
   .on(events.EVENT_APP_FAVORITE_DATA_LIST, async (e, params) => {
-    const retData = await db.favorites.list();
-    store.commit('updateFavoritesData', retData);
+    const retData = await db.favorites.listBySort();
+    await store.dispatch('changeFavoriteData', retData);
   })
   .on(events.EVENT_APP_FAVORITE_DATA_ADD, async (e, params) => {
-    const favorite = await db.favorites.create(params);
     const favoritesData = clone(store.state.favoritesData, true);
+    params.sort = favoritesData.length + 1;
+    const favorite = await db.favorites.create(params);
     favoritesData.push(favorite);
-    store.commit('updateFavoritesData', favoritesData);
+    await store.dispatch('changeFavoriteData', favoritesData);
   })
   .on(events.EVENT_APP_FAVORITE_DATA_MOVE, async (e, data) => {
     await addOneClipboardData(data);
   })
   .on(events.EVENT_APP_FAVORITE_DATA_UPDATE, async (e, params) => {
-    e.returnValue = await updateOneClipboardData(params._id, params.data);
+    e.returnValue = await updateFavoriteData(params._id, params.data);
   })
-  .on(events.EVENT_APP_FAVORITE_DATA_REMOVE, async (e, _id) => {
-    const affectedNum = await db.clipboardCard.clear(_id);
-    await removeFavorite(_id);
+  .on(events.EVENT_APP_FAVORITE_DATA_REMOVE, async (e, data) => {
+    const affectedNum = await db.clipboardCard.clear(data._id);
+    await removeFavorite(data);
     e.returnValue = affectedNum;
+  })
+  .on(events.EVENT_APP_FAVORITE_DATA_SORT, async (e, list) => {
+    await db.favorites.updateSort(list);
   })
   .on(events.EVENT_APP_CLIPBOARD_ICON_LIST, async (e) => {
     await getIconMap();
@@ -204,13 +208,12 @@ export function addOneClipboardData(data) {
   return db.clipboardCard.add(data);
 }
 
-export function updateOneClipboardData(_id, data) {
+export function updateFavoriteData(_id, data) {
   return db.favorites.updateById(_id, data);
 }
 
-export function removeFavorite(_id) {
-  db.clipboardCard.clear(_id).then();
-  return db.favorites.removeOne(_id);
+export function removeFavorite(data) {
+  return db.favorites.removeAndUpdateSort(data);
 }
 
 export function removeOneClipboardData(_id) {

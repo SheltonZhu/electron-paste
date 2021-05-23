@@ -26,7 +26,7 @@ export default new Vuex.Store({
     query: '',
     clipboardData: [],
     favoritesData: [],
-    dragData: {},
+    dragData: null,
     iconMap: {},
     isRenaming: false,
   },
@@ -132,6 +132,9 @@ export default new Vuex.Store({
     },
     changeRenaming({ commit }, stat) {
       commit('updateRename', stat);
+    },
+    changeFavoriteData({ commit }, data) {
+      commit('updateFavoritesData', data);
     },
   },
   plugins: [createSharedMutations()],

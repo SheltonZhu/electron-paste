@@ -57,6 +57,28 @@ const clipboardCardIcon = dbFactory(
   clipboardCardIconSchema
 );
 
+favorites.removeAndUpdateSort = async (data) => {
+  const ret = await favorites
+    .find({ sort: { $gt: data.sort } })
+    .sort({ sort: 1 });
+  for (const idx in ret) {
+    const item = ret[idx];
+    await favorites.updateById(item._id, { sort: item.sort - 1 });
+  }
+  return await favorites.removeOne(data._id);
+};
+
+favorites.updateSort = async (list) => {
+  for (const idx in list) {
+    const item = list[idx];
+    await favorites.updateById(item._id, { sort: parseInt(idx) + 1 });
+  }
+};
+
+favorites.listBySort = async () => {
+  return favorites.find({}, { createdAt: -1, updatedAt: -1 }).sort({ sort: 1 });
+};
+
 clipboardCard.checkHistoryCapacity = async () => {
   const hcm = store.state.appConfig.historyCapacityNum;
   if (hcm === '∞') return 0;

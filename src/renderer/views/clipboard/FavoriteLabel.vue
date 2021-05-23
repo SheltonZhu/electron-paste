@@ -1,6 +1,7 @@
 <template>
   <span
     :class="{ 'is-droppable': isDroppable }"
+    style="padding: 5px 0"
     @drop.prevent="onCardDrop"
     @dragenter="onCardDragIn"
     @dragleave="onCardDragOut"
@@ -93,6 +94,7 @@ import Spot from '../../components/Spot';
 import { component as VueContextMenu } from '@xunlei/vue-context-menu';
 import { mapActions, mapState } from 'vuex';
 import { defaultHistoryFavorite } from '../../../shared/env';
+import { clone } from '../../../shared/utils';
 import {
   move2Favorite,
   updateFavorite,
@@ -163,8 +165,8 @@ export default {
     ...mapActions(['changeFavorite']),
     onCardDrop() {
       console.log('[favorite]: drop');
-      if (this.favoriteData._id !== this.dragData.favorite) {
-        const newData = Object.assign({}, this.dragData);
+      if (this.dragData && this.favoriteData._id !== this.dragData.favorite) {
+        const newData = clone(this.dragData, true);
         newData.favorite = this.favoriteData._id;
         delete newData._id;
         move2Favorite(newData);
@@ -174,7 +176,7 @@ export default {
     onCardDragIn(e) {
       console.log('[favorite]: in');
       this.dragEl = e.target;
-      if (this.favoriteData._id !== this.dragData.favorite) {
+      if (this.dragData && this.favoriteData._id !== this.dragData.favorite) {
         this.isDroppable = true;
       }
     },
@@ -200,7 +202,7 @@ export default {
         }
       )
         .then(async () => {
-          const affectedNum = removeFavorite(this.favoriteData._id);
+          const affectedNum = removeFavorite(this.favoriteData);
           if (this.isSelected) {
             this.changeFavorite(defaultHistoryFavorite).then(
               listClipboardDataDebounce

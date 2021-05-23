@@ -79,16 +79,20 @@
             </transition>
           </el-button>
         </el-tooltip>
+        <draggable v-model="favoritesData" v-bind="dragOptions">
+          <transition-group type="transition" name="flip-list">
+            <favorite-label
+              :is-expand="expand"
+              :favoritesFontColor="favoritesFontColor"
+              :favoritesFontColorSelected="favoritesFontColorSelected"
+              :favoritesBgColorSelected="favoritesBgColorSelected"
+              v-for="favorite in favoritesData"
+              :key="favorite._id"
+              :favorite-data="favorite"
+            />
+          </transition-group>
+        </draggable>
 
-        <favorite-label
-          :is-expand="expand"
-          :favoritesFontColor="favoritesFontColor"
-          :favoritesFontColorSelected="favoritesFontColorSelected"
-          :favoritesBgColorSelected="favoritesBgColorSelected"
-          v-for="favorite in favoritesData"
-          :key="favorite._id"
-          :favorite-data="favorite"
-        />
         <!--    添加新标签输入框    -->
         <div v-if="newFavoriteVisible">
           <el-button
@@ -171,17 +175,20 @@ import {
   listClipboardDataDebounce,
   openConfig,
   openLog,
+  sortFavorite,
 } from '../../ipc';
 import { mapActions, mapState } from 'vuex';
 import { debounce } from '../../../shared/utils';
 import { CARD_TYPE, defaultHistoryFavorite } from '../../../shared/env';
 import Mousetrap from 'mousetrap';
+import draggable from 'vuedraggable';
 
 export default {
   name: 'NavBar',
   components: {
     Spot,
     FavoriteLabel,
+    draggable,
   },
   props: {
     favoritesFontColor: {
@@ -217,7 +224,24 @@ export default {
     },
   },
   computed: {
-    ...mapState(['favoritesData', 'query', 'favorite', 'searchType']),
+    ...mapState(['query', 'favorite', 'searchType']),
+    favoritesData: {
+      get() {
+        return this.$store.state.favoritesData;
+      },
+      set(value) {
+        sortFavorite(value);
+        this.$store.dispatch('changeFavoriteData', value);
+      },
+    },
+    dragOptions() {
+      return {
+        animation: 0,
+        group: 'favorites',
+        disabled: this.expand,
+        ghostClass: 'ghost',
+      };
+    },
     isSelected() {
       return this.favorite === defaultHistoryFavorite;
     },
@@ -454,5 +478,18 @@ export default {
 .slide-leave-to {
   opacity: 0;
   transform: translateX(-30%);
+}
+
+.flip-list-move {
+  transition: transform 0.5s;
+}
+
+.no-move {
+  transition: transform 0s;
+}
+.ghost {
+  opacity: 0.5;
+  background: #15bbf9;
+  border-radius: 4px;
 }
 </style>

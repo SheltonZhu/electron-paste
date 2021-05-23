@@ -75,3 +75,6 @@ export const EVENT_APP_FAVORITE_DATA_UPDATE = 'app.favorite.data.update';
 
 // 由`ipc-renderer`发出 删除收藏栏
 export const EVENT_APP_FAVORITE_DATA_REMOVE = 'app.favorite.data.remove';
+
+// 由`ipc-renderer`发出 收藏栏排序
+export const EVENT_APP_FAVORITE_DATA_SORT = 'app.favorite.data.sort';

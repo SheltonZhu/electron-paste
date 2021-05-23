@@ -172,8 +172,15 @@ export function updateFavorite(_id, data) {
 /**
  * 删除收藏标签
  * */
-export function removeFavorite(_id) {
-  return ipcRenderer.sendSync(events.EVENT_APP_FAVORITE_DATA_REMOVE, _id);
+export function removeFavorite(data) {
+  return ipcRenderer.sendSync(events.EVENT_APP_FAVORITE_DATA_REMOVE, data);
+}
+
+/**
+ * 收藏标签排序
+ * */
+export function sortFavorite(list) {
+  return ipcRenderer.send(events.EVENT_APP_FAVORITE_DATA_SORT, list);
 }
 
 /**
