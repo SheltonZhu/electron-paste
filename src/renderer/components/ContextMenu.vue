@@ -166,6 +166,13 @@ export default {
       },
       true
     );
+    document.addEventListener(
+      'wheel',
+      () => {
+        this.show = false;
+      },
+      true
+    );
   },
   watch: {
     axis() {

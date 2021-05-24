@@ -72,7 +72,7 @@ const defaultConfig = {
       enable: true,
     },
     interSearch: {
-      key: 'Alt+S',
+      key: 'Ctrl+F',
       enable: false,
     },
     quickPaste: {

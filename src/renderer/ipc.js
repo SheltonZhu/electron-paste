@@ -53,10 +53,17 @@ export function toggleMenu() {
 }
 
 /**
- * 隐藏窗口
+ * 隐藏主窗口
  */
 export function hideClipboard() {
   ipcRenderer.send(events.EVENT_APP_HIDE_WINDOW_CLIPBOARD);
+}
+
+/**
+ * 隐藏设置窗口
+ */
+export function hideSetting() {
+  ipcRenderer.send(events.EVENT_APP_HIDE_WINDOW_SETTING);
 }
 
 /**
@@ -71,6 +78,20 @@ export function hideAndPaste(options) {
  * */
 export function openSetting(options) {
   return ipcRenderer.send(events.EVENT_APP_OPEN_WINDOW_SETTING, options);
+}
+
+/**
+ * 打开配置
+ * */
+export function openConfig(options) {
+  return ipcRenderer.send(events.EVENT_APP_OPEN_CONFIG, options);
+}
+
+/**
+ * 打开日志
+ * */
+export function openLog(options) {
+  return ipcRenderer.send(events.EVENT_APP_OPEN_LOG, options);
 }
 
 /**
@@ -151,8 +172,15 @@ export function updateFavorite(_id, data) {
 /**
  * 删除收藏标签
  * */
-export function removeFavorite(_id) {
-  return ipcRenderer.sendSync(events.EVENT_APP_FAVORITE_DATA_REMOVE, _id);
+export function removeFavorite(data) {
+  return ipcRenderer.sendSync(events.EVENT_APP_FAVORITE_DATA_REMOVE, data);
+}
+
+/**
+ * 收藏标签排序
+ * */
+export function sortFavorite(list) {
+  return ipcRenderer.send(events.EVENT_APP_FAVORITE_DATA_SORT, list);
 }
 
 /**

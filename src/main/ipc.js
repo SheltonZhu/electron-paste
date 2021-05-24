@@ -1,4 +1,4 @@
-import { app, ipcMain, clipboard, nativeImage } from 'electron';
+import { ipcMain, clipboard, nativeImage } from 'electron';
 import { readJsonSync } from 'fs-extra';
 import * as events from '../shared/events';
 import { appConfigPath } from './bootstrap';
@@ -8,19 +8,19 @@ import {
   sendData as sendToClipboard,
 } from './window-clipboard';
 import {
+  hideWindow as hideSetting,
   sendData as sendToSetting,
   showWindow as showSetting,
 } from './window-settings';
 import defaultConfig, { mergeConfig } from '../shared/config';
 import { showNotification } from './notification';
 import { toggleMenu } from './menu';
-import { CARD_TYPE, defaultHistoryFavorite, osInfo } from '../shared/env';
+import { CARD_TYPE, defaultHistoryFavorite, meta } from '../shared/env';
 import { clone } from '../shared/utils';
-
+import { openConfigFile, openLog } from './tray-handler';
 import logger from './logger';
 import robot from 'robotjs';
 import store from '../renderer/store';
-import pkg from '../../package.json';
 import db from './db';
 
 /**
@@ -30,6 +30,10 @@ ipcMain
   .on(events.EVENT_APP_HIDE_WINDOW_CLIPBOARD, () => {
     // 隐藏窗口
     hideClipboard();
+  })
+  .on(events.EVENT_APP_HIDE_WINDOW_SETTING, () => {
+    // 隐藏窗口
+    hideSetting();
   })
   .on(events.EVENT_APP_WEB_INIT, (e) => {
     // 页面初始化
@@ -42,14 +46,7 @@ ipcMain
     }
     const res = {
       config: stored,
-      meta: {
-        version: pkg.version,
-        electron: app.getVersion(),
-        chrome: process.versions.chrome,
-        nodejs: process.versions.node,
-        v8: process.versions.v8,
-        os: osInfo,
-      },
+      meta: meta,
     };
     store.dispatch('initConfig', res).then();
   })
@@ -65,6 +62,13 @@ ipcMain
   .on(events.EVENT_APP_OPEN_WINDOW_SETTING, async (e) => {
     showSetting();
   })
+  .on(events.EVENT_APP_OPEN_CONFIG, async (e) => {
+    await openConfigFile();
+  })
+  .on(events.EVENT_APP_OPEN_LOG, async (e) => {
+    await openLog();
+  })
+
   .on(events.EVENT_APP_TOGGLE_MENU, () => {
     toggleMenu();
   })
@@ -80,24 +84,29 @@ ipcMain
     }
   })
   .on(events.EVENT_APP_FAVORITE_DATA_LIST, async (e, params) => {
-    const retData = await db.favorites.list();
-    store.commit('updateFavoritesData', retData);
+    const retData = await db.favorites.listBySort();
+    await store.dispatch('changeFavoriteData', retData);
   })
   .on(events.EVENT_APP_FAVORITE_DATA_ADD, async (e, params) => {
-    const favorite = await db.favorites.create(params);
     const favoritesData = clone(store.state.favoritesData, true);
+    params.sort = favoritesData.length + 1;
+    const favorite = await db.favorites.create(params);
     favoritesData.push(favorite);
-    store.commit('updateFavoritesData', favoritesData);
+    await store.dispatch('changeFavoriteData', favoritesData);
   })
   .on(events.EVENT_APP_FAVORITE_DATA_MOVE, async (e, data) => {
     await addOneClipboardData(data);
   })
   .on(events.EVENT_APP_FAVORITE_DATA_UPDATE, async (e, params) => {
-    e.returnValue = await updateOneClipboardData(params._id, params.data);
+    e.returnValue = await updateFavoriteData(params._id, params.data);
   })
-  .on(events.EVENT_APP_FAVORITE_DATA_REMOVE, async (e, _id) => {
-    await removeFavorite(_id);
-    e.returnValue = await db.clipboardCard.clear(_id);
+  .on(events.EVENT_APP_FAVORITE_DATA_REMOVE, async (e, data) => {
+    const affectedNum = await db.clipboardCard.clear(data._id);
+    await removeFavorite(data);
+    e.returnValue = affectedNum;
+  })
+  .on(events.EVENT_APP_FAVORITE_DATA_SORT, async (e, list) => {
+    await db.favorites.updateSort(list);
   })
   .on(events.EVENT_APP_CLIPBOARD_ICON_LIST, async (e) => {
     await getIconMap();
@@ -191,13 +200,12 @@ export function addOneClipboardData(data) {
   return db.clipboardCard.add(data);
 }
 
-export function updateOneClipboardData(_id, data) {
+export function updateFavoriteData(_id, data) {
   return db.favorites.updateById(_id, data);
 }
 
-export function removeFavorite(_id) {
-  db.clipboardCard.clear(_id).then();
-  return db.favorites.removeOne(_id);
+export function removeFavorite(data) {
+  return db.favorites.removeAndUpdateSort(data);
 }
 
 export function removeOneClipboardData(_id) {

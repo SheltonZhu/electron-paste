@@ -7,6 +7,9 @@ export const EVENT_APP_NOTIFY_RENDERER = 'app.notify.renderer';
 // 由`ipc-renderer`发出 隐藏剪贴板窗口
 export const EVENT_APP_HIDE_WINDOW_CLIPBOARD = 'app.hide.window.clipboard';
 
+// 由`ipc-renderer`发出 隐藏设置窗口
+export const EVENT_APP_HIDE_WINDOW_SETTING = 'app.hide.window.setting';
+
 // 由`ipc-main`发出 打开并跳转到指定的页面
 export const EVENT_APP_SHOW_PAGE = 'app.show.page';
 
@@ -31,8 +34,14 @@ export const EVENT_APP_CLIPBOARD_PASTE = 'app.clipboard.paste';
 // 由`ipc-main`发出 修改快捷键绑定
 export const EVENT_APP_CHANGE_BIND = 'app.change.bind';
 
-// 由`ipc-main`发出 打开设置窗口
+// 由`ipc-main`发出 打开配置文件
 export const EVENT_APP_OPEN_WINDOW_SETTING = 'app.open.window.setting';
+
+// 由`ipc-main`发出 打开日志文件
+export const EVENT_APP_OPEN_LOG = 'app.open.log';
+
+// 由`ipc-main`发出 打开置
+export const EVENT_APP_OPEN_CONFIG = 'app.open.config';
 
 // 由`ipc-renderer`发出 获取剪贴板数据
 export const EVENT_APP_CLIPBOARD_DATA_LIST = 'app.clipboard.data.list';
@@ -66,3 +75,6 @@ export const EVENT_APP_FAVORITE_DATA_UPDATE = 'app.favorite.data.update';
 
 // 由`ipc-renderer`发出 删除收藏栏
 export const EVENT_APP_FAVORITE_DATA_REMOVE = 'app.favorite.data.remove';
+
+// 由`ipc-renderer`发出 收藏栏排序
+export const EVENT_APP_FAVORITE_DATA_SORT = 'app.favorite.data.sort';

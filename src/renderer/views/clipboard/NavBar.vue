@@ -79,16 +79,20 @@
             </transition>
           </el-button>
         </el-tooltip>
+        <draggable v-model="favoritesData" v-bind="dragOptions">
+          <transition-group type="transition" name="flip-list">
+            <favorite-label
+              :is-expand="expand"
+              :favoritesFontColor="favoritesFontColor"
+              :favoritesFontColorSelected="favoritesFontColorSelected"
+              :favoritesBgColorSelected="favoritesBgColorSelected"
+              v-for="favorite in favoritesData"
+              :key="favorite._id"
+              :favorite-data="favorite"
+            />
+          </transition-group>
+        </draggable>
 
-        <favorite-label
-          :is-expand="expand"
-          :favoritesFontColor="favoritesFontColor"
-          :favoritesFontColorSelected="favoritesFontColorSelected"
-          :favoritesBgColorSelected="favoritesBgColorSelected"
-          v-for="favorite in favoritesData"
-          :key="favorite._id"
-          :favorite-data="favorite"
-        />
         <!--    添加新标签输入框    -->
         <div v-if="newFavoriteVisible">
           <el-button
@@ -116,7 +120,7 @@
       <!--   添加标签按钮   -->
       <el-button
         v-if="!expand"
-        class="el-icon-plus add-btn"
+        class="icon-iconfont-add add-btn"
         :style="{ color: favoritesFontColor }"
         @click="clickFavoriteAdder"
       ></el-button>
@@ -132,20 +136,24 @@
           <!--          <el-dropdown-item icon="el-icon-delete" @click.native="clearClipboard"-->
           <!--            >清空剪贴板历史-->
           <!--          </el-dropdown-item>-->
-          <el-dropdown-item icon="el-icon-setting" @click.native="openSetting"
+          <el-dropdown-item
+            icon="icon-iconfont-setting"
+            @click.native="openSetting"
             >设置
           </el-dropdown-item>
           <el-dropdown-item
-            icon="el-icon-info"
+            icon="icon-iconfont-config"
             divided
-            @click.native="openAbout"
-            >关于
-          </el-dropdown-item>
-          <el-dropdown-item icon="el-icon-question" @click.native="openHelp"
-            >帮助
+            @click.native="openConfig"
+            >配置文件
           </el-dropdown-item>
           <el-dropdown-item
-            icon="el-icon-s-promotion"
+            icon="icon-iconfont-log-file"
+            @click.native="openLog"
+            >日志文件
+          </el-dropdown-item>
+          <el-dropdown-item
+            icon="icon-iconfont-exit"
             divided
             @click.native="quitApp"
             >退出
@@ -165,17 +173,22 @@ import {
   listFavoriteData,
   addFavorite,
   listClipboardDataDebounce,
+  openConfig,
+  openLog,
+  sortFavorite,
 } from '../../ipc';
 import { mapActions, mapState } from 'vuex';
 import { debounce } from '../../../shared/utils';
 import { CARD_TYPE, defaultHistoryFavorite } from '../../../shared/env';
 import Mousetrap from 'mousetrap';
+import draggable from 'vuedraggable';
 
 export default {
   name: 'NavBar',
   components: {
     Spot,
     FavoriteLabel,
+    draggable,
   },
   props: {
     favoritesFontColor: {
@@ -211,7 +224,24 @@ export default {
     },
   },
   computed: {
-    ...mapState(['favoritesData', 'query', 'favorite', 'searchType']),
+    ...mapState(['query', 'favorite', 'searchType']),
+    favoritesData: {
+      get() {
+        return this.$store.state.favoritesData;
+      },
+      set(value) {
+        sortFavorite(value);
+        this.$store.dispatch('changeFavoriteData', value);
+      },
+    },
+    dragOptions() {
+      return {
+        animation: 0,
+        group: 'favorites',
+        disabled: this.expand,
+        ghostClass: 'ghost',
+      };
+    },
     isSelected() {
       return this.favorite === defaultHistoryFavorite;
     },
@@ -222,7 +252,7 @@ export default {
       listFavoriteData();
     },
     initShortCut() {
-      Mousetrap.bind('alt+s', () => {
+      Mousetrap.bind('ctrl+f', () => {
         if (!this.expand) {
           this.$refs.searchBtn.$el.click();
         } else {
@@ -293,13 +323,17 @@ export default {
     execSearchDebounce: debounce(function () {
       this.execSearch();
     }, 200),
-    quitApp() {
-      this.$electron.remote.app.quit();
+    openConfig() {
+      openConfig();
     },
-    openAbout() {},
-    openHelp() {},
     openSetting() {
       openSetting();
+    },
+    openLog() {
+      openLog();
+    },
+    quitApp() {
+      this.$electron.remote.app.quit();
     },
   },
 };
@@ -444,5 +478,18 @@ export default {
 .slide-leave-to {
   opacity: 0;
   transform: translateX(-30%);
+}
+
+.flip-list-move {
+  transition: transform 0.5s;
+}
+
+.no-move {
+  transition: transform 0s;
+}
+.ghost {
+  opacity: 0.5;
+  background: #15bbf9;
+  border-radius: 4px;
 }
 </style>

@@ -235,7 +235,7 @@ export default {
   data() {
     return {
       newPicUrl: '',
-      activeColor: '#15bbf9',
+      activeColor: '#4c96d7',
       inactiveColor: '#aaabab',
       predefineBackgroundColors: [
         'rgba(255, 255, 255, 0.72)', // 原版
@@ -262,6 +262,7 @@ export default {
         'rgba(249, 252, 44, 1)',
         'rgba(239, 38, 85, 1)',
         'rgba(202, 38, 239, 1)',
+        'rgb(24, 48, 85)',
       ],
       predefineFavoritesFontColorsSelected: [
         'rgba(255, 255, 255, 1)', // 原版
@@ -473,5 +474,11 @@ export default {
 
 .el-divider__text {
   background-color: #eae9ea !important;
+}
+</style>
+<style>
+.bg-pic img:hover {
+  transform: scale(1.1, 1.1);
+  filter: contrast(130%);
 }
 </style>

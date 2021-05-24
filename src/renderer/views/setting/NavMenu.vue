@@ -13,26 +13,26 @@
       <el-menu-item
         :index="PAGE_PERSONALIZATION.page"
         :route="{ name: PAGE_PERSONALIZATION.name }"
-        ><i class="el-icon-magic-stick" />个性化
+        ><i class="icon-iconfont-gexinghua" /> 个性化
       </el-menu-item>
       <el-menu-item
         :index="PAGE_GENERAL.page"
         :route="{ name: PAGE_GENERAL.name }"
-        ><i class="el-icon-set-up" />通用
+        ><i class="icon-iconfont-tongyong" /> 通用
       </el-menu-item>
       <el-menu-item
         :index="PAGE_SHORTCUT.page"
         :route="{ name: PAGE_SHORTCUT.name }"
-        ><i class="el-icon-position" />快捷键
+        ><i class="icon-iconfont-shortcut" /> 快捷键
       </el-menu-item>
       <el-menu-item :index="PAGE_RULES.page" :route="{ name: PAGE_RULES.name }"
-        ><i class="el-icon-s-marketing" />规则
+        ><i class="icon-iconfont-regex" /> 规则
       </el-menu-item>
       <!--      <el-menu-item index="5" :route="{ name: 'about' }"
         ><i class="el-icon-upload" />同步</el-menu-item
       >-->
       <el-menu-item :index="PAGE_ABOUT.page" :route="{ name: PAGE_ABOUT.name }"
-        ><i class="el-icon-info" />关于
+        ><i class="icon-iconfont-about" /> 关于
       </el-menu-item>
     </el-menu>
   </div>

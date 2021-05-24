@@ -1,0 +1,46 @@
+.shaking1,
+.shaking2,
+.shaking3 {
+  margin: 2px 0;
+  transform-origin: center;
+  animation: shake-rotate 0.4s infinite;
+}
+
+.shaking2 {
+  animation-delay: 0.1s;
+}
+
+.shaking3 {
+  animation-delay: 0.2s;
+}
+
+@keyframes shake-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  12.5% {
+    transform: rotate(0.5deg);
+  }
+  25% {
+    -webkit-transform: rotate(1.2deg);
+  }
+  37.5% {
+    transform: rotate(0.5deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  62.5% {
+    transform: rotate(-0.5deg);
+  }
+  75% {
+    transform: rotate(-1.2deg);
+  }
+  87.5% {
+    transform: rotate(-0.5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}

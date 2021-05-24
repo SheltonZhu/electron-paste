@@ -105,6 +105,16 @@ body {
   display: none; /* Chrome Safari */
 }
 
+/* 引入图标 */
+[class^='icon-iconfont'],
+[class*=' icon-iconfont'] {
+  font-family: 'iconfont' !important;
+  font-size: 18px !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .bg {
   height: 450px;
   background-size: cover;

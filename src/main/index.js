@@ -20,7 +20,6 @@ import {
 import { clearShortcuts } from './shortcut';
 import { isProd, isWin, isMac } from '../shared/env';
 import { isQuiting, appConfig$ } from './data';
-import { showNotification } from './notification';
 import logger from './logger';
 
 const isPrimaryInstance = app.requestSingleInstanceLock();
@@ -38,7 +37,7 @@ if (!isPrimaryInstance) {
     // 如果是通过链接打开的应用，则添加记录
     if (argv) {
       logger.info('paste://, arg: ', argv);
-      showNotification(argv[1], '浏览器打开');
+      // showNotification(argv[1], '浏览器打开');
     }
   });
 

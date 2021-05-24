@@ -3,6 +3,8 @@
 [English](README.md)
 
 ![](https://img.shields.io/github/languages/top/SheltonZhu/electron-paste.svg?style=flat)
+![](https://img.shields.io/github/license/SheltonZhu/electron-paste)
+![](https://img.shields.io/github/v/release/SheltonZhu/electron-paste)
 ![](https://img.shields.io/github/stars/SheltonZhu/electron-paste.svg?style=social)
 
 这是一个使用[Electron](https://www.electronjs.org/) 和 [Vue.js](https://vuejs.org/)

@@ -148,7 +148,7 @@ export default {
   data() {
     return {
       // switch color
-      activeColor: '#15bbf9',
+      activeColor: '#4c96d7',
       inactiveColor: '#aaabab',
     };
   },

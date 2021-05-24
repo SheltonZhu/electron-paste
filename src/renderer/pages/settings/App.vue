@@ -15,22 +15,39 @@
 import TitleBar from '../../components/TitleBar';
 import NavMenu from '../../views/setting/NavMenu';
 import Personalization from '../../views/setting/Personalization';
-import { getInitConfig } from '../../ipc';
-
+import { getInitConfig, hideSetting } from '../../ipc';
+import Mousetrap from 'mousetrap';
 export default {
   components: { TitleBar, NavMenu, Personalization },
   mounted() {
     // 启动应用时获取初始化数据
     getInitConfig();
+    this.initShortcut();
   },
   data() {
     return {};
   },
   computed: {},
-  methods: {},
+  methods: {
+    initShortcut() {
+      Mousetrap.bind('esc', () => {
+        hideSetting();
+      });
+    },
+  },
 };
 </script>
 <style>
+/* 引入图标 */
+[class^='icon-iconfont'],
+[class*=' icon-iconfont'] {
+  font-family: 'iconfont' !important;
+  font-size: 18px !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
   margin: 0 auto;
   background: #eae9ea;

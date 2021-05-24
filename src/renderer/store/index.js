@@ -26,8 +26,9 @@ export default new Vuex.Store({
     query: '',
     clipboardData: [],
     favoritesData: [],
-    dragData: {},
+    dragData: null,
     iconMap: {},
+    isRenaming: false,
   },
   mutations: {
     // 更新应用配置
@@ -85,6 +86,9 @@ export default new Vuex.Store({
     updateIconMap(state, map) {
       state.iconMap = map;
     },
+    updateRename(state, stat) {
+      state.isRenaming = stat;
+    },
   },
   actions: {
     initConfig({ commit }, { config, meta }) {
@@ -125,6 +129,12 @@ export default new Vuex.Store({
     },
     changeIconMap({ commit }, map) {
       commit('updateIconMap', map);
+    },
+    changeRenaming({ commit }, stat) {
+      commit('updateRename', stat);
+    },
+    changeFavoriteData({ commit }, data) {
+      commit('updateFavoritesData', data);
     },
   },
   plugins: [createSharedMutations()],

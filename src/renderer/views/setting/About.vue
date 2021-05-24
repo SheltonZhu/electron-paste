@@ -1,31 +1,28 @@
 <template>
   <div class="about">
+    <github-corner :href="homepage" class="github-corner" />
+
     <div style="text-align: center">
       <el-row
         class="row"
-        style="display: flex; align-items: center; margin: 15px 110px"
+        style="display: flex; align-items: center; margin: 15px 100px"
       >
         <external-link :href="homepage">
-          <el-image
-            src="../static/icon.png"
-            fit="center"
-            style="
-              width: 100px;
-              height: 100px;
-              margin: 0 20px 10px 100px;
-              cursor: pointer;
-            "
+          <pan-thumb
+            image="../static/icon.png"
+            width="100px"
+            height="100px"
+            style="margin: 0 20px 10px 100px; box-shadow: none"
           >
-            <div slot="error" class="image-slot">
-              <i class="el-icon-picture-outline"></i>
-            </div>
-          </el-image>
+            <p><a>Great!</a></p>
+          </pan-thumb>
         </external-link>
-
-        <div style="font-size: 30px; font-weight: bold">
-          {{ formattedAppName }}
+        <div style="font-size: 32px; font-weight: bold">
+          <mallki :text="formattedAppName"></mallki>
         </div>
-        <div style="margin: 10px 0 0 10px">v{{ meta.version }}</div>
+        <div style="margin: 10px 0 0 10px">
+          <mallki :text="'v' + meta.version"></mallki>
+        </div>
         <el-badge
           v-if="hasUpdate"
           @click.native="downloadNewVersion"
@@ -66,10 +63,12 @@
 import { mapState } from 'vuex';
 import pkg from '../../../../package.json';
 import ExternalLink from '../../components/ExternalLink';
-
+import GithubCorner from '../../components/GithubCorner';
+import Mallki from '../../components/Mallki';
+import PanThumb from '../../components/PanThumb';
 export default {
   name: 'About',
-  components: { ExternalLink },
+  components: { Mallki, ExternalLink, GithubCorner, PanThumb },
   data() {
     return {
       hasUpdate: false,
@@ -106,6 +105,14 @@ export default {
 </script>
 
 <style scoped>
+.github-corner {
+  position: absolute;
+  bottom: 0;
+  border: 0;
+  right: 0;
+  transform: rotate(90deg);
+}
+
 .row {
   padding: 10px 5px;
 }
