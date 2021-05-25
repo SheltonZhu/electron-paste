@@ -31,7 +31,7 @@ export function createWindow() {
     alwaysOnTop: true,
     resizable: false,
     movable: false,
-    fullscreenable: false,
+    // fullscreenable: false,
     minimizable: false,
     closable: false,
     autoHideMenuBar: true,

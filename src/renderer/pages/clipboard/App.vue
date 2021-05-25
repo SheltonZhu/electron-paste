@@ -101,9 +101,9 @@ body {
   margin: 0 auto;
 }
 
-::-webkit-scrollbar {
-  display: none; /* Chrome Safari */
-}
+/*::-webkit-scrollbar {*/
+/*  display: none; !* Chrome Safari *!*/
+/*}*/
 
 /* 引入图标 */
 [class^='icon-iconfont'],
@@ -114,7 +114,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+#app {
+  overflow-y: hidden;
+}
 .bg {
   height: 450px;
   background-size: cover;

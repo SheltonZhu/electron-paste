@@ -1,5 +1,5 @@
 <template>
-  <div class="clipboard-panel" @wheel.prevent="onMouseWheel" ref="clipboard">
+  <div class="clipboard-panel" @wheel="onMouseWheel" ref="clipboard">
     <clipboard-card
       v-for="(card, index) in clipboardData"
       :key="card._id"
@@ -45,6 +45,7 @@ export default {
       'query',
       'clipboardData',
       'isSearching',
+      'fullscreen',
     ]),
     isEmpty() {
       return this.clipboardData.length === 0;
@@ -66,8 +67,9 @@ export default {
       }
     },
     onMouseWheel(e) {
-      e.preventDefault();
-      this.$refs.clipboard.scrollLeft += parseInt(e.deltaY);
+      if (!this.fullscreen) {
+        this.$refs.clipboard.scrollLeft += parseInt(e.deltaY);
+      }
     },
     focusFirst() {
       try {
@@ -83,9 +85,8 @@ export default {
 </script>
 <style scoped>
 .clipboard-panel {
-  overflow-x: scroll;
-  overflow-y: hidden;
   white-space: nowrap;
   outline: none;
+  overflow-x: hidden;
 }
 </style>

@@ -11017,6 +11017,11 @@ vue-electron@^1.0.6:
   resolved "https://registry.npm.taobao.org/vue-electron/download/vue-electron-1.0.6.tgz#e798e03180b8933539defe31f92e53b9242b9406"
   integrity sha1-55jgMYC4kzU53v4x+S5TuSQrlAY=
 
+vue-fullscreen@^2.3.5:
+  version "2.3.5"
+  resolved "https://registry.npm.taobao.org/vue-fullscreen/download/vue-fullscreen-2.3.5.tgz#7593a39966ba21c8b5f562b39ce6d5b99d1d45bc"
+  integrity sha1-dZOjmWa6Ici19WKznObVuZ0dRbw=
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.npm.taobao.org/vue-hot-reload-api/download/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"

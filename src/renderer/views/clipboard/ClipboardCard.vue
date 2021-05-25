@@ -62,7 +62,7 @@
       </div>
     </div>
     <div class="card-text" :style="{ color: appConfig.cardFontColor }">
-      <div v-if="isText">
+      <div v-if="isText" class="card-content">
         <span
           v-if="data.html"
           v-html="data.html"
@@ -90,7 +90,7 @@
         {{ data.text }}
       </el-link>
       <el-image
-        class="card-image"
+        class="card-image card-content"
         style="width: 330px"
         v-if="isImage"
         :src="data.base64data"
@@ -121,36 +121,36 @@
   </el-card>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
-import { CARD_TYPE } from '../../../shared/env'
+import { mapActions, mapState } from 'vuex';
+import { CARD_TYPE } from '../../../shared/env';
 import {
   hideAndPaste,
   hideClipboard,
   renameClipboardData,
   removeClipboardData,
   move2Favorite,
-  listClipboardData
-} from '../../ipc'
-import { dataURLtoBlob } from '../../../shared/utils'
-import ContextMenu from '../../components/ContextMenu'
-import { isLinux } from '../../../shared/env'
-
+  listClipboardData,
+} from '../../ipc';
+import { dataURLtoBlob } from '../../../shared/utils';
+import ContextMenu from '../../components/ContextMenu';
+import { isLinux } from '../../../shared/env';
+// import { unBind, bind } from '../../shortcut';
 export default {
   name: 'ClipboardCard',
   props: {
     data: {
       type: Object,
-      default: null
+      default: null,
     },
     index: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   components: { ContextMenu },
   data: () => {
     return {
-      defaultIcon: '../static/icon.png'
-    }
+      defaultIcon: '../static/icon.png',
+    };
   },
   computed: {
     ...mapState([
@@ -158,22 +158,23 @@ export default {
       'favoritesData',
       'favorite',
       'iconMap',
-      'isRenaming'
+      'isRenaming',
+      'fullscreen',
     ]),
-    shortcut () {
-      if (this.index < 9) return `Alt+${this.index + 1}`
-      return ''
+    shortcut() {
+      if (this.index < 9) return `Alt+${this.index + 1}`;
+      return '';
     },
-    isText () {
-      return this.data.cardType === CARD_TYPE.TEXT
+    isText() {
+      return this.data.cardType === CARD_TYPE.TEXT;
     },
-    isImage () {
-      return this.data.cardType === CARD_TYPE.IMAGE
+    isImage() {
+      return this.data.cardType === CARD_TYPE.IMAGE;
     },
-    isLink () {
-      return this.data.cardType === CARD_TYPE.LINK
+    isLink() {
+      return this.data.cardType === CARD_TYPE.LINK;
     },
-    cardHeaderColor () {
+    cardHeaderColor() {
       switch (true) {
         case this.isText:
           return this.appConfig.cardHeaderBgColorText;
@@ -189,31 +190,31 @@ export default {
       // const idx = this.index % colors.length
       // return colors[idx]
     },
-    metaInfo () {
+    metaInfo() {
       switch (true) {
         case this.isText:
-          return `${this.data.meta.charLength} 个字符`
+          return `${this.data.meta.charLength} 个字符`;
         case this.isImage:
-          return `${this.data.meta.size.width} ✖ ${this.data.meta.size.height} 个像素`
+          return `${this.data.meta.size.width} ✖ ${this.data.meta.size.height} 个像素`;
         default:
-          return ''
+          return '';
       }
     },
-    iconUrl () {
-      return this.iconMap[this.data.icon] || this.defaultIcon
+    iconUrl() {
+      return this.iconMap[this.data.icon] || this.defaultIcon;
     },
-    contextMenu () {
+    contextMenu() {
       return [
         {
           text: '复制',
           icon: 'el-icon-document-copy',
-          onClick: this.copyAndHide
+          onClick: this.copyAndHide,
         },
         {
           text: '粘贴',
           icon: 'el-icon-document-add',
           hidden: !this.appConfig.directPaste,
-          onClick: this.pasteAndHide
+          onClick: this.pasteAndHide,
         },
         {
           text: '粘贴纯文本',
@@ -222,41 +223,42 @@ export default {
             !this.isText ||
             this.appConfig.textMode ||
             !this.appConfig.directPaste,
-          onClick: this.pasteTextAndHide
+          onClick: this.pasteTextAndHide,
         },
         {
           text: '重命名',
           icon: 'el-icon-edit',
-          onClick: this.rename
+          onClick: this.rename,
         },
 
         {
           text: '删除',
           icon: 'el-icon-delete',
           divided: true,
-          onClick: this.deleteOneData
+          onClick: this.deleteOneData,
         },
         {
           text: '打开链接',
           icon: 'el-icon-link',
           onClick: this.openLink,
-          hidden: !this.isLink
+          hidden: !this.isLink,
+        },
+        {
+          text: '快速查看',
+          icon: 'el-icon-view',
+          hidden: this.isLink,
+          onClick: this.togglePreview,
         },
         {
           text: '保存图片',
           icon: 'el-icon-picture-outline',
           onClick: this.contextMenuSaveImage,
-          hidden: !this.isImage || isLinux
-        },
-        {
-          text: '快速查看（TODO）',
-          icon: 'el-icon-view',
-          hidden: true
+          hidden: !this.isImage || isLinux,
         },
         {
           text: '添加到收藏',
           icon: 'el-icon-star-off',
-          children: this.favoriteChildren
+          children: this.favoriteChildren,
         },
         {
           text: '谷歌翻译',
@@ -269,8 +271,8 @@ export default {
               onClick: () => {
                 this.googleTranslate(
                   'https://translate.google.cn/?sl=auto&tl=zh-CN&text='
-                )
-              }
+                );
+              },
             },
             {
               text: '日语',
@@ -278,8 +280,8 @@ export default {
               onClick: () => {
                 this.googleTranslate(
                   'https://translate.google.cn/?sl=auto&tl=ja&text='
-                )
-              }
+                );
+              },
             },
             {
               text: '汉语',
@@ -287,8 +289,8 @@ export default {
               onClick: () => {
                 this.googleTranslate(
                   'https://translate.google.cn/?sl=auto&tl=zh-CN&text='
-                )
-              }
+                );
+              },
             },
             {
               text: '汉语',
@@ -296,10 +298,10 @@ export default {
               onClick: () => {
                 this.googleTranslate(
                   'https://translate.google.cn/?sl=auto&tl=zh-TW&text='
-                )
-              }
-            }
-          ]
+                );
+              },
+            },
+          ],
         },
         {
           text: '分享',
@@ -308,169 +310,168 @@ export default {
             {
               text: '邮件',
               icon: 'el-icon-message',
-              onClick: this.share2email
+              onClick: this.share2email,
             },
             {
               text: 'Twitter',
               icon: 'icon-iconfont-twitter',
-              onClick: this.share2twitter
-            }
-          ]
-        }
-      ]
+              onClick: this.share2twitter,
+            },
+          ],
+        },
+      ];
     },
-    favoriteChildren () {
-      const children = []
+    favoriteChildren() {
+      const children = [];
       for (const favorite of this.favoritesData) {
         if (favorite._id !== this.favorite) {
           children.push({
             text: favorite.name,
             icon: 'el-icon-collection-tag',
             onClick: () => {
-              this.add2favorite(favorite._id)
-            }
-          })
+              this.add2favorite(favorite._id);
+            },
+          });
         }
       }
-      return children
-    }
+      return children;
+    },
   },
-  mounted () {
-  },
+  mounted() {},
   methods: {
-    ...mapActions(['saveDragData']),
-    mountContextMenu (e, root, tag) {
-      e.stopPropagation()
-      e.preventDefault()
+    ...mapActions(['saveDragData', 'changeFullscreen']),
+    fullscreenChange(fullscreen) {
+      this.changeFullscreen(fullscreen).then(() => {
+        const shortcut = this.appConfig.windowShortcuts.hideClipboard;
+        if (this.fullscreen) {
+          unBind(shortcut.key);
+        } else {
+          bind('hideClipboard', shortcut.key);
+        }
+      });
+    },
+    togglePreview() {
+      this.$fullscreen.toggle(this.$el.querySelector('.card-content'), {
+        wrap: true,
+        fullscreenClass: 'fullscreen',
+        callback: this.fullscreenChange,
+      });
+    },
+    mountContextMenu(e, root, tag) {
+      e.stopPropagation();
+      e.preventDefault();
       root.$emit('easyAxis', {
         tag: tag,
         x: e.clientX,
-        y: e.clientY
-      })
+        y: e.clientY,
+      });
     },
-    onDragStart () {
-      this.saveDragData(this.data)
+    onDragStart() {
+      this.saveDragData(this.data);
     },
-    onDragEnd () {
-      this.saveDragData(null)
+    onDragEnd() {
+      this.saveDragData(null);
     },
-    select (direction, e) {
+    select(direction, e) {
       try {
         if (direction === 'right') {
-          e.target.nextElementSibling.focus()
+          e.target.nextElementSibling.focus();
         } else {
-          e.target.previousElementSibling.focus()
+          e.target.previousElementSibling.focus();
         }
       } catch (e) {
-        e.toString()
+        e.toString();
       }
     },
-    cardOnEnter () {
-      if (!this.isRenaming) this.pasteAndHide()
+    cardOnEnter() {
+      if (!this.isRenaming) this.pasteAndHide();
     },
-    cardOnDblClick () {
-      this.pasteAndHide()
+    cardOnDblClick() {
+      this.pasteAndHide();
     },
-    copyAndHide () {
+    copyAndHide() {
       hideAndPaste({
-        data: this.data
-      })
+        data: this.data,
+      });
     },
-    pasteTextAndHide () {
+    pasteTextAndHide() {
       hideAndPaste({
         data: this.data,
         textMode: true,
-        directPaste: this.appConfig.directPaste
-      })
+        directPaste: this.appConfig.directPaste,
+      });
     },
-    pasteAndHide (timeout) {
+    pasteAndHide(timeout) {
       hideAndPaste({
         data: this.data,
         directPaste: this.appConfig.directPaste,
-        timeout
-      })
+        timeout,
+      });
     },
-    openLink () {
-      hideClipboard()
-      this.execShellOpenLink(this.data.text)
+    openLink() {
+      hideClipboard();
+      this.execShellOpenLink(this.data.text);
     },
-    share2twitter () {
-      this.execShellOpenLink('https://twitter.com/compose/tweet')
-      this.pasteAndHide(2500)
+    share2twitter() {
+      this.execShellOpenLink('https://twitter.com/compose/tweet');
+      this.pasteAndHide(2500);
     },
-    share2email () {
-      this.execShellOpenLink('mailto: somebody@somewhere.io')
-      this.pasteAndHide()
+    share2email() {
+      this.execShellOpenLink('mailto: somebody@somewhere.io');
+      this.pasteAndHide();
     },
-    execShellOpenLink (link) {
-      this.$electron.shell.openExternal(link)
+    execShellOpenLink(link) {
+      this.$electron.shell.openExternal(link);
     },
-    deleteOneData () {
-      removeClipboardData(this.data._id)
-      listClipboardData()
+    deleteOneData() {
+      removeClipboardData(this.data._id);
+      listClipboardData();
     },
-    rename () {
+    rename() {
       this.$store.dispatch('changeRenaming', true).then(async () => {
         try {
           const ret = await this.$prompt(this.data.name, '重命名', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            inputPlaceholder: '输入新名称'
-          })
-          renameClipboardData(this.data._id, ret.value)
-          listClipboardData()
+            inputPlaceholder: '输入新名称',
+          });
+          renameClipboardData(this.data._id, ret.value);
+          listClipboardData();
         } catch (e) {
         } finally {
           setTimeout(() => {
-            this.$store.dispatch('changeRenaming', false)
-          }, 200)
+            this.$store.dispatch('changeRenaming', false);
+          }, 200);
         }
-      })
-
-      // this.$prompt(this.data.name, '重命名', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   inputPlaceholder: '输入新名称'
-      // })
-      //   .then(async ({ value }) => {
-      //     renameClipboardData(this.data._id, value)
-      //     listClipboardData()
-      //   })
-      //   .catch(() => {
-      //   })
-      //   .finally(() => {
-      //     setTimeout(() => {
-      //       this.$store.dispatch('updateRename', false)
-      //     }, 5000)
-      //   })
+      });
     },
-    contextMenuSaveImage () {
-      const blob = dataURLtoBlob(this.data.base64data)
-      const type = blob.type.split('/')[1]
-      const reader = new FileReader()
-      reader.readAsDataURL(blob)
+    contextMenuSaveImage() {
+      const blob = dataURLtoBlob(this.data.base64data);
+      const type = blob.type.split('/')[1];
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
       reader.onload = (e) => {
-        const link = document.createElement('a')
-        link.download = `${this.data._id}.${type}`
-        link.href = e.target.result
-        link.style.display = 'none'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      }
+        const link = document.createElement('a');
+        link.download = `${this.data._id}.${type}`;
+        link.href = e.target.result;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
     },
-    add2favorite (_id) {
-      const newData = Object.assign({}, this.data)
-      newData.favorite = _id
-      delete newData._id
-      move2Favorite(newData)
+    add2favorite(_id) {
+      const newData = Object.assign({}, this.data);
+      newData.favorite = _id;
+      delete newData._id;
+      move2Favorite(newData);
     },
-    googleTranslate (url) {
-      hideClipboard()
-      this.execShellOpenLink(`${url}${this.data.text}`)
-    }
-  }
-}
+    googleTranslate(url) {
+      hideClipboard();
+      this.execShellOpenLink(`${url}${this.data.text}`);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -619,8 +620,16 @@ export default {
   box-shadow: none !important;
 }
 
-.el-card__header .clearfix{
+.el-card__header .clearfix {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+}
+
+.fullscreen {
+  padding: 0 10%;
+  pointer-events: none;
+  background: rgba(255, 0, 0, 0) !important;
+  width: auto !important;
+  display: block !important;
 }
 </style>

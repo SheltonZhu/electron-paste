@@ -29,6 +29,7 @@ export default new Vuex.Store({
     dragData: null,
     iconMap: {},
     isRenaming: false,
+    fullscreen: false,
   },
   mutations: {
     // 更新应用配置
@@ -89,6 +90,9 @@ export default new Vuex.Store({
     updateRename(state, stat) {
       state.isRenaming = stat;
     },
+    updateFullscreen(state, stat) {
+      state.fullscreen = stat;
+    },
   },
   actions: {
     initConfig({ commit }, { config, meta }) {
@@ -135,6 +139,12 @@ export default new Vuex.Store({
     },
     changeFavoriteData({ commit }, data) {
       commit('updateFavoritesData', data);
+    },
+    changeFullscreen({ commit }, stat) {
+      return new Promise((resolve, reject) => {
+        commit('updateFullscreen', stat);
+        resolve();
+      });
     },
   },
   plugins: [createSharedMutations()],
