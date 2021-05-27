@@ -489,7 +489,7 @@ export default {
 }
 .ghost {
   opacity: 0.5;
-  background: #15bbf9;
+  background: #15bbf900;
   border-radius: 4px;
 }
 </style>

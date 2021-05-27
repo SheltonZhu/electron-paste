@@ -112,12 +112,34 @@
       </div>
     </div>
 
+    <!--  右键菜单  -->
     <context-menu
       :list="contextMenu"
       :tag="index"
       :arrow="true"
       :itemWidth="200"
     ></context-menu>
+
+    <el-dialog
+      title="编辑内容"
+      :visible.sync="editable"
+      width="30%"
+      :modal-append-to-body="false"
+      :fullscreen="true"
+      :append-to-body="true"
+      :close-on-press-escape="true"
+      custom-class="rtf-editor"
+      :destroy-on-close="true"
+      center
+    >
+      <editor ref="quill" :data="data"></editor>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="editable = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="updateContent"
+          >提 交</el-button
+        >
+      </span>
+    </el-dialog>
   </el-card>
 </template>
 <script>
@@ -130,11 +152,14 @@ import {
   removeClipboardData,
   move2Favorite,
   listClipboardData,
+  editClipboardData,
 } from '../../ipc';
 import { dataURLtoBlob } from '../../../shared/utils';
 import ContextMenu from '../../components/ContextMenu';
+import Editor from '../../components/Editor';
 import { isLinux } from '../../../shared/env';
-// import { unBind, bind } from '../../shortcut';
+import { unBind, bind } from '../../shortcut';
+
 export default {
   name: 'ClipboardCard',
   props: {
@@ -146,11 +171,22 @@ export default {
       type: Number,
     },
   },
-  components: { ContextMenu },
+  components: { ContextMenu, Editor },
   data: () => {
     return {
       defaultIcon: '../static/icon.png',
+      editable: false,
     };
+  },
+  watch: {
+    editable(stat) {
+      const shortcut = this.appConfig.windowShortcuts.hideClipboard;
+      if (stat) {
+        unBind(shortcut.key);
+      } else {
+        bind('hideClipboard', shortcut.key);
+      }
+    },
   },
   computed: {
     ...mapState([
@@ -230,7 +266,14 @@ export default {
           icon: 'el-icon-edit',
           onClick: this.rename,
         },
-
+        {
+          text: '编辑',
+          icon: 'el-icon-edit-outline',
+          hidden: !this.isText,
+          onClick: () => {
+            this.editable = true;
+          },
+        },
         {
           text: '删除',
           icon: 'el-icon-delete',
@@ -246,7 +289,7 @@ export default {
         {
           text: '快速查看',
           icon: 'el-icon-view',
-          hidden: this.isLink,
+          hidden: this.isLink || isLinux,
           onClick: this.togglePreview,
         },
         {
@@ -337,7 +380,6 @@ export default {
       return children;
     },
   },
-  mounted() {},
   methods: {
     ...mapActions(['saveDragData', 'changeFullscreen']),
     fullscreenChange(fullscreen) {
@@ -444,6 +486,12 @@ export default {
           }, 200);
         }
       });
+    },
+    updateContent() {
+      this.editable = false;
+      const data = this.$refs.quill.returnData();
+      editClipboardData(data);
+      listClipboardData();
     },
     contextMenuSaveImage() {
       const blob = dataURLtoBlob(this.data.base64data);
@@ -599,6 +647,10 @@ export default {
 .box-card {
   border-radius: 10px !important;
 }
+.el-dialog.is-fullscreen {
+  background-color: #ffffffbf !important;
+  backdrop-filter: saturate(180%) blur(5px) !important;
+}
 
 .el-message-box input {
   background-color: #ffffffbf !important;
@@ -631,5 +683,9 @@ export default {
   background: rgba(255, 0, 0, 0) !important;
   width: auto !important;
   display: block !important;
+}
+pre.ql-syntax {
+  background-color: #23241f;
+  color: #f8f8f2;
 }
 </style>

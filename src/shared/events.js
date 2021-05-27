@@ -52,8 +52,11 @@ export const EVENT_APP_CLIPBOARD_DATA_CLEAR = 'app.clipboard.data.clear';
 // 由`ipc-renderer`发出 删除一条剪贴板数据
 export const EVENT_APP_CLIPBOARD_DATA_REMOVE = 'app.clipboard.data.remove';
 
-// 由`ipc-renderer`发出 清除剪贴板数据
+// 由`ipc-renderer`发出 修改名称
 export const EVENT_APP_CLIPBOARD_DATA_RENAME = 'app.clipboard.data.rename';
+
+// 由`ipc-renderer`发出 修改内容
+export const EVENT_APP_CLIPBOARD_DATA_EDIT = 'app.clipboard.data.edit';
 
 // 由`ipc-renderer`发出 获取icon数据
 export const EVENT_APP_CLIPBOARD_ICON_LIST = 'app.clipboard.icon.list';

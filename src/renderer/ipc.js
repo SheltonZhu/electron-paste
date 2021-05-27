@@ -122,6 +122,13 @@ export function removeClipboardData(_id) {
 }
 
 /**
+ * 修改内容
+ * */
+export function editClipboardData(data) {
+  return ipcRenderer.send(events.EVENT_APP_CLIPBOARD_DATA_EDIT, data);
+}
+
+/**
  * 修改一条记录名字
  * */
 export function renameClipboardData(_id, name) {
