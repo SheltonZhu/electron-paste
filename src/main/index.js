@@ -9,7 +9,7 @@ import {
   createWindow as createClipboard,
   getWindow as getClipboard,
   destroyWindow as destroyClipboard,
-  reCreateWindow,
+  resizeWindow,
   showWindow as showClipboard,
 } from './window-clipboard';
 import {
@@ -118,16 +118,16 @@ if (!isPrimaryInstance) {
     // 监听屏幕变化
     screen.on('display-metrics-changed', async () => {
       logger.debug('[screen]: display-changed');
-      reCreateWindow();
+      resizeWindow();
     });
 
     screen.on('display-removed', () => {
-      reCreateWindow();
+      resizeWindow();
       logger.debug('[screen]: display-removed');
     });
 
     screen.on('display-added', () => {
-      reCreateWindow();
+      resizeWindow();
       logger.debug('[screen]: display-added');
     });
 

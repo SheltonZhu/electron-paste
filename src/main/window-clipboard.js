@@ -19,12 +19,8 @@ export function createWindow() {
   if (process.platform === 'darwin') {
     app.dock.hide();
   }
-  const display = screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
-    width: display.width,
-    height: 450,
-    x: 0,
-    y: isLinux ? display.height : display.height - 450,
+    ...getBounds(),
     backgroundColor: '#00000000',
     transparent: true,
     frame: false,
@@ -103,8 +99,28 @@ export function showWindow() {
   }
 
   if (mainWindow) {
+    mainWindow.setBounds(getBounds());
     mainWindow.show();
+    mainWindow.setBounds(getBounds());
   }
+}
+
+/**
+ * 返回鼠标所在显示器的剪贴板应该所在的 rectangle
+ */
+export function getBounds() {
+  const point = screen.getCursorScreenPoint();
+  const display = screen.getDisplayNearestPoint(point);
+  const workAreaSize = display.workAreaSize;
+  return {
+    x: display.bounds.x,
+    y: isLinux
+      ? display.bounds.y + display.bounds.height
+      : // : display.bounds.y + display.bounds.height - 450,
+        display.bounds.y + workAreaSize.height - 450,
+    width: display.bounds.width,
+    height: 450,
+  };
 }
 
 /**
@@ -141,6 +157,15 @@ export function destroyWindow() {
   if (mainWindow) {
     mainWindow.destroy();
     mainWindow = null;
+  }
+}
+
+/**
+ * 更新窗口位置大小
+ */
+export function resizeWindow() {
+  if (mainWindow) {
+    mainWindow.setBounds(getBounds());
   }
 }
 
