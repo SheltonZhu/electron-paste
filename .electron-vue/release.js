@@ -82,10 +82,7 @@ function release() {
           target: [
             {
               target: 'nsis',
-              arch: [
-                "ia32",
-                'x64',
-              ],
+              arch: ['ia32', 'x64'],
             },
           ],
         },

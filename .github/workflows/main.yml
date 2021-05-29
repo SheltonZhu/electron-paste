@@ -71,13 +71,12 @@ jobs:
           GH_TOKEN: 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
 
       # step6: cleanup artifacts in build
-      - name: cleanup artifacts
+      - name: cleanup artifacts for windows
         if: matrix.os == 'windows-2016'
         run: |
-          npx rimraf "build/builder-effective-config.yaml build/icons"
-          # npx rimraf "build/!(*.exe*)"
+          npx rimraf "build/builder-effective-config.yaml build/icons build/win-*unpacked"
 
-      - name: cleanup artifacts
+      - name: cleanup artifacts for linux
         if: matrix.os == 'ubuntu-20.04'
         run: |
           npx rimraf "build/!(*.AppImage|*.deb|*.tar.gz|*.rpm)"
