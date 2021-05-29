@@ -309,7 +309,7 @@ export default {
           hidden: !this.isText,
           children: [
             {
-              text: '英语',
+              text: '英文',
               icon: 'icon-iconfont-en',
               onClick: () => {
                 this.googleTranslate(
@@ -318,7 +318,7 @@ export default {
               },
             },
             {
-              text: '日语',
+              text: '日文',
               icon: 'icon-iconfont-jp',
               onClick: () => {
                 this.googleTranslate(
@@ -327,8 +327,8 @@ export default {
               },
             },
             {
-              text: '汉语',
-              icon: 'icon-iconfont-jianti',
+              text: '中文',
+              icon: 'icon-iconfont-simple',
               onClick: () => {
                 this.googleTranslate(
                   'https://translate.google.cn/?sl=auto&tl=zh-CN&text='
@@ -336,12 +336,40 @@ export default {
               },
             },
             {
-              text: '汉语',
-              icon: 'icon-iconfont-fanti',
+              text: '中文',
+              icon: 'icon-iconfont-traditional',
               onClick: () => {
                 this.googleTranslate(
                   'https://translate.google.cn/?sl=auto&tl=zh-TW&text='
                 );
+              },
+            },
+          ],
+        },
+        {
+          text: 'Deepl翻译',
+          icon: 'icon-iconfont-deepl',
+          hidden: !this.isText,
+          children: [
+            {
+              text: '英文',
+              icon: 'icon-iconfont-en',
+              onClick: () => {
+                this.googleTranslate('https://www.deepl.com/translator#zh/ja/');
+              },
+            },
+            {
+              text: '日文',
+              icon: 'icon-iconfont-jp',
+              onClick: () => {
+                this.googleTranslate('https://www.deepl.com/translator#zh/ja/');
+              },
+            },
+            {
+              text: '中文',
+              icon: 'icon-iconfont-cn',
+              onClick: () => {
+                this.googleTranslate('https://www.deepl.com/translator#en/zh/');
               },
             },
           ],
