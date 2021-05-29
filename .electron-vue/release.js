@@ -83,7 +83,7 @@ function release() {
             {
               target: 'nsis',
               arch: [
-                // "ia32",
+                "ia32",
                 'x64',
               ],
             },
@@ -105,7 +105,7 @@ function release() {
           icon: 'build/icons',
           category: 'Utility',
           synopsis: pkg.description,
-          target: ['deb', 'rpm', 'tar.gz', 'pacman', 'appImage'],
+          target: ['deb', 'rpm', 'tar.gz', 'appImage'],
           desktop: {
             Name: 'electron-paste',
             Encoding: 'UTF-8',

@@ -5,6 +5,10 @@ name: Build Electron Paste For Win/Linux
 # Workflow's trigger
 on:
   push:
+    # Sequence of patterns matched against refs/heads
+#    branches:
+      # Push events on main branch
+#      - main
     tags:
       - v*.*.*
 
@@ -21,26 +25,39 @@ jobs:
     # create a build matrix for jobs
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-20.04]
+        os: [windows-2016, ubuntu-20.04]
 
     # create steps
     steps:
       # step1: check out repository
       - name: Check out git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
 
       # step2: install node env
       - name: Install Node.js
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@master
+        with:
+          node-version: 14
 
-      # step3: npm install
+      # step3: npm install build tools
+      - name: npm install windows build tools
+        if: matrix.os == 'windows-2016'
+        run: |
+          npm install --global --production windows-build-tools@4.0.0 && npm install node-gyp@latest && npm config set python python2.7 && npm config set msvs_version 2017
+
+      - name: npm install linux build tools
+        if: matrix.os == 'ubuntu-20.04'
+        run: |
+          sudo apt install libxtst-dev libpng++-dev
+
+      # step4: npm install
       - name: npm install
         run: |
           npm install
 
-      # step4: build app for mac/win
+      # step5: build app for mac/win
       - name: build windows app
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2016'
         run: |
           npm run build
         env:
@@ -53,25 +70,26 @@ jobs:
         env:
           GH_TOKEN: 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
 
-      # step5: cleanup artifacts in build
+      # step6: cleanup artifacts in build
       - name: cleanup artifacts
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2016'
         run: |
-          npx rimraf "build/!(*.exe|*.blockmap)"
+          npx rimraf "build/builder-effective-config.yaml build/icons"
+          # npx rimraf "build/!(*.exe*)"
 
       - name: cleanup artifacts
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'ubuntu-20.04'
         run: |
-          npx rimraf "build/!(latest.yml|*.AppImage|*.deb|*.tar.gz)"
+          npx rimraf "build/!(*.AppImage|*.deb|*.tar.gz|*.rpm)"
 
-      # step6: upload artifacts
+      # step7: upload artifacts
       - name: upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@master
         with:
           name: ${{ matrix.os }}
           path: build
 
-      # step7: create release
+      # step8: create release
       - name: release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
