@@ -6,6 +6,13 @@
   "description": "剪贴板",
   "glyphs": [
     {
+      "icon_id": "14032861",
+      "name": "deepl",
+      "font_class": "deepl",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
       "icon_id": "5972591",
       "name": "about",
       "font_class": "about",
@@ -71,7 +78,7 @@
     {
       "icon_id": "7254692",
       "name": "繁体",
-      "font_class": "fanti",
+      "font_class": "traditional",
       "unicode": "e640",
       "unicode_decimal": 58944
     },
@@ -92,7 +99,7 @@
     {
       "icon_id": "17232176",
       "name": "简体",
-      "font_class": "jianti",
+      "font_class": "simple",
       "unicode": "e6cf",
       "unicode_decimal": 59087
     },

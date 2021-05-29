@@ -134,6 +134,10 @@ ipcMain
       name: params.name,
     });
   })
+  .on(events.EVENT_APP_CLIPBOARD_DATA_EDIT, async (e, params) => {
+    logger.info(params);
+    await db.clipboardCard.updateById(params._id, params);
+  })
   .on(events.EVENT_APP_CLIPBOARD_PASTE, async (e, params) => {
     hideClipboard();
     switch (params.data.cardType) {

@@ -13,7 +13,7 @@
       :show="contextMenuVisible"
       @update:show="(show) => (contextMenuVisible = show)"
     >
-      <el-button @click="clickRenameFavorite" class="el-icon-edit-outline">
+      <el-button @click="clickRenameFavorite" class="el-icon-edit">
         重命名</el-button
       >
       <el-button @click="clickRemoveFavorite" class="el-icon-delete">

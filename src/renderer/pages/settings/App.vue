@@ -7,7 +7,9 @@
       <nav-menu />
     </div>
     <div class="content">
-      <router-view></router-view>
+      <transition name="fade" mode="out-in">
+        <router-view></router-view>
+      </transition>
     </div>
   </div>
 </template>
@@ -65,5 +67,14 @@ body {
 
 #app > .content {
   margin-top: 10px;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
