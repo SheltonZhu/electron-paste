@@ -6,7 +6,7 @@ name: Build Electron Paste For Win/Linux
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - v*.*.*
 
 # Workflow's jobs
 jobs:
@@ -21,7 +21,7 @@ jobs:
     # create a build matrix for jobs
     strategy:
       matrix:
-        os: [ windows-latest, ubuntu-20.04 ]
+        os: [windows-latest, ubuntu-20.04]
 
     # create steps
     steps:
