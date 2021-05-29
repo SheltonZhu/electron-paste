@@ -147,7 +147,7 @@ export default {
     },
     // 边界距离
     borderWidth: {
-      default: 6,
+      default: 18,
     },
   },
   mounted() {
@@ -183,12 +183,14 @@ export default {
           this.axis.x = bw - this.itemWidth - this.borderWidth - this.offset.x;
         }
         if (
-          this.axis.y + this.offset.y + this.itemHeight * this.list.length >=
+          this.axis.y +
+            this.offset.y +
+            this.itemHeight * this.list.filter((x) => !x.hidden).length >=
           bh
         ) {
           this.axis.y =
             bh -
-            this.itemHeight * this.list.length -
+            this.itemHeight * this.list.filter((x) => !x.hidden).length -
             this.borderWidth -
             this.offset.y;
         }
@@ -199,6 +201,7 @@ export default {
     axisComputed() {
       return {
         top: this.axis.y + this.offset.y + 'px',
+        // top: '20px',
         left: this.axis.x + this.offset.x + 'px',
       };
     },
