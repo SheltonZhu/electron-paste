@@ -61,14 +61,14 @@ jobs:
         run: |
           npm run build
         env:
-          GH_TOKEN: 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
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: build linux app
         if: matrix.os == 'ubuntu-20.04'
         run: |
           npm run build
         env:
-          GH_TOKEN: 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
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # step6: cleanup artifacts in build
       - name: cleanup artifacts for windows

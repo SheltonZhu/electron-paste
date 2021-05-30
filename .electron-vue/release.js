@@ -43,7 +43,6 @@ function release() {
       config: {
         productName: 'Electron Paste',
         appId: 'sheltonzhu.github.io',
-        artifactName: '${productName}-${version}.${ext}',
         compression: 'normal',
         copyright: 'Copyright © 2021 SheltonZhu',
         files: files,
@@ -72,6 +71,7 @@ function release() {
         mac: {
           icon: 'build/icons/icon.icns',
           category: 'public.app-category.developer-tools',
+          artifactName: 'Electron-Paste-${version}.${ext}',
           target: ['zip', 'dmg'],
           extendInfo: {
             LSUIElement: 'YES',
@@ -79,6 +79,7 @@ function release() {
         },
         win: {
           icon: 'build/icons/icon.ico',
+          artifactName: 'Electron-Paste-${version}.Setup.${ext}',
           target: [
             {
               target: 'nsis',
@@ -100,6 +101,7 @@ function release() {
         },
         linux: {
           icon: 'build/icons',
+          artifactName: 'Electron-Paste-${version}.${ext}',
           category: 'Utility',
           synopsis: pkg.description,
           target: ['deb', 'rpm', 'tar.gz', 'appImage'],
