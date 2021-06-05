@@ -17,7 +17,11 @@ function generateMenus() {
     { label: '设置', click: handler.showSettingsWindow },
     {
       label: '配置',
-      submenu: [{ label: '打开配置文件', click: handler.openConfigFile }],
+      submenu: [
+        { label: '打开配置文件', click: handler.openConfigFile },
+        { label: '导出配置文件', click: handler.exportConfigToFile },
+        { label: '导入配置文件', click: handler.importConfigFromFile },
+      ],
     },
     {
       label: '帮助',

@@ -24,7 +24,12 @@ ipcRenderer
   })
   .on(events.EVENT_RX_SYNC_MAIN, (e, appConfig) => {
     // 同步数据
-    store.dispatch('changeConfig', [appConfig]).then();
+    store
+      .dispatch('changeConfig', appConfig)
+      .then()
+      .catch((e) => {
+        console.log(e);
+      });
   })
   .on(events.EVENT_APP_CHANGE_BIND, (e, shortcut) => {
     changeBind(shortcut.funcName, shortcut.oldKey, shortcut.newKey);

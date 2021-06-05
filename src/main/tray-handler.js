@@ -2,6 +2,9 @@ import { app, shell, dialog } from 'electron';
 import bootstrapPromise, { appConfigPath } from './bootstrap';
 import logger, { logPath } from './logger';
 import { meta } from '../shared/env';
+import { chooseSavePath, chooseFile } from '../shared/dialog';
+import { writeJson, readJson } from 'fs-extra';
+import { currentConfig, updateAppConfig } from './data';
 
 import {
   showWindow as showClipboard,
@@ -13,6 +16,49 @@ import {
   openDevtool as sod,
 } from './window-settings';
 import { notificationIcon } from '../shared/icon';
+import { showNotification } from './notification';
+
+// 导出配置文件
+export function exportConfigToFile() {
+  chooseSavePath('选择导出的目录', {}, 'config.json').then((filePath) => {
+    logger.debug('[exportConfigToFile]: filePath:', filePath);
+    if (filePath) {
+      writeJson(filePath, currentConfig, { spaces: '\t' });
+      showNotification(`点击打开: ${filePath}`, '导出配置成功!', () => {
+        shell.openPath(filePath).catch((e) => {
+          logger.error(`[tray]: 打开配置失败： ${e}`);
+        });
+      });
+    }
+  });
+}
+
+// 导入配置文件
+export function importConfigFromFile() {
+  chooseFile(
+    '选择config.json',
+    [{ name: 'Json', extensions: ['json'] }],
+    'config.json'
+  ).then((filePath) => {
+    logger.debug('[importConfigFromFile]: filePath:', filePath);
+    if (filePath) {
+      readJson(filePath)
+        .then((fileConfig) => {
+          logger.debug('fileConfig:', fileConfig);
+          updateAppConfig(fileConfig, false);
+          showNotification(`导入配置: ${filePath}`, '导入配置成功!');
+        })
+        .catch((e) => {
+          logger.error(e);
+          showNotification(e.toString(), '导入配置失败!', () => {
+            shell.openPath(filePath).catch((e) => {
+              logger.error(`[tray]: 打开配置失败： ${e}`);
+            });
+          });
+        });
+    }
+  });
+}
 
 // 打开窗口
 export function showClipboardWindow() {
