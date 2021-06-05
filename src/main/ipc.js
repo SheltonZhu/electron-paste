@@ -135,11 +135,10 @@ ipcMain
     });
   })
   .on(events.EVENT_APP_CLIPBOARD_DATA_EDIT, async (e, params) => {
-    logger.info(params);
     await db.clipboardCard.updateById(params._id, params);
   })
   .on(events.EVENT_APP_CLIPBOARD_PASTE, async (e, params) => {
-    hideClipboard();
+    hideClipboard(params.isPaste);
     switch (params.data.cardType) {
       case CARD_TYPE.IMAGE:
         const image = nativeImage.createFromDataURL(params.data.base64data);

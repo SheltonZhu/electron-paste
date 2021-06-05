@@ -59,6 +59,7 @@ export function updateAppConfig(
   forceAppendArray = false
 ) {
   const changedKeys = getUpdatedKeys(currentConfig, targetConfig);
+  logger.debug('changedKeys: ', changedKeys.length);
   // 只有有数据变更才更新配置
   if (changedKeys.length) {
     const oldConfig = clone(currentConfig, true);

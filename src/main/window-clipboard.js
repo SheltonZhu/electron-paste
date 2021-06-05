@@ -126,8 +126,8 @@ export function getBounds() {
 /**
  * 隐藏主视图
  */
-export function hideWindow() {
-  if (isWin && activeWin) {
+export function hideWindow(isPaste) {
+  if (isWin && activeWin && isPaste) {
     activeWin.bringToTop();
     activeWin = null;
   }
