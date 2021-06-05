@@ -474,6 +474,7 @@ export default {
     pasteAndHide(timeout) {
       hideAndPaste({
         data: this.data,
+        isPaste: true,
         directPaste: this.appConfig.directPaste,
         timeout,
       });
