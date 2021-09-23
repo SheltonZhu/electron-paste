@@ -269,7 +269,7 @@ export default {
         {
           text: '编辑',
           icon: 'el-icon-edit-outline',
-          hidden: !this.isText,
+          hidden: !this.isText && !this.isLink,
           onClick: () => {
             this.editable = true;
           },
