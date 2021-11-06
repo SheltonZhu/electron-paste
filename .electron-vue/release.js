@@ -90,7 +90,7 @@ function release() {
         nsis: {
           license: 'LICENSE',
           oneClick: false,
-          perMachine: true,
+          perMachine: false,
           allowToChangeInstallationDirectory: true,
           installerIcon: 'build/icons/icon.ico', // 安装图标
           uninstallerIcon: 'build/icons/icon.ico', //卸载图标

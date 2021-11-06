@@ -1,6 +1,6 @@
 {
   "name": "electron-paste",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "author": "Shelton Zhu <498220739@qq.com> (https://github.com/SheltonZhu)",
   "description": "An Electron & Vue.js clipboard with elementUI support.",
   "homepage": "https://github.com/SheltonZhu/electron-paste",
