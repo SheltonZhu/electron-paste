@@ -136,15 +136,15 @@
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="editable = false">取 消</el-button>
         <el-button size="small" type="primary" @click="updateContent"
-          >提 交</el-button
+        >提 交</el-button
         >
       </span>
     </el-dialog>
   </el-card>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex';
-import { CARD_TYPE } from '../../../shared/env';
+import { mapActions, mapState } from 'vuex'
+import { CARD_TYPE } from '../../../shared/env'
 import {
   hideAndPaste,
   hideClipboard,
@@ -152,41 +152,41 @@ import {
   removeClipboardData,
   move2Favorite,
   listClipboardData,
-  editClipboardData,
-} from '../../ipc';
-import { dataURLtoBlob } from '../../../shared/utils';
-import ContextMenu from '../../components/ContextMenu';
-import Editor from '../../components/Editor';
-import { isLinux } from '../../../shared/env';
-import { unBind, bind } from '../../shortcut';
+  editClipboardData
+} from '../../ipc'
+import { dataURLtoBlob } from '../../../shared/utils'
+import ContextMenu from '../../components/ContextMenu'
+import Editor from '../../components/Editor'
+import { isLinux } from '../../../shared/env'
+import { unBind, bind } from '../../shortcut'
 
 export default {
   name: 'ClipboardCard',
   props: {
     data: {
       type: Object,
-      default: null,
+      default: null
     },
     index: {
-      type: Number,
-    },
+      type: Number
+    }
   },
   components: { ContextMenu, Editor },
   data: () => {
     return {
       defaultIcon: '../static/icon.png',
-      editable: false,
-    };
+      editable: false
+    }
   },
   watch: {
-    editable(stat) {
-      const shortcut = this.appConfig.windowShortcuts.hideClipboard;
+    editable (stat) {
+      const shortcut = this.appConfig.windowShortcuts.hideClipboard
       if (stat) {
-        unBind(shortcut.key);
+        unBind(shortcut.key)
       } else {
-        bind('hideClipboard', shortcut.key);
+        bind('hideClipboard', shortcut.key)
       }
-    },
+    }
   },
   computed: {
     ...mapState([
@@ -195,62 +195,62 @@ export default {
       'favorite',
       'iconMap',
       'isRenaming',
-      'fullscreen',
+      'fullscreen'
     ]),
-    shortcut() {
-      if (this.index < 9) return `Alt+${this.index + 1}`;
-      return '';
+    shortcut () {
+      if (this.index < 9) return `Alt+${this.index + 1}`
+      return ''
     },
-    isText() {
-      return this.data.cardType === CARD_TYPE.TEXT;
+    isText () {
+      return this.data.cardType === CARD_TYPE.TEXT
     },
-    isImage() {
-      return this.data.cardType === CARD_TYPE.IMAGE;
+    isImage () {
+      return this.data.cardType === CARD_TYPE.IMAGE
     },
-    isLink() {
-      return this.data.cardType === CARD_TYPE.LINK;
+    isLink () {
+      return this.data.cardType === CARD_TYPE.LINK
     },
-    cardHeaderColor() {
+    cardHeaderColor () {
       switch (true) {
         case this.isText:
-          return this.appConfig.cardHeaderBgColorText;
+          return this.appConfig.cardHeaderBgColorText
         case this.isLink:
-          return this.appConfig.cardHeaderBgColorLink;
+          return this.appConfig.cardHeaderBgColorLink
         case this.isImage:
-          return this.appConfig.cardHeaderBgColorImage;
+          return this.appConfig.cardHeaderBgColorImage
         default:
-          return '#aaabab';
+          return '#aaabab'
       }
       // const colors = ['#ff625c', '#fe9700', '#ffd74a', '#84e162', '#15bbf9', '#d58fe6', '#aaabab']
       // const idx = Math.floor(Math.random() * colors.length)
       // const idx = this.index % colors.length
       // return colors[idx]
     },
-    metaInfo() {
+    metaInfo () {
       switch (true) {
         case this.isText:
-          return `${this.data.meta.charLength} 个字符`;
+          return `${this.data.meta.charLength} 个字符`
         case this.isImage:
-          return `${this.data.meta.size.width} ✖ ${this.data.meta.size.height} 个像素`;
+          return `${this.data.meta.size.width} ✖ ${this.data.meta.size.height} 个像素`
         default:
-          return '';
+          return ''
       }
     },
-    iconUrl() {
-      return this.iconMap[this.data.icon] || this.defaultIcon;
+    iconUrl () {
+      return this.iconMap[this.data.icon] || this.defaultIcon
     },
-    contextMenu() {
+    contextMenu () {
       return [
         {
           text: '复制',
           icon: 'el-icon-document-copy',
-          onClick: this.copyAndHide,
+          onClick: this.copyAndHide
         },
         {
           text: '粘贴',
           icon: 'el-icon-document-add',
           hidden: !this.appConfig.directPaste,
-          onClick: this.pasteAndHide,
+          onClick: this.pasteAndHide
         },
         {
           text: '粘贴纯文本',
@@ -259,49 +259,49 @@ export default {
             !this.isText ||
             this.appConfig.textMode ||
             !this.appConfig.directPaste,
-          onClick: this.pasteTextAndHide,
+          onClick: this.pasteTextAndHide
         },
         {
           text: '重命名',
           icon: 'el-icon-edit',
-          onClick: this.rename,
+          onClick: this.rename
         },
         {
           text: '编辑',
           icon: 'el-icon-edit-outline',
           hidden: !this.isText && !this.isLink,
           onClick: () => {
-            this.editable = true;
-          },
+            this.editable = true
+          }
         },
         {
           text: '删除',
           icon: 'el-icon-delete',
           divided: true,
-          onClick: this.deleteOneData,
+          onClick: this.deleteOneData
         },
         {
           text: '打开链接',
           icon: 'el-icon-link',
           onClick: this.openLink,
-          hidden: !this.isLink,
+          hidden: !this.isLink
         },
         {
           text: '快速查看',
           icon: 'el-icon-view',
           hidden: this.isLink || isLinux,
-          onClick: this.togglePreview,
+          onClick: this.togglePreview
         },
         {
           text: '保存图片',
           icon: 'el-icon-picture-outline',
           onClick: this.contextMenuSaveImage,
-          hidden: !this.isImage || isLinux,
+          hidden: !this.isImage || isLinux
         },
         {
           text: '添加到收藏',
           icon: 'el-icon-star-off',
-          children: this.favoriteChildren,
+          children: this.favoriteChildren
         },
         {
           text: '谷歌翻译',
@@ -314,8 +314,8 @@ export default {
               onClick: () => {
                 this.googleTranslate(
                   'https://translate.google.cn/?sl=auto&tl=zh-CN&text='
-                );
-              },
+                )
+              }
             },
             {
               text: '日文',
@@ -323,8 +323,8 @@ export default {
               onClick: () => {
                 this.googleTranslate(
                   'https://translate.google.cn/?sl=auto&tl=ja&text='
-                );
-              },
+                )
+              }
             },
             {
               text: '中文',
@@ -332,8 +332,8 @@ export default {
               onClick: () => {
                 this.googleTranslate(
                   'https://translate.google.cn/?sl=auto&tl=zh-CN&text='
-                );
-              },
+                )
+              }
             },
             {
               text: '中文',
@@ -341,10 +341,10 @@ export default {
               onClick: () => {
                 this.googleTranslate(
                   'https://translate.google.cn/?sl=auto&tl=zh-TW&text='
-                );
-              },
-            },
-          ],
+                )
+              }
+            }
+          ]
         },
         {
           text: 'Deepl翻译',
@@ -355,24 +355,24 @@ export default {
               text: '英文',
               icon: 'icon-iconfont-en',
               onClick: () => {
-                this.googleTranslate('https://www.deepl.com/translator#zh/ja/');
-              },
+                this.googleTranslate('https://www.deepl.com/translator#zh/ja/')
+              }
             },
             {
               text: '日文',
               icon: 'icon-iconfont-jp',
               onClick: () => {
-                this.googleTranslate('https://www.deepl.com/translator#zh/ja/');
-              },
+                this.googleTranslate('https://www.deepl.com/translator#zh/ja/')
+              }
             },
             {
               text: '中文',
               icon: 'icon-iconfont-cn',
               onClick: () => {
-                this.googleTranslate('https://www.deepl.com/translator#en/zh/');
-              },
-            },
-          ],
+                this.googleTranslate('https://www.deepl.com/translator#en/zh/')
+              }
+            }
+          ]
         },
         {
           text: '分享',
@@ -381,174 +381,208 @@ export default {
             {
               text: '邮件',
               icon: 'el-icon-message',
-              onClick: this.share2email,
+              onClick: this.share2email
             },
             {
               text: 'Twitter',
               icon: 'icon-iconfont-twitter',
-              onClick: this.share2twitter,
+              onClick: this.share2twitter
+            }
+          ]
+        }, {
+          text: '其他',
+          icon: 'el-icon-more',
+          hidden: !this.isText,
+          children: [
+            {
+              text: '大写',
+              icon: 'el-icon-male',
+              onClick: this.toUpperCase,
+              hidden: !this.isText
             },
-          ],
-        },
-      ];
+            {
+              text: '小写',
+              icon: 'el-icon-female',
+              onClick: this.toLowerCase,
+              hidden: !this.isText
+            }
+          ]
+        }
+      ]
     },
-    favoriteChildren() {
-      const children = [];
+    favoriteChildren () {
+      const children = []
       for (const favorite of this.favoritesData) {
         if (favorite._id !== this.favorite) {
           children.push({
             text: favorite.name,
             icon: 'el-icon-collection-tag',
             onClick: () => {
-              this.add2favorite(favorite._id);
-            },
-          });
+              this.add2favorite(favorite._id)
+            }
+          })
         }
       }
-      return children;
-    },
+      return children
+    }
   },
   methods: {
     ...mapActions(['saveDragData', 'changeFullscreen']),
-    fullscreenChange(fullscreen) {
+    fullscreenChange (fullscreen) {
       this.changeFullscreen(fullscreen).then(() => {
-        const shortcut = this.appConfig.windowShortcuts.hideClipboard;
+        const shortcut = this.appConfig.windowShortcuts.hideClipboard
         if (this.fullscreen) {
-          unBind(shortcut.key);
+          unBind(shortcut.key)
         } else {
-          bind('hideClipboard', shortcut.key);
+          bind('hideClipboard', shortcut.key)
         }
-      });
+      })
     },
-    togglePreview() {
+    togglePreview () {
       this.$fullscreen.toggle(this.$el.querySelector('.card-content'), {
         wrap: true,
         fullscreenClass: 'fullscreen',
-        callback: this.fullscreenChange,
-      });
+        callback: this.fullscreenChange
+      })
     },
-    mountContextMenu(e, root, tag) {
-      e.stopPropagation();
-      e.preventDefault();
+    mountContextMenu (e, root, tag) {
+      e.stopPropagation()
+      e.preventDefault()
       root.$emit('easyAxis', {
         tag: tag,
         x: e.clientX,
-        y: e.clientY,
-      });
+        y: e.clientY
+      })
     },
-    onDragStart() {
-      this.saveDragData(this.data);
+    onDragStart () {
+      this.saveDragData(this.data)
     },
-    onDragEnd() {
-      this.saveDragData(null);
+    onDragEnd () {
+      this.saveDragData(null)
     },
-    select(direction, e) {
+    select (direction, e) {
       try {
         if (direction === 'right') {
-          e.target.nextElementSibling.focus();
+          e.target.nextElementSibling.focus()
         } else {
-          e.target.previousElementSibling.focus();
+          e.target.previousElementSibling.focus()
         }
       } catch (e) {
-        e.toString();
+        e.toString()
       }
     },
-    cardOnEnter() {
-      if (!this.isRenaming) this.pasteAndHide();
+    cardOnEnter () {
+      if (!this.isRenaming) this.pasteAndHide()
     },
-    cardOnDblClick() {
-      this.pasteAndHide();
+    cardOnDblClick () {
+      this.pasteAndHide()
     },
-    copyAndHide() {
+    copyAndHide () {
       hideAndPaste({
-        data: this.data,
-      });
+        data: this.data
+      })
     },
-    pasteTextAndHide() {
+    pasteTextAndHide () {
       hideAndPaste({
         data: this.data,
         textMode: true,
-        directPaste: this.appConfig.directPaste,
-      });
+        directPaste: this.appConfig.directPaste
+      })
     },
-    pasteAndHide(timeout) {
+    pasteTextAndHideWithContent (content) {
+      const newData = {
+        data: this.data,
+        textMode: true,
+        directPaste: this.appConfig.directPaste
+      }
+      newData.data.text = content
+      hideAndPaste(newData)
+    },
+    pasteAndHide (timeout) {
       hideAndPaste({
         data: this.data,
         isPaste: true,
         directPaste: this.appConfig.directPaste,
-        timeout,
-      });
+        timeout
+      })
     },
-    openLink() {
-      hideClipboard();
-      this.execShellOpenLink(this.data.text);
+    openLink () {
+      hideClipboard()
+      this.execShellOpenLink(this.data.text)
     },
-    share2twitter() {
-      this.execShellOpenLink('https://twitter.com/compose/tweet');
-      this.pasteAndHide(2500);
+    share2twitter () {
+      this.execShellOpenLink('https://twitter.com/compose/tweet')
+      this.pasteAndHide(2500)
     },
-    share2email() {
-      this.execShellOpenLink('mailto: somebody@somewhere.io');
-      this.pasteAndHide();
+    share2email () {
+      this.execShellOpenLink('mailto: somebody@somewhere.io')
+      this.pasteAndHide()
     },
-    execShellOpenLink(link) {
-      this.$electron.shell.openExternal(link);
+
+    toUpperCase () {
+      this.pasteTextAndHideWithContent(this.data.text.toUpperCase())
     },
-    deleteOneData() {
-      removeClipboardData(this.data._id);
-      listClipboardData();
+    toLowerCase () {
+      this.pasteTextAndHideWithContent(this.data.text.toLowerCase())
     },
-    rename() {
+    execShellOpenLink (link) {
+      this.$electron.shell.openExternal(link)
+    },
+    deleteOneData () {
+      removeClipboardData(this.data._id)
+      listClipboardData()
+    },
+    rename () {
       this.$store.dispatch('changeRenaming', true).then(async () => {
         try {
           const ret = await this.$prompt(this.data.name, '重命名', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            inputPlaceholder: '输入新名称',
-          });
-          renameClipboardData(this.data._id, ret.value);
-          listClipboardData();
+            inputPlaceholder: '输入新名称'
+          })
+          renameClipboardData(this.data._id, ret.value)
+          listClipboardData()
         } catch (e) {
         } finally {
           setTimeout(() => {
-            this.$store.dispatch('changeRenaming', false);
-          }, 200);
+            this.$store.dispatch('changeRenaming', false)
+          }, 200)
         }
-      });
+      })
     },
-    updateContent() {
-      this.editable = false;
-      const data = this.$refs.quill.returnData();
-      editClipboardData(data);
-      listClipboardData();
+    updateContent () {
+      this.editable = false
+      const data = this.$refs.quill.returnData()
+      editClipboardData(data)
+      listClipboardData()
     },
-    contextMenuSaveImage() {
-      const blob = dataURLtoBlob(this.data.base64data);
-      const type = blob.type.split('/')[1];
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
+    contextMenuSaveImage () {
+      const blob = dataURLtoBlob(this.data.base64data)
+      const type = blob.type.split('/')[1]
+      const reader = new FileReader()
+      reader.readAsDataURL(blob)
       reader.onload = (e) => {
-        const link = document.createElement('a');
-        link.download = `${this.data._id}.${type}`;
-        link.href = e.target.result;
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      };
+        const link = document.createElement('a')
+        link.download = `${this.data._id}.${type}`
+        link.href = e.target.result
+        link.style.display = 'none'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
     },
-    add2favorite(_id) {
-      const newData = Object.assign({}, this.data);
-      newData.favorite = _id;
-      delete newData._id;
-      move2Favorite(newData);
+    add2favorite (_id) {
+      const newData = Object.assign({}, this.data)
+      newData.favorite = _id
+      delete newData._id
+      move2Favorite(newData)
     },
-    googleTranslate(url) {
-      hideClipboard();
-      this.execShellOpenLink(`${url}${this.data.text}`);
-    },
-  },
-};
+    googleTranslate (url) {
+      hideClipboard()
+      this.execShellOpenLink(`${url}${this.data.text}`)
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -676,6 +710,7 @@ export default {
 .box-card {
   border-radius: 10px !important;
 }
+
 .el-dialog.is-fullscreen {
   background-color: #ffffffbf !important;
   backdrop-filter: saturate(180%) blur(5px) !important;
@@ -713,6 +748,7 @@ export default {
   width: auto !important;
   display: block !important;
 }
+
 pre.ql-syntax {
   background-color: #23241f;
   color: #f8f8f2;
